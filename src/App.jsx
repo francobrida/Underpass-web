@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import FiltersBar from './components/FiltersBar';
+import EventsGrid from './components/EventsGrid';
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       <Navbar />
       
       {/* Main Content Area */}
-      <main className="flex-grow p-6 md:p-10 max-w-7xl mx-auto w-full space-y-8 mt-4">
+      <main className="flex-grow p-6 md:p-10 max-w-[1400px] mx-auto w-full space-y-12 mt-4">
         
         {/* Header Titles */}
         <div className="space-y-1">
@@ -24,9 +25,9 @@ function App() {
         {/* Filters Section */}
         <FiltersBar />
 
-        {/* This is where the events grid will go next */}
-        <div className="pt-8">
-          {/* placeholder for events grid */}
+        {/* Events Grid Section */}
+        <div className="pt-4">
+          <EventsGrid />
         </div>
 
       </main>
