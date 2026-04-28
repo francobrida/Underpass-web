@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import EventCard from './EventCard';
 import apiClient from '../services/apiClient';
 
-const EventsGrid = () => {
+const EventsGrid = ({ filters }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,22 +10,26 @@ const EventsGrid = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const { data: result } = await apiClient.get('/events');
-        
-        // Laravel suele devolver paginación en result.data o la colección directa
+        // Limpiamos los filtros para no enviar strings vacíos al backend
+        const cleanParams = Object.fromEntries(
+          Object.entries(filters).filter(([_, value]) => value !== '')
+        );
+
+        const { data: result } = await apiClient.get('/events', { params: cleanParams });
         const dataArray = result.data || result;
         
-        if (Array.isArray(dataArray)) {
+        if (Array.isArray(dataArray) && dataArray.length > 0) {
+          console.log("🔍 DATOS_CRUDOS_API (Primer evento):", dataArray[0]);
           const normalizedEvents = dataArray.map(item => ({
             id: item.id,
             title: item.title || item.name || 'SIN TÍTULO',
-            organizer: item.organizer?.name || item.organizer || 'UNDERGROUND BCN',
-            date: item.date || (item.created_at ? item.created_at.split('T')[0] : 'TBA'),
-            time: item.time || '00:00',
-            location: item.location || item.neighborhood || item.barrio || 'TBA',
-            style: item.style || item.genre || 'TECHNO',
+            lineup: item.lineup || item.organizer?.name || item.organizer || 'ARTISTAS POR ANUNCIAR',
+            date: item.date ? item.date.split('T')[0] : (item.created_at ? item.created_at.split('T')[0] : 'TBA'),
+            time: item.start_time ? item.start_time.slice(0, 5) : '00:00',
+            location: item.location || item.location_name || item.neighborhood || 'TBA',
+            style: Array.isArray(item.genres) ? item.genres.map(g => g.name || g).join(', ') : (item.style || 'TECHNO'),
             price: item.price ? `${item.price}€` : 'GRATIS',
-            image: item.flyer_url || item.image || 'https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?auto=format&fit=crop&w=800&q=80',
+            image: item.flyer || item.flyer_url || 'images/flyers/party1.jpg',
             tags: item.tags || []
           }));
           setEvents(normalizedEvents);
@@ -33,15 +37,16 @@ const EventsGrid = () => {
           setEvents([]);
         }
       } catch (err) {
-        console.error("Error fetching events:", err);
-        setError(err.response?.data?.message || err.message);
+        console.error("Error cargando eventos:", err);
+        setError(err.message || "Error desconocido al conectar con la API");
+        setEvents([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchEvents();
-  }, []);
+  }, [filters]);
 
   if (loading) {
     return (

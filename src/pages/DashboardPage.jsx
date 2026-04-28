@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import FiltersBar from '../components/FiltersBar';
 import EventsGrid from '../components/EventsGrid';
 
 const DashboardPage = () => {
+  const [filters, setFilters] = useState({
+    search: '',
+    neighborhood: '',
+    genre: '',
+    price: ''
+  });
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(prev => ({ ...prev, ...newFilters }));
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
@@ -21,11 +32,11 @@ const DashboardPage = () => {
         </div>
 
         {/* Filters */}
-        <FiltersBar />
+        <FiltersBar onFilterChange={handleFilterChange} filters={filters} />
 
         {/* Events Grid */}
         <div className="pt-4">
-          <EventsGrid />
+          <EventsGrid filters={filters} />
         </div>
 
       </main>
