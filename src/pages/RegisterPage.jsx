@@ -1,49 +1,70 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff, Loader2, Mail, KeyRound } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Mail, KeyRound, User, ShieldCheck } from 'lucide-react';
 import apiClient, { setAuthToken, setAuthUser } from '../services/apiClient';
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     if (error) setError(null);
+    if (fieldErrors[e.target.name]) {
+      setFieldErrors({ ...fieldErrors, [e.target.name]: null });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setFieldErrors({});
+
+    // Validación local
+    if (form.password !== form.password_confirmation) {
+      setError('Las contraseñas no coinciden.');
+      setLoading(false);
+      return;
+    }
 
     try {
-      const { data } = await apiClient.post('/login', {
+      const { data } = await apiClient.post('/register', {
+        name: form.name,
         email: form.email,
         password: form.password,
+        password_confirmation: form.password_confirmation,
       });
 
-      // Guardar token y datos del usuario
       const token = data.token || data.access_token;
       const user = data.user || data.data;
 
       if (token) {
         setAuthToken(token);
         if (user) setAuthUser(user);
-        navigate('/events');
+        navigate('/');
       } else {
-        setError('Respuesta inesperada del servidor. No se recibió token.');
+        // Si la API no devuelve token tras registrar, mandamos al login
+        navigate('/login');
       }
     } catch (err) {
       if (err.response) {
-        const msg = err.response.data?.message || err.response.data?.error;
-        if (err.response.status === 401 || err.response.status === 422) {
-          setError(msg || 'Credenciales incorrectas.');
+        const resData = err.response.data;
+        if (err.response.status === 422 && resData.errors) {
+          // Mapear errores de validación de Laravel
+          setFieldErrors(resData.errors);
+          setError(resData.message || 'Revisá los campos marcados.');
         } else {
-          setError(msg || `Error del servidor (${err.response.status})`);
+          setError(resData.message || resData.error || `Error del servidor (${err.response.status})`);
         }
       } else {
         setError('No se pudo conectar con el servidor.');
@@ -53,10 +74,13 @@ const LoginPage = () => {
     }
   };
 
+  const inputClass = (fieldName) =>
+    `w-full bg-black border ${fieldErrors[fieldName] ? 'border-red-800' : 'border-[#1a1a1a]'} rounded-none px-4 py-3.5 text-sm text-white font-mono placeholder-[#333] focus:outline-none focus:border-accent focus:shadow-[0_0_15px_rgba(139,92,246,0.15)] transition-all`;
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
 
-      {/* Subtle animated background grid */}
+      {/* Background grid */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
 
       {/* Decorative glow */}
@@ -74,7 +98,7 @@ const LoginPage = () => {
           </p>
         </div>
 
-        {/* Login Card */}
+        {/* Register Card */}
         <div className="bg-[#050505] border border-[#1f1f1f] p-8 relative overflow-hidden">
 
           {/* Top accent line */}
@@ -82,10 +106,30 @@ const LoginPage = () => {
 
           <h2 className="text-white font-display font-bold uppercase text-lg tracking-widest mb-8 flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-accent shadow-[0_0_10px_var(--color-accent)] animate-pulse"></span>
-            Iniciar Sesión
+            Crear Cuenta
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
+
+            {/* Name Field */}
+            <div className="group">
+              <label className="flex items-center gap-2 text-[15px] text-[#555] font-mono uppercase tracking-[0.2em] mb-2 group-focus-within:text-accent transition-colors">
+                <User size={12} className="text-accent" />
+                <span className="text-accent/60">{'>'}</span> nombre
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="tu nombre"
+                required
+                className={inputClass('name')}
+              />
+              {fieldErrors.name && (
+                <p className="text-red-400 text-[10px] font-mono mt-1">{fieldErrors.name[0]}</p>
+              )}
+            </div>
 
             {/* Email Field */}
             <div className="group">
@@ -100,8 +144,11 @@ const LoginPage = () => {
                 onChange={handleChange}
                 placeholder="tu@email.com"
                 required
-                className="w-full bg-black border border-[#1a1a1a] rounded-none px-4 py-3.5 text-sm text-white font-mono placeholder-[#333] focus:outline-none focus:border-accent focus:shadow-[0_0_15px_rgba(139,92,246,0.15)] transition-all"
+                className={inputClass('email')}
               />
+              {fieldErrors.email && (
+                <p className="text-red-400 text-[10px] font-mono mt-1">{fieldErrors.email[0]}</p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -116,9 +163,9 @@ const LoginPage = () => {
                   name="password"
                   value={form.password}
                   onChange={handleChange}
-                  placeholder="••••••••"
+                  placeholder="mínimo 8 caracteres"
                   required
-                  className="w-full bg-black border border-[#1a1a1a] rounded-none px-4 py-3.5 pr-12 text-sm text-white font-mono placeholder-[#333] focus:outline-none focus:border-accent focus:shadow-[0_0_15px_rgba(139,92,246,0.15)] transition-all"
+                  className={`${inputClass('password')} pr-12`}
                 />
                 <button
                   type="button"
@@ -128,6 +175,26 @@ const LoginPage = () => {
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
+              {fieldErrors.password && (
+                <p className="text-red-400 text-[10px] font-mono mt-1">{fieldErrors.password[0]}</p>
+              )}
+            </div>
+
+            {/* Confirm Password Field */}
+            <div className="group">
+              <label className="flex items-center gap-2 text-[15px] text-[#555] font-mono uppercase tracking-[0.2em] mb-2 group-focus-within:text-accent transition-colors">
+                <ShieldCheck size={12} className="text-accent" />
+                <span className="text-accent/60">{'>'}</span> confirmar password
+              </label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password_confirmation"
+                value={form.password_confirmation}
+                onChange={handleChange}
+                placeholder="repetí tu contraseña"
+                required
+                className={inputClass('password_confirmation')}
+              />
             </div>
 
             {/* Error Message */}
@@ -146,27 +213,27 @@ const LoginPage = () => {
               {loading ? (
                 <>
                   <Loader2 size={16} className="animate-spin" />
-                  CONECTANDO...
+                  CREANDO CUENTA...
                 </>
               ) : (
-                'ENTRAR'
+                'REGISTRARSE'
               )}
             </button>
           </form>
 
-          {/* Register Link */}
+          {/* Login Link */}
           <div className="mt-8 pt-6 border-t border-[#1a1a1a] text-center">
             <p className="text-[#555] text-[11px] font-mono uppercase tracking-widest">
-              ¿No tenés cuenta?{' '}
-              <Link to="/register" className="text-accent hover:text-white transition-colors">
-                REGISTRATE
+              ¿Ya tenés cuenta?{' '}
+              <Link to="/login" className="text-accent hover:text-white transition-colors">
+                INICIÁ SESIÓN
               </Link>
             </p>
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-[#333] text-[10px] font-mono text-center mt-6 uppercase tracking-widest">
+        <p className="text-[#333] text-[10px] font-mono text-center mt-6 mb-10 uppercase tracking-widest">
           © 2026 UNDERPASS — ALL RIGHTS RESERVED
         </p>
       </div>
@@ -174,4 +241,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
