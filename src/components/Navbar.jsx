@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const navItems = useMemo(() => {
     const items = [
-      { name: 'PANEL ADMIN', icon: <Settings size={16} />, href: '#', adminOnly: true },
+      { name: 'PANEL ADMIN', icon: <Settings size={16} />, href: '/admin', adminOnly: true },
       { name: 'WAITING ROOM', icon: <Hourglass size={16} />, href: '/waiting-room' },
       { name: 'MIS EVENTOS', icon: <Ticket size={16} />, href: '/my-events' },
       { name: 'SELLOS Y PUNTOS', icon: <Medal size={16} />, href: '#' },

@@ -8,6 +8,7 @@ import EventDetailPage from './pages/EventDetailPage';
 import WaitingRoomPage from './pages/WaitingRoomPage';
 import MyEventsPage from './pages/MyEventsPage';
 import EditEventPage from './pages/EditEventPage';
+import AdminPanelPage from './pages/AdminPanelPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -45,6 +46,14 @@ function App() {
           element={
             <ProtectedRoute>
               <WaitingRoomPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminPanelPage />
             </ProtectedRoute>
           }
         />
