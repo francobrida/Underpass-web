@@ -6,6 +6,9 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import EventDetailPage from './pages/EventDetailPage';
 import WaitingRoomPage from './pages/WaitingRoomPage';
+import MyEventsPage from './pages/MyEventsPage';
+import EditEventPage from './pages/EditEventPage';
+import AdminPanelPage from './pages/AdminPanelPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -23,10 +26,34 @@ function App() {
           }
         />
         <Route
+          path="/my-events"
+          element={
+            <ProtectedRoute>
+              <MyEventsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditEventPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/waiting-room"
           element={
             <ProtectedRoute>
               <WaitingRoomPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminPanelPage />
             </ProtectedRoute>
           }
         />

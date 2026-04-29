@@ -1,16 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Ticket } from 'lucide-react';
+import { Calendar, Clock, MapPin } from 'lucide-react';
 
 const EventCard = ({ event }) => {
   const navigate = useNavigate();
 
   const baseUrl = import.meta.env.VITE_API_BASE_URL.split('/api/v1')[0];
-  const imagePath = event.image || 'images/flyers/party1.jpg';
+  const imagePath = event.image || event.flyer || 'images/flyers/party1.jpg';
   const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
   const finalSrc = imagePath.startsWith('http') ? imagePath : `${baseUrl}/${cleanPath}`;
-
-  console.log(`📸 CARGANDO_IMAGEN [Evento: ${event.id}]:`, finalSrc);
 
   return (
     <div 
@@ -29,17 +27,16 @@ const EventCard = ({ event }) => {
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
           onError={(e) => {
             if (!e.target.src.includes('unsplash')) {
-              console.error("❌ ERROR_CRITICO en:", finalSrc);
               e.target.src = 'https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?auto=format&fit=crop&w=800&q=80';
             }
           }}
         />
         
         {/* Floating Tags Top */}
-        <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+        <div className="absolute top-4 left-4 z-20">
           <div className="flex items-center gap-1.5 px-3 py-1 bg-black/80 backdrop-blur-sm border border-[#333] text-[10px] font-mono text-white tracking-widest uppercase">
             <MapPin size={10} className="text-accent" />
-            {event.location}
+            {event.location || event.neighborhood || 'BCN'}
           </div>
         </div>
       </div>
@@ -49,10 +46,12 @@ const EventCard = ({ event }) => {
         
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-3">
-          <span className="text-[10px] text-accent font-mono border border-accent/30 bg-accent/10 px-2 py-0.5">
-            #{event.style}
-          </span>
-          {event.tags.map(tag => (
+          {event.style && (
+            <span className="text-[10px] text-accent font-mono border border-accent/30 bg-accent/10 px-2 py-0.5">
+              #{event.style}
+            </span>
+          )}
+          {event.tags?.map(tag => (
             <span key={tag} className="text-[10px] text-[#666] font-mono border border-[#222] bg-[#111] px-2 py-0.5 group-hover:border-[#444] transition-colors">
               #{tag}
             </span>
@@ -60,11 +59,11 @@ const EventCard = ({ event }) => {
         </div>
 
         {/* Title */}
-        <h3 className="text-2xl text-white font-display font-black uppercase italic tracking-tight mb-1 group-hover:text-accent transition-colors">
+        <h3 className="text-2xl text-white font-display font-black uppercase italic tracking-tight mb-1 group-hover:text-accent transition-colors line-clamp-1">
           {event.title}
         </h3>
-        <p className="text-xs text-[#ccc] font-mono uppercase tracking-widest mb-6">
-          LINEUP: {event.lineup}
+        <p className="text-xs text-[#ccc] font-mono uppercase tracking-widest mb-6 line-clamp-1">
+          LINEUP: {event.lineup || 'Por confirmar'}
         </p>
 
         {/* Date & Time Footer */}
@@ -72,26 +71,25 @@ const EventCard = ({ event }) => {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5 text-xs text-[#aaa] font-mono">
               <Calendar size={14} className="text-accent/60" />
-              {event.date}
+              {event.date ? event.date.split('T')[0] : 'TBA'}
             </div>
             <div className="flex items-center gap-1.5 text-xs text-[#aaa] font-mono">
               <Clock size={14} className="text-accent/60" />
-              {event.time}
+              {event.time || (event.start_time ? event.start_time.slice(0, 5) : '00:00')} HS
             </div>
           </div>
-          {/* Precio alineado a la derecha del horario */}
+          {/* Precio */}
           <div className="text-white font-display font-black italic text-sm">
-            {event.price}
+            {event.price || 'GRATIS'}
           </div>
         </div>
 
-        {/* Hidden Button that reveals on hover */}
+        {/* Button Overlay */}
         <div className="overflow-hidden mt-0 h-0 group-hover:h-12 group-hover:mt-4 transition-all duration-300 ease-out">
           <button className="w-full bg-white text-black font-display font-black italic uppercase text-xs tracking-widest py-3 hover:bg-accent hover:text-white transition-colors duration-300">
             Ver Detalles
           </button>
         </div>
-
       </div>
     </div>
   );
