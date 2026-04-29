@@ -171,26 +171,36 @@ const WaitingEventCard = ({ event, onVouch }) => {
       </div>
 
       {/* Vouch Progress & Button */}
-      <div className="flex flex-col items-center md:items-end gap-4 min-w-[200px]">
+      <div className="flex flex-col items-center md:items-end gap-6 min-w-[240px] bg-black/40 p-4 border border-[#1a1a1a] rounded-sm">
         
         {/* Progress Tracker */}
-        <div className="w-full space-y-2">
-          <div className="flex justify-between text-[9px] font-mono text-[#555] uppercase tracking-widest">
+        <div className="w-full space-y-3">
+          <div className="flex justify-between text-[11px] font-mono font-bold text-[#999] uppercase tracking-[0.3em] mb-1">
             <span>Progreso</span>
-            <span>{vouchCount} / 3 VOUCHES</span>
+            <span className={vouchCount > 0 ? 'text-accent' : ''}>{vouchCount} / 3 VOUCHES</span>
           </div>
-          <div className="h-2 w-full bg-[#111] border border-[#222] relative overflow-hidden">
+          
+          {/* Main Progress Bar */}
+          <div className="h-4 w-full bg-black border border-[#333] relative overflow-hidden rounded-full p-[2px]">
             <div 
-              className="h-full bg-accent shadow-[0_0_10px_var(--color-accent)] transition-all duration-1000"
-              style={{ width: `${Math.min(progress, 100)}%` }}
+              className="h-full bg-accent shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.6)] transition-all duration-1000 rounded-full"
+              style={{ 
+                width: `${Math.min(progress, 100)}%`,
+                boxShadow: progress > 0 ? '0 0 15px rgba(255, 255, 255, 0.3)' : 'none' 
+              }}
             ></div>
           </div>
-          {/* LED Indicators */}
-          <div className="flex gap-2 justify-center md:justify-end pt-1">
+
+          {/* Larger LED Indicators */}
+          <div className="flex gap-3 justify-center md:justify-end pt-1">
             {[1, 2, 3].map(i => (
               <div 
                 key={i} 
-                className={`w-3 h-1 border ${i <= vouchCount ? 'bg-accent border-accent shadow-[0_0_5px_var(--color-accent)]' : 'bg-transparent border-[#333]'}`}
+                className={`w-8 h-2 border-2 transition-all duration-500 rounded-sm ${
+                  i <= vouchCount 
+                    ? 'bg-accent border-accent shadow-[0_0_15px_var(--color-accent)] scale-110' 
+                    : 'bg-transparent border-[#222]'
+                }`}
               ></div>
             ))}
           </div>
@@ -199,20 +209,20 @@ const WaitingEventCard = ({ event, onVouch }) => {
         <button 
           onClick={handleAction}
           disabled={isVouching || event.has_vouched || event.is_mine}
-          className={`flex items-center gap-2 px-6 py-2 font-display font-black italic text-xs tracking-[0.2em] uppercase transition-all duration-300 ${
+          className={`flex items-center justify-center gap-2 px-6 py-2.5 font-display font-black italic text-[11px] tracking-[0.2em] uppercase transition-all duration-300 border-2 ${
             (isVouching || event.has_vouched || event.is_mine)
-              ? 'bg-[#1a1a1a] text-[#444] cursor-default border-[#222]' 
-              : 'bg-white text-black hover:bg-accent hover:text-white hover:shadow-neon cursor-pointer border-transparent'
+              ? 'bg-transparent text-[#444] cursor-default border-[#222]' 
+              : 'bg-white text-black hover:bg-accent hover:text-white hover:border-accent hover:shadow-neon cursor-pointer border-transparent transform hover:-translate-y-1'
           }`}
         >
           {isVouching ? (
             <Loader2 size={14} className="animate-spin" />
           ) : event.has_vouched ? (
-            <><ShieldCheck size={14} className="text-accent/50" /> VOUCHED</>
+            <><ShieldCheck size={14} className="text-accent" /> VOUCHED</>
           ) : event.is_mine ? (
             <><AlertCircle size={14} /> TU EVENTO</>
           ) : (
-            <><UserCheck size={14} /> Vouch</>
+            <><UserCheck size={14} /> DAR Vouch</>
           )}
         </button>
       </div>
