@@ -46,30 +46,30 @@ const Navbar = () => {
       </div>
 
       {/* Nav Links */}
-      <div className="hidden md:flex items-center gap-8">
-        {navItems.map((item, index) => (
-          <a
-            key={index}
-            href={item.href}
-            className="flex items-center gap-2 text-text-secondary hover:text-white text-[11px] font-bold tracking-widest transition-colors duration-200"
+      <div className="hidden md:flex items-center gap-1">
+        {navItems.map((item) => (
+          <Link
+            key={item.name}
+            to={item.href}
+            className="flex items-center gap-2.5 px-5 py-2.5 text-[11px] font-display font-bold uppercase tracking-[0.2em] text-[#888] hover:text-white hover:bg-white/5 transition-all duration-300"
           >
-            <span className="text-text-secondary">{item.icon}</span>
+            {React.cloneElement(item.icon, { size: 18 })}
             {item.name}
-          </a>
+          </Link>
         ))}
-        
-        {/* Logout Button */}
+      </div>
+
+      <div className="flex items-center gap-4 pl-4 border-l border-[#1f1f1f]">
         <button 
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="ml-4 flex items-center gap-2 px-5 py-2 border border-border text-text-secondary hover:text-white hover:border-accent hover:shadow-[0_0_10px_rgba(139,92,246,0.2)] rounded font-display uppercase text-[11px] font-bold tracking-widest transition-all duration-300 disabled:opacity-50"
+          className="flex items-center gap-2.5 px-5 py-2.5 text-[11px] font-display font-black italic uppercase tracking-[0.2em] bg-white text-black hover:bg-accent hover:text-white transition-all duration-300 disabled:opacity-50"
         >
           {isLoggingOut ? (
-            <Loader2 size={14} className="animate-spin text-accent" />
+            <Loader2 size={18} className="animate-spin" />
           ) : (
-            <LogOut size={14} className="text-accent" />
+            <><LogOut size={18} /> SALIR</>
           )}
-          {isLoggingOut ? 'Saliendo...' : 'Salir'}
         </button>
       </div>
     </nav>
