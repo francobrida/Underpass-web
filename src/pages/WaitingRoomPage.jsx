@@ -166,7 +166,7 @@ const WaitingEventCard = ({ event, onVouch }) => {
         </div>
 
         <p className="text-[10px] text-[#444] font-mono uppercase tracking-[0.2em]">
-          PROUESTA_POR: {event.organizer?.name || 'USER_COMMUNITY'}
+          Organizado por: {event.organizer?.name || event.organizer || 'USER_COMMUNITY'}
         </p>
       </div>
 
