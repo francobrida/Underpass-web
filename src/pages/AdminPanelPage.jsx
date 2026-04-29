@@ -443,15 +443,7 @@ const AdminPanelPage = () => {
                           </td>
                           <td className="p-5 text-right">
                             <div className="flex justify-end gap-3">
-                              {eventSubTab === 'pending' && (
-                                <button 
-                                  onClick={() => toggleVerification(e)}
-                                  className="p-3 bg-[#111] text-green-500 hover:bg-green-500/10 border border-[#222] hover:border-green-500/30 transition-all cursor-pointer"
-                                  title="Verificar Evento"
-                                >
-                                  <ShieldCheck size={20} />
-                                </button>
-                              )}
+                              
                               <button 
                                 onClick={() => handleEventEditClick(e)}
                                 className="p-3 bg-[#111] text-[#aaa] hover:text-white hover:bg-[#222] border border-[#222] hover:border-[#333] transition-all cursor-pointer"
