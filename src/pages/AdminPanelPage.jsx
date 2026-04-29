@@ -114,7 +114,6 @@ const AdminPanelPage = () => {
         price: parseFloat(eventEditFormData.price) || 0,
         is_18_plus: !!eventEditFormData.is_18_plus,
         is_verified: !!eventEditFormData.is_verified,
-        // Formato H:i (HH:mm) exigido por date_format:H:i
         start_time: eventEditFormData.start_time ? eventEditFormData.start_time.slice(0, 5) : null,
         end_time: eventEditFormData.end_time ? eventEditFormData.end_time.slice(0, 5) : null,
       };
