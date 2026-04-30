@@ -60,7 +60,9 @@ const EventDetailPage = () => {
     title: 'VINTAGE TECHNO NIGHT',
     date: '2024-01-01',
     is_verified: true,
-    is_mine: true
+    is_mine: true,
+    organizer_name: "THE VINTAGE CREW",
+    flyer: 'https://images.unsplash.com/photo-1574433232601-3830c45974c8?auto=format&fit=crop&w=800&q=80'
   };
 
   useEffect(() => {
@@ -175,65 +177,70 @@ const EventDetailPage = () => {
         {/* Main Content: Flyer next to Name */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-start">
           
-          {/* Left Column: Flyer (More importance) */}
-          <div className="lg:col-span-5 order-2 lg:order-1">
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-accent/30 blur opacity-20 group-hover:opacity-50 transition-opacity duration-500"></div>
-              <div className="relative bg-black border border-[#1f1f1f] p-2 shadow-2xl">
-                <img 
-                  src={event.flyer} 
-                  alt="Official Flyer" 
-                  className="w-full h-auto"
-                  onError={(e) => {
-                    if (e.target.src !== 'party1.jpg' && !e.target.src.includes('unsplash')) {
-                      console.error("Fallo flyer en:", event.flyer);
-                      e.target.src = 'https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?auto=format&fit=crop&w=1200&q=80';
-                    }
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* QR STAMP SECTION (Owner Only - Only for active/future events) */}
-            {event.is_mine && !isPast && (
-              <div className="mt-8 bg-[#080808] border border-[#1f1f1f] p-6 relative group overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-accent opacity-50 shadow-[0_0_10px_var(--color-accent)]"></div>
-                
-                <div className="text-center space-y-1 mb-6">
-                  <h3 className="text-white font-display font-black italic text-xs tracking-[0.3em] uppercase flex items-center justify-center gap-2">
-                    <QrCode size={14} className="text-accent" /> STAMP QR CODE
-                  </h3>
-                  <p className="text-[#555] font-mono text-[9px] uppercase tracking-widest">Escanea para coleccionar Stamp</p>
-                </div>
-                
-                <div className="flex justify-center bg-white p-5 rounded-sm">
-                  <QRCodeCanvas 
-                    id="qr-gen"
-                    value={event.stamp_token || `underpass_stamp_${event.id}`}
-                    size={220}
-                    level={"H"}
-                    includeMargin={false}
+          {/* Left Column: Flyer (Hidden for past events) */}
+          {!isPast && (
+            <div className="lg:col-span-5 order-2 lg:order-1">
+              <div className="relative group">
+                <div className="absolute -inset-0.5 bg-accent/30 blur opacity-20 group-hover:opacity-50 transition-opacity duration-500"></div>
+                <div className="relative bg-black border border-[#1f1f1f] p-2 shadow-2xl">
+                  <img 
+                    src={event.flyer} 
+                    alt="Official Flyer" 
+                    className="w-full h-auto"
+                    onError={(e) => {
+                      if (e.target.src !== 'party1.jpg' && !e.target.src.includes('unsplash')) {
+                        console.error("Fallo flyer en:", event.flyer);
+                        e.target.src = 'https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?auto=format&fit=crop&w=1200&q=80';
+                      }
+                    }}
                   />
                 </div>
-
-                <div className="mt-6 space-y-3">
-                  <button 
-                    onClick={downloadQRCode}
-                    className="w-full py-4 bg-accent hover:bg-accent-hover text-white font-display font-black italic uppercase text-[10px] tracking-[0.2em] transition-all flex items-center justify-center gap-2 shadow-neon transform hover:-translate-y-1"
-                  >
-                    <Download size={14} /> DESCARGAR QR
-                  </button>
-                  <p className="text-[#333] font-mono text-[8px] text-center uppercase tracking-widest leading-relaxed">
-                    * QR único para este evento.<br/>Click para descargar imagen de alta calidad
-                  </p>
-                </div>
               </div>
-            )}
-          </div>
+
+              {/* QR STAMP SECTION (Owner Only - Only for active/future events) */}
+              {event.is_mine && !isPast && (
+                <div className="mt-8 bg-[#080808] border border-[#1f1f1f] p-6 relative group overflow-hidden">
+                  <div className="absolute top-0 left-0 w-full h-[2px] bg-accent opacity-50 shadow-[0_0_10px_var(--color-accent)]"></div>
+                  
+                  <div className="text-center space-y-1 mb-6">
+                    <h3 className="text-white font-display font-black italic text-xs tracking-[0.3em] uppercase flex items-center justify-center gap-2">
+                      <QrCode size={14} className="text-accent" /> STAMP QR CODE
+                    </h3>
+                    <p className="text-[#555] font-mono text-[9px] uppercase tracking-widest">Escanea para coleccionar Stamp</p>
+                  </div>
+                  
+                  <div className="flex justify-center bg-white p-5 rounded-sm">
+                    <QRCodeCanvas 
+                      id="qr-gen"
+                      value={event.stamp_token || `underpass_stamp_${event.id}`}
+                      size={220}
+                      level={"H"}
+                      includeMargin={false}
+                    />
+                  </div>
+
+                  <div className="mt-6 space-y-3">
+                    <button 
+                      onClick={downloadQRCode}
+                      className="w-full py-4 bg-accent hover:bg-accent-hover text-white font-display font-black italic uppercase text-[10px] tracking-[0.2em] transition-all flex items-center justify-center gap-2 shadow-neon transform hover:-translate-y-1"
+                    >
+                      <Download size={14} /> DESCARGAR QR
+                    </button>
+                    <p className="text-[#333] font-mono text-[8px] text-center uppercase tracking-widest leading-relaxed">
+                      * QR único para este evento.<br/>Click para descargar imagen de alta calidad
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Right Column: Info */}
-          <div className="lg:col-span-7 order-1 lg:order-2 space-y-8">
+          <div className={`${isPast ? 'lg:col-span-12' : 'lg:col-span-7'} order-1 lg:order-2 space-y-8`}>
             <div className="space-y-4">
+              <p className="text-accent/60 font-mono text-[10px] uppercase tracking-[0.5em] mb-2 animate-pulse">
+                // ORG BY: {event.organizer || event.organizer_name || event.user?.name}
+              </p>
               <h1 className="text-4xl md:text-6xl text-white font-display font-black uppercase italic tracking-tighter leading-tight">
                 {event.title}
               </h1>
