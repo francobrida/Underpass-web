@@ -54,17 +54,6 @@ const EventDetailPage = () => {
     organizer_email: 'organizer@test.com'
   };
 
-  const mockPastEvent = {
-    ...mockEvent,
-    id: 999,
-    title: 'VINTAGE TECHNO NIGHT',
-    date: '2024-01-01',
-    is_verified: true,
-    is_mine: true,
-    organizer_name: "THE VINTAGE CREW",
-    flyer: 'https://images.unsplash.com/photo-1574433232601-3830c45974c8?auto=format&fit=crop&w=800&q=80'
-  };
-
   useEffect(() => {
     const fetchEventData = async () => {
       setLoading(true);

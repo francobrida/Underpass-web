@@ -9,6 +9,8 @@ import WaitingRoomPage from './pages/WaitingRoomPage';
 import MyEventsPage from './pages/MyEventsPage';
 import EditEventPage from './pages/EditEventPage';
 import AdminPanelPage from './pages/AdminPanelPage';
+import StampsPage from './pages/StampsPage';
+import RankingPage from './pages/RankingPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -54,6 +56,22 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminPanelPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/stamps"
+          element={
+            <ProtectedRoute>
+              <StampsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ranking"
+          element={
+            <ProtectedRoute>
+              <RankingPage />
             </ProtectedRoute>
           }
         />

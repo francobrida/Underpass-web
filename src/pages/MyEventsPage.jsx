@@ -49,16 +49,6 @@ const MyEventsPage = () => {
         return acc;
       }, { verified: [], pending: [], past: [] });
 
-      // Inyectamos el Mock para testear el diseño del archivo
-      categorized.past.push({
-        id: '999',
-        title: 'VINTAGE TECHNO NIGHT (MOCK)',
-        date: '2024-01-01',
-        is_verified: true,
-        location_name: 'The Old Warehouse',
-        flyer: 'https://images.unsplash.com/photo-1574433232601-3830c45974c8?auto=format&fit=crop&w=800&q=80'
-      });
-
       setEvents(categorized);
     } catch (err) {
       console.error("Error cargando mis eventos:", err);
