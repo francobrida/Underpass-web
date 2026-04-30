@@ -4,7 +4,8 @@ import Navbar from '../components/Navbar';
 import apiClient from '../services/apiClient';
 import { 
   Save, X, AlertTriangle, Loader2, 
-  Calendar, Clock, MapPin, Type, AlignLeft, Tag, DollarSign
+  Calendar, Clock, MapPin, Type, AlignLeft, Tag, DollarSign,
+  ExternalLink
 } from 'lucide-react';
 
 const EditEventPage = () => {
@@ -21,9 +22,16 @@ const EditEventPage = () => {
     end_time: '',
     location: '',
     neighborhood: '',
-    price: '',
+    price_info: '',
+    ticket_link: '',
     style: ''
   });
+  const [notification, setNotification] = useState(null);
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 5000);
+  };
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -37,15 +45,17 @@ const EditEventPage = () => {
           date: event.date ? event.date.split('T')[0] : '',
           start_time: event.start_time || '',
           end_time: event.end_time || '',
-          location: event.location || '',
+          location: event.location || event.location_name || '',
           neighborhood: event.neighborhood || '',
           price: event.price || '',
+          price_info: event.price_info || '',
+          ticket_link: event.ticket_link || '',
           style: event.style || ''
         });
       } catch (err) {
         console.error("Error cargando evento:", err);
-        alert("No se pudo cargar la información del evento.");
-        navigate('/my-events');
+        showNotification("No se pudo cargar la información del evento.", "error");
+        setTimeout(() => navigate('/my-events'), 2000);
       } finally {
         setLoading(false);
       }
@@ -56,14 +66,34 @@ const EditEventPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
+    const payload = {
+      title: formData.title,
+      lineup: formData.lineup,
+      description: formData.description,
+      date: formData.date,
+      location_name: formData.location,
+      neighborhood: formData.neighborhood,
+      price: parseFloat(formData.price) || 0,
+      start_time: formData.start_time ? formData.start_time.slice(0, 5) : null,
+      end_time: formData.end_time ? formData.end_time.slice(0, 5) : null,
+    };
+
+    // Solo incluimos estos si tienen contenido para evitar errores de validación 'string' vs 'null'
+    if (formData.price_info && formData.price_info.trim() !== "") {
+      payload.price_info = formData.price_info;
+    }
+    
+    if (formData.ticket_link && formData.ticket_link.trim() !== "") {
+      payload.ticket_link = formData.ticket_link;
+    }
+
     try {
-      // LLAMADA AL ENDPOINT OFICIAL: PUT /api/v1/events/{id}
-      await apiClient.put(`/events/${id}`, formData);
-      alert("Evento actualizado correctamente. Recuerda que ha vuelto a la Waiting Room para ser verificado.");
-      navigate('/my-events');
+      await apiClient.put(`/events/${id}`, payload);
+      showNotification("Evento actualizado correctamente. Volviendo a la Waiting Room...");
+      setTimeout(() => navigate('/my-events'), 2000);
     } catch (err) {
       console.error("Error al actualizar:", err);
-      alert("Error al guardar los cambios. Revisa los datos introducidos.");
+      showNotification("Error al guardar los cambios. Revisa los datos.", "error");
     } finally {
       setSaving(false);
     }
@@ -230,6 +260,34 @@ const EditEventPage = () => {
                 placeholder="EJ: POBLENOU"
               />
             </div>
+
+            {/* Info de Precio (Opcional) */}
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
+                <DollarSign size={12} /> Info adicional precio
+              </label>
+              <input 
+                type="text"
+                value={formData.price_info}
+                onChange={(e) => setFormData({...formData, price_info: e.target.value})}
+                className="w-full bg-black border border-[#222] p-4 text-sm text-[#aaa] font-mono focus:border-accent outline-none transition-all"
+                placeholder="EJ: INCLUYE UNA COPA"
+              />
+            </div>
+
+            {/* Ticket Link (Opcional) */}
+            <div className="md:col-span-2 space-y-2">
+              <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
+                <ExternalLink size={12} /> Link de Entradas
+              </label>
+              <input 
+                type="url"
+                value={formData.ticket_link}
+                onChange={(e) => setFormData({...formData, ticket_link: e.target.value})}
+                className="w-full bg-black border border-[#222] p-4 text-sm text-accent font-mono focus:border-accent outline-none transition-all"
+                placeholder="https://ra.co/events/..."
+              />
+            </div>
           </div>
 
           {/* Botones de acción */}
@@ -256,6 +314,20 @@ const EditEventPage = () => {
           Underpass System // Event Protocol Update // {new Date().getFullYear()}
         </p>
       </main>
+
+      {/* Custom Notification Toast */}
+      {notification && (
+        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 border animate-in fade-in slide-in-from-bottom-4 duration-300 ${
+          notification.type === 'error' 
+            ? 'bg-red-950/20 border-red-500/50 text-red-500 shadow-[0_0_20px_rgba(239,68,68,0.2)]' 
+            : 'bg-accent/10 border-accent/50 text-accent shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.2)]'
+        }`}>
+          {notification.type === 'error' ? <AlertTriangle size={18} /> : <Save size={18} />}
+          <p className="font-mono text-[11px] uppercase tracking-widest font-bold">
+            {notification.message}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

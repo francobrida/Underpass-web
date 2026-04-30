@@ -30,22 +30,34 @@ const MyEventsPage = () => {
         return;
       }
 
-      const now = new Date();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       
       const categorized = allEvents.reduce((acc, event) => {
         if (!event) return acc;
         
         const eventDate = event.date ? new Date(event.date) : new Date();
+        const isPast = eventDate < today;
         
-        if (eventDate < now && event.is_verified) {
+        if (isPast) {
           acc.past.push(event);
-        } else if (!event.is_verified) {
+        } else if (event.is_verified === false || event.is_verified === 0) {
           acc.pending.push(event);
         } else {
           acc.verified.push(event);
         }
         return acc;
       }, { verified: [], pending: [], past: [] });
+
+      // Inyectamos el Mock para testear el diseño del archivo
+      categorized.past.push({
+        id: '999',
+        title: 'VINTAGE TECHNO NIGHT (MOCK)',
+        date: '2024-01-01',
+        is_verified: true,
+        location_name: 'The Old Warehouse',
+        flyer: 'party1.jpg'
+      });
 
       setEvents(categorized);
     } catch (err) {
@@ -135,12 +147,44 @@ const MyEventsPage = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 gap-4">
-            {events.pending.map(event => (
-              <MyPendingEventCard key={event.id} event={event} onDelete={() => handleDelete(event.id)} />
-            ))}
-            {events.pending.length === 0 && <EmptyState message="No hay eventos en espera." />}
-          </div>
+          {events.pending.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {events.pending.map(event => (
+                <div key={event.id} className="relative group">
+                  <div className="opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500">
+                    <EventCard event={event} />
+                  </div>
+                  
+                  {/* Vouch Count Badge for Pending */}
+                  <div className="absolute top-4 left-4 z-30">
+                    <span className="px-2 py-1 bg-accent text-white font-mono text-[9px] font-bold uppercase tracking-widest shadow-neon">
+                      {event.vouch_count || 0} / 3 VOUCHES
+                    </span>
+                  </div>
+
+                  {/* Overlays for Edit/Delete */}
+                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-30">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); navigate(`/events/edit/${event.id}`); }}
+                      className="p-2 bg-white text-black hover:bg-accent hover:text-white transition-colors shadow-xl"
+                      title="Editar"
+                    >
+                      <Edit3 size={18} />
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); handleDelete(event.id); }}
+                      className="p-2 bg-black text-red-500 border border-red-500/50 hover:bg-red-500 hover:text-white transition-colors shadow-xl"
+                      title="Eliminar"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <EmptyState message="No hay eventos en espera." />
+          )}
         </section>
 
         {/* SECTION 3: PAST EVENTS */}
@@ -154,21 +198,37 @@ const MyEventsPage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {events.past.map(event => (
-              <button 
-                key={event.id}
-                onClick={() => handleFetchVibeChecks(event.id)}
-                className="flex items-center gap-4 p-4 bg-[#050505] border border-[#111] hover:border-[#333] transition-all text-left group"
-              >
-                <div className="w-12 h-12 bg-[#111] flex items-center justify-center text-[#444] group-hover:text-accent transition-colors">
-                  <Star size={20} />
-                </div>
-                <div>
-                  <h4 className="text-sm text-white font-bold uppercase tracking-wider">{event.title}</h4>
-                  <p className="text-[10px] text-[#444] font-mono">{event.date}</p>
-                </div>
-              </button>
-            ))}
+            {events.past.map(event => {
+              const flyer = event.flyer || 'party1.jpg';
+              const baseUrl = import.meta.env.VITE_API_BASE_URL.split('/api/v1')[0];
+              const finalSrc = flyer.startsWith('http') ? flyer : (flyer === 'party1.jpg' ? 'party1.jpg' : `${baseUrl}/${flyer.startsWith('/') ? flyer.substring(1) : flyer}`);
+
+              return (
+                <button 
+                  key={event.id}
+                  onClick={() => navigate(`/events/${event.id}`)}
+                  className="flex items-center gap-4 p-4 bg-[#050505] border border-[#111] hover:border-accent/40 transition-all text-left group relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="w-16 h-16 flex-shrink-0 bg-black border border-[#111] overflow-hidden relative z-10 opacity-60 group-hover:opacity-100 transition-opacity">
+                    <img 
+                      src={finalSrc} 
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
+                      alt="" 
+                      onError={(e) => e.target.src = 'https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?auto=format&fit=crop&w=200&q=80'}
+                    />
+                  </div>
+                  <div className="relative z-10 flex-grow">
+                    <h4 className="text-xs text-white font-bold uppercase tracking-wider group-hover:text-accent transition-colors leading-tight">{event.title}</h4>
+                    <div className="flex items-center gap-2 mt-2">
+                      <p className="text-[9px] text-[#444] font-mono">{event.date}</p>
+                      <span className="w-1 h-1 bg-[#222] rounded-full"></span>
+                      <p className="text-[9px] text-accent/50 font-mono uppercase tracking-widest">ARCHIVED</p>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
             {events.past.length === 0 && <EmptyState message="No hay eventos pasados en tu registro." />}
           </div>
         </section>
@@ -217,39 +277,6 @@ const MyEventsPage = () => {
   );
 };
 
-const MyPendingEventCard = ({ event, onDelete }) => {
-  const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_API_BASE_URL.split('/api/v1')[0];
-  const flyer = event.flyer || 'images/flyers/party1.jpg';
-  const finalSrc = flyer.startsWith('http') ? flyer : `${baseUrl}/${flyer.startsWith('/') ? flyer.substring(1) : flyer}`;
-
-  return (
-    <div className="flex items-center gap-6 p-4 bg-[#080808] border border-[#111] group relative">
-      <div className="w-24 h-24 flex-shrink-0 bg-black overflow-hidden opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all border border-[#222]">
-        <img src={finalSrc} className="w-full h-full object-cover" alt="" />
-      </div>
-      <div className="flex-grow">
-        <h4 className="text-lg text-white font-display font-black uppercase italic tracking-wider leading-none mb-2">{event.title}</h4>
-        <div className="flex gap-4 text-[10px] text-[#555] font-mono uppercase">
-           <span className="flex items-center gap-1"><Calendar size={12}/> {event.date}</span>
-           <span className="flex items-center gap-1"><MapPin size={12}/> {event.neighborhood}</span>
-           <span className="text-accent font-bold">VOUCHES: {event.vouch_count || 0}/3</span>
-        </div>
-      </div>
-      <div className="flex gap-2">
-        <button 
-          onClick={() => navigate(`/events/edit/${event.id}`)}
-          className="p-3 bg-[#111] text-[#444] hover:text-white transition-colors border border-transparent hover:border-[#333]"
-        >
-           <Edit3 size={16} />
-        </button>
-        <button onClick={onDelete} className="p-3 bg-[#111] text-[#444] hover:text-red-500 transition-colors border border-transparent hover:border-red-500/30">
-           <Trash2 size={16} />
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const VibeCheckModal = ({ data, onClose }) => {
   const stats = [
