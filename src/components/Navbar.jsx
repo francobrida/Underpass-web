@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Settings, Hourglass, Ticket, Medal, User, LogOut, Loader2 } from 'lucide-react';
+import { Settings, Hourglass, Ticket, Medal, User, LogOut, Loader2, Calendar } from 'lucide-react';
 import apiClient, { clearAuth, getAuthUser } from '../services/apiClient';
 
 const Navbar = () => {
@@ -11,6 +11,7 @@ const Navbar = () => {
 
   const navItems = useMemo(() => {
     const items = [
+      { name: 'AGENDA DE EVENTOS', icon: <Calendar size={16} />, href: '/events' },
       { name: 'PANEL ADMIN', icon: <Settings size={16} />, href: '/admin', adminOnly: true },
       { name: 'WAITING ROOM', icon: <Hourglass size={16} />, href: '/waiting-room' },
       { name: 'MIS EVENTOS', icon: <Ticket size={16} />, href: '/my-events' },

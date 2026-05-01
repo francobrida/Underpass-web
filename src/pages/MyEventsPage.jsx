@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import apiClient, { getAuthUser } from '../services/apiClient';
 import EventCard from '../components/EventCard';
+import TechnicalLoader from '../components/TechnicalLoader';
 import { 
   Edit3, Trash2, AlertTriangle, History, 
   ShieldCheck, Hourglass, Star, MessageSquare, 
@@ -80,6 +81,15 @@ const MyEventsPage = () => {
       alert("No se pudieron cargar los VibeChecks");
     }
   };
+
+  if (loading) return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <Navbar />
+      <div className="flex-grow flex items-center justify-center">
+        <TechnicalLoader />
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-background flex flex-col pb-20">

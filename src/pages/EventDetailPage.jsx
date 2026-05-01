@@ -8,6 +8,7 @@ import {
 import { QRCodeCanvas } from 'qrcode.react';
 import apiClient from '../services/apiClient';
 import Navbar from '../components/Navbar';
+import TechnicalLoader from '../components/TechnicalLoader';
 
 const EventDetailPage = () => {
   const { id } = useParams();
@@ -132,7 +133,7 @@ const EventDetailPage = () => {
       <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
         <div className="flex-grow flex items-center justify-center">
-          <div className="w-16 h-[2px] bg-accent animate-pulse"></div>
+          <TechnicalLoader />
         </div>
       </div>
     );

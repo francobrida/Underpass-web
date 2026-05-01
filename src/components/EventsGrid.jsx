@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import EventCard from './EventCard';
 import apiClient from '../services/apiClient';
+import TechnicalLoader from './TechnicalLoader';
 
 const EventsGrid = ({ filters }) => {
   const [events, setEvents] = useState([]);
@@ -50,8 +51,8 @@ const EventsGrid = ({ filters }) => {
 
   if (loading) {
     return (
-      <div className="w-full flex justify-center py-20">
-        <div className="w-10 h-10 border-4 border-[#1f1f1f] border-t-accent rounded-full animate-spin"></div>
+      <div className="w-full py-20">
+        <TechnicalLoader />
       </div>
     );
   }

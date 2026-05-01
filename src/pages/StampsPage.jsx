@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Trophy, Award, Calendar, Activity, Cpu, ShieldCheck, Database, Layers } from 'lucide-react';
 import apiClient from '../services/apiClient';
 import Navbar from '../components/Navbar';
+import TechnicalLoader from '../components/TechnicalLoader';
 
 const StampsPage = () => {
   const navigate = useNavigate();
@@ -30,6 +31,15 @@ const StampsPage = () => {
     fetchData();
   }, []);
 
+  if (loading) return (
+    <div className="min-h-screen bg-[#050505] flex flex-col">
+      <Navbar />
+      <div className="flex-grow flex items-center justify-center">
+        <TechnicalLoader />
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-accent selection:text-black font-sans">
       <Navbar />
@@ -43,24 +53,24 @@ const StampsPage = () => {
       <main className="max-w-7xl mx-auto px-6 py-12 relative z-10">
         
         {/* TOP STATUS BAR (INTEGRATED RACK) */}
-        <header className="grid grid-cols-1 lg:grid-cols-12 gap-1 bg-[#0a0a0a] border border-[#1a1a1a] p-1 shadow-2xl mb-12">
+        <header className="grid grid-cols-1 lg:grid-cols-12 gap-1 panel-neon p-1 mb-12">
           
           {/* RANKING ACCESS - DIRECT BUTTON */}
-          <div className="lg:col-span-5 bg-black flex border-b lg:border-b-0 lg:border-r border-[#1a1a1a]">
+          <div className="lg:col-span-5 bg-black flex border-b lg:border-b-0 lg:border-r border-white/5">
             <button 
               onClick={() => navigate('/ranking')}
               className="group flex items-center justify-between w-full p-8 hover:bg-accent/5 transition-all"
             >
               <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-colors shadow-[0_0_15px_rgba(var(--color-accent),0.1)]">
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-colors shadow-[0_0_15px_rgba(139,92,246,0.3)]">
                   <Trophy size={24} />
                 </div>
                 <div className="text-left">
                   <p className="text-xl font-display font-black uppercase italic tracking-tight group-hover:text-accent transition-colors">Community Ranking</p>
-                  <p className="text-[9px] font-mono text-[#444] uppercase tracking-[0.3em] mt-1">View Global Leaderboard</p>
+                  <p className="text-[12px] font-mono text-[#666] uppercase tracking-[0.3em] mt-1">Ver el ranking de usuarios</p>
                 </div>
               </div>
-              <Activity size={18} className="text-[#1a1a1a] group-hover:text-accent transition-colors animate-pulse" />
+              <Activity size={18} className="text-[#222] group-hover:text-accent transition-colors animate-pulse" />
             </button>
           </div>
 
@@ -70,11 +80,8 @@ const StampsPage = () => {
               <div className="flex items-center gap-3">
                 <div className="w-2 h-2 rounded-full bg-accent animate-ping"></div>
                 <span className="text-3xl font-mono font-black text-white tracking-tighter">
-                  {points} <span className="text-[10px] text-accent uppercase tracking-[0.4em] ml-2">Points Accumulated</span>
+                  {points} <span className="text-[15px] text-accent/80 uppercase tracking-[0.4em] ml-2">Puntos Acumulados</span>
                 </span>
-              </div>
-              <div className="hidden md:block">
-                <ShieldCheck size={20} className="text-[#1a1a1a]" />
               </div>
             </div>
 
@@ -82,7 +89,7 @@ const StampsPage = () => {
             <div className="flex gap-[3px] h-12 items-end">
               {[...Array(40)].map((_, i) => {
                 const isActive = (i / 40) < (points / 2000);
-                let colorClass = "bg-[#0d0d0d]";
+                let colorClass = "bg-[#111]";
                 if (isActive) {
                   if (i < 24) colorClass = "bg-green-500/80 shadow-[0_0_10px_rgba(34,197,94,0.4)]";
                   else if (i < 34) colorClass = "bg-yellow-500/80 shadow-[0_0_10px_rgba(234,179,8,0.4)]";
@@ -101,24 +108,16 @@ const StampsPage = () => {
         </header>
 
         {/* MAIN DECK: STAMPS PASSPORT */}
-        <section className="bg-[#0a0a0a] border border-[#1a1a1a] shadow-2xl relative overflow-hidden">
+        <section className="panel-neon relative overflow-hidden">
           {/* Section Header */}
-          <div className="p-8 border-b border-[#1a1a1a] bg-black flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="p-8 border-b border-white/5 bg-black flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-accent flex items-center justify-center text-black">
+              <div className="w-12 h-12 bg-accent flex items-center justify-center text-black shadow-neon">
                 <Layers size={24} />
               </div>
               <div>
-                <h2 className="text-3xl text-white font-display font-black uppercase italic tracking-tighter leading-none">Stamp Collection</h2>
-                <p className="text-[#555] font-mono text-[10px] uppercase tracking-[0.4em] mt-1">Personnel Authorization Log // Records: {stamps.length}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-6 font-mono text-[9px] text-[#444] uppercase tracking-widest bg-[#0d0d0d] px-4 py-2 border border-[#1a1a1a]">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-accent"></div> COLLECTED
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#222]"></div> LOCKED
+                <h2 className="text-3xl text-white font-display font-black uppercase italic tracking-tighter leading-none">SELLOS COLECCIONADOS</h2>
+                <p className="text-[#666] font-mono text-[11px] uppercase tracking-[0.4em] mt-1">Certificados de asistencia al under</p>
               </div>
             </div>
           </div>
@@ -128,11 +127,11 @@ const StampsPage = () => {
             {stamps.map((stamp, i) => (
               <div key={stamp.id} className="group relative">
                 {/* Technical Slot Decor */}
-                <div className="absolute -inset-2 border border-[#1a1a1a] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-accent/20"></div>
-                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-accent/20"></div>
+                <div className="absolute -inset-2 border border-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-accent/40"></div>
+                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-accent/40"></div>
 
-                <div className="relative aspect-square flex flex-col items-center justify-center p-4 bg-black border border-[#1a1a1a] group-hover:border-accent/30 transition-all duration-500 overflow-hidden shadow-inner">
+                <div className="relative aspect-square flex flex-col items-center justify-center p-4 bg-black border border-white/10 group-hover:border-accent/30 transition-all duration-500 overflow-hidden shadow-inner">
                   {/* Stamp Seal Design */}
                   <div 
                     className="relative w-full h-full flex flex-col items-center justify-center text-center p-4 rounded-full border-4 border-white/5 group-hover:border-accent/10 transition-all duration-700 transform group-hover:scale-105"
@@ -141,38 +140,38 @@ const StampsPage = () => {
                     <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-full"></div>
                     <div className="relative z-10 space-y-1">
                       <p className="text-[7px] font-mono text-accent/40 uppercase tracking-[0.3em] font-bold">Validated</p>
-                      <h3 className="text-[10px] md:text-[11px] font-display font-black uppercase italic leading-none text-[#999] group-hover:text-white transition-colors">
+                      <h3 className="text-[10px] md:text-[11px] font-display font-black uppercase italic leading-none text-[#ccc] group-hover:text-white transition-colors">
                         {stamp.event?.title || 'SESSION'}
                       </h3>
-                      <div className="flex items-center justify-center gap-1 text-[8px] font-mono text-[#333] pt-2">
+                      <div className="flex items-center justify-center gap-1 text-[8px] font-mono text-[#555] pt-2">
                         <Calendar size={10} /> {stamp.event?.date || '2024'}
                       </div>
                     </div>
                   </div>
 
                   {/* Corner Label */}
-                  <div className="absolute top-2 left-2 text-[8px] font-mono text-[#222] font-black italic">ID://{stamp.id}</div>
+                  <div className="absolute top-2 left-2 text-[8px] font-mono text-[#333] font-black italic">ID://{stamp.id}</div>
                 </div>
               </div>
             ))}
 
             {/* Empty Slots */}
             {[...Array(Math.max(0, 10 - stamps.length))].map((_, i) => (
-              <div key={`empty-${i}`} className="aspect-square bg-[#050505] border border-[#111] opacity-30 flex items-center justify-center group relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02)_0,transparent_100%)]"></div>
-                <p className="text-[8px] font-mono text-[#333] uppercase tracking-[0.5em] -rotate-45">Access Denied</p>
-                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-[#1a1a1a]"></div>
-                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-[#1a1a1a]"></div>
+              <div key={`empty-${i}`} className="aspect-square bg-[#050505] border border-white/5 opacity-30 flex items-center justify-center group relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0,transparent_100%)]"></div>
+                <p className="text-[8px] font-mono text-[#444] uppercase tracking-[0.5em] -rotate-45">Access Denied</p>
+                <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-white/10"></div>
+                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/10"></div>
               </div>
             ))}
           </div>
 
           {/* Footer Info Panel */}
-          <div className="p-4 bg-[#080808] border-t border-[#1a1a1a] flex justify-between items-center px-8">
-            <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.5em]">Central Archive // Data Integrity: 100% // Version 4.0.2</p>
+          <div className="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center px-8">
+            <p className="text-[8px] text-[#444] font-mono uppercase tracking-[0.5em]">Vibra alto, respeta siempre. Si estas leyendo esto, fuaa qué buen ojo</p>
             <div className="flex gap-4">
-              <div className="w-16 h-1 bg-[#111] rounded-full overflow-hidden">
-                <div className="w-3/4 h-full bg-accent/20"></div>
+              <div className="w-16 h-1 bg-[#1a1a1a] rounded-full overflow-hidden">
+                <div className="w-3/4 h-full bg-accent/40 shadow-neon"></div>
               </div>
             </div>
           </div>
