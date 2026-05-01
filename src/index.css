@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a0a0a;
-  --color-surface: #121212;
-  --color-border: #2a2a2a;
+  --color-background: #050505;
+  --color-surface: #0d0d0d;
+  --color-border: #333333;
   --color-accent: #8b5cf6;
-  --color-accent-hover: #7c3aed;
-  --color-text-primary: #f3f4f6;
-  --color-text-secondary: #9ca3af;
+  --color-accent-hover: #a78bfa;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #aaaaaa;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Outfit", system-ui, sans-serif;
-  --shadow-neon: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
+  --shadow-neon: 0 0 15px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2);
 }
 
 @layer base {
@@ -24,6 +24,10 @@
   body {
     background-color: var(--color-background);
     color: var(--color-text-primary);
+    background-image: 
+      radial-gradient(circle at 50% -20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 0% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+    background-attachment: fixed;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -43,5 +47,9 @@
   
   .card {
     @apply bg-surface border border-border rounded-lg p-6 shadow-lg;
+  }
+
+  .panel-neon {
+    @apply bg-[#0a0a0a] border border-white/10 shadow-[0_0_20px_rgba(139,92,246,0.15)] hover:shadow-[0_0_30px_rgba(139,92,246,0.25)] transition-all duration-500;
   }
 }

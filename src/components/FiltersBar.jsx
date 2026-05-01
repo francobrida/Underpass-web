@@ -36,7 +36,7 @@ const FiltersBar = ({ onFilterChange, filters }) => {
   };
 
   return (
-    <div className="w-full bg-[#050505] border border-[#1f1f1f] p-6 relative overflow-hidden">
+    <div className="w-full bg-[#050505] border border-[#1f1f1f] p-6 relative overflow-hidden animate-in fade-in slide-in-from-top-4 duration-700">
       
       {/* Decorative industrial lines */}
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#333] to-transparent opacity-50"></div>
@@ -53,7 +53,7 @@ const FiltersBar = ({ onFilterChange, filters }) => {
             type="text" 
             value={filters.search}
             onChange={(e) => onFilterChange({ search: e.target.value })}
-            placeholder="NOMBRE O LINEUP..." 
+            placeholder="NOMBRE, LINEUP O CLUB..." 
             className="w-full bg-black border border-[#222] rounded-none px-4 py-3 text-xs text-white font-mono placeholder-[#444] focus:outline-none focus:border-accent focus:shadow-[3px_3px_0px_var(--color-accent)] transition-all"
           />
         </div>
@@ -69,7 +69,7 @@ const FiltersBar = ({ onFilterChange, filters }) => {
               onChange={(e) => onFilterChange({ neighborhood: e.target.value })}
               className="w-full bg-black border border-[#222] rounded-none pl-4 pr-10 py-3 text-xs text-white font-mono focus:outline-none focus:border-accent focus:shadow-[3px_3px_0px_var(--color-accent)] transition-all appearance-none cursor-pointer"
             >
-              <option value="">TODOS</option>
+              <option value="">TODOS LOS BARRIOS</option>
               {availableNeighborhoods.map((n, i) => (
                 <option key={i} value={n}>
                   {n.toUpperCase()}

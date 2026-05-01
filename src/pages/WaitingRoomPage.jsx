@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import apiClient from '../services/apiClient';
 import { ShieldCheck, UserCheck, AlertCircle, Loader2, Calendar, Clock, MapPin } from 'lucide-react';
+import TechnicalLoader from '../components/TechnicalLoader';
 
 const WaitingRoomPage = () => {
   const [events, setEvents] = useState([]);
@@ -61,7 +62,7 @@ const WaitingRoomPage = () => {
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <Loader2 className="animate-spin text-accent" size={40} />
+            <TechnicalLoader />
           </div>
         ) : error ? (
           <div className="bg-red-500/10 border border-red-500/50 p-6 text-center">

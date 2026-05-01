@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import apiClient, { getAuthUser } from '../services/apiClient';
 import EventCard from '../components/EventCard';
+import TechnicalLoader from '../components/TechnicalLoader';
 import { 
   Edit3, Trash2, AlertTriangle, History, 
   ShieldCheck, Hourglass, Star, MessageSquare, 
@@ -30,16 +31,18 @@ const MyEventsPage = () => {
         return;
       }
 
-      const now = new Date();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       
       const categorized = allEvents.reduce((acc, event) => {
         if (!event) return acc;
         
         const eventDate = event.date ? new Date(event.date) : new Date();
+        const isPast = eventDate < today;
         
-        if (eventDate < now && event.is_verified) {
+        if (isPast) {
           acc.past.push(event);
-        } else if (!event.is_verified) {
+        } else if (event.is_verified === false || event.is_verified === 0) {
           acc.pending.push(event);
         } else {
           acc.verified.push(event);
@@ -78,6 +81,15 @@ const MyEventsPage = () => {
       alert("No se pudieron cargar los VibeChecks");
     }
   };
+
+  if (loading) return (
+    <div className="min-h-screen bg-background flex flex-col">
+      <Navbar />
+      <div className="flex-grow flex items-center justify-center">
+        <TechnicalLoader />
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-background flex flex-col pb-20">
@@ -135,41 +147,111 @@ const MyEventsPage = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 gap-4">
-            {events.pending.map(event => (
-              <MyPendingEventCard key={event.id} event={event} onDelete={() => handleDelete(event.id)} />
-            ))}
-            {events.pending.length === 0 && <EmptyState message="No hay eventos en espera." />}
-          </div>
+          {events.pending.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {events.pending.map(event => (
+                <div key={event.id} className="relative group">
+                  <div className="opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500">
+                    <EventCard event={event} />
+                  </div>
+                  
+                  {/* Vouch Count Badge for Pending */}
+                  <div className="absolute top-4 left-4 z-30">
+                    <span className="px-2 py-1 bg-accent text-white font-mono text-[9px] font-bold uppercase tracking-widest shadow-neon">
+                      {event.vouch_count || 0} / 3 VOUCHES
+                    </span>
+                  </div>
+
+                  {/* Overlays for Edit/Delete */}
+                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-30">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); navigate(`/events/edit/${event.id}`); }}
+                      className="p-2 bg-white text-black hover:bg-accent hover:text-white transition-colors shadow-xl"
+                      title="Editar"
+                    >
+                      <Edit3 size={18} />
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); handleDelete(event.id); }}
+                      className="p-2 bg-black text-red-500 border border-red-500/50 hover:bg-red-500 hover:text-white transition-colors shadow-xl"
+                      title="Eliminar"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <EmptyState message="No hay eventos en espera." />
+          )}
         </section>
 
-        {/* SECTION 3: PAST EVENTS */}
-        <section className="space-y-8">
+        {/* SECTION 3: PAST EVENTS (ARCHIVE) */}
+        <section className="space-y-8 pb-20">
           <div className="flex items-center gap-4 border-l-4 border-[#333] pl-6">
             <History className="text-[#666]" size={32} />
             <div>
-              <h2 className="text-3xl text-white font-display font-black uppercase italic tracking-tighter opacity-50">Archivo Histórico</h2>
-              <p className="text-[#444] font-mono text-[10px] uppercase tracking-[0.2em]">Eventos finalizados y reportes de VibeCheck</p>
+              <h2 className="text-3xl text-white font-display font-black uppercase italic tracking-tighter opacity-70">Archivo Histórico</h2>
+              <p className="text-[#555] font-mono text-[10px] uppercase tracking-[0.2em]">Registros finalizados y métricas de VibeCheck</p>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {events.past.map(event => (
-              <button 
-                key={event.id}
-                onClick={() => handleFetchVibeChecks(event.id)}
-                className="flex items-center gap-4 p-4 bg-[#050505] border border-[#111] hover:border-[#333] transition-all text-left group"
-              >
-                <div className="w-12 h-12 bg-[#111] flex items-center justify-center text-[#444] group-hover:text-accent transition-colors">
-                  <Star size={20} />
-                </div>
-                <div>
-                  <h4 className="text-sm text-white font-bold uppercase tracking-wider">{event.title}</h4>
-                  <p className="text-[10px] text-[#444] font-mono">{event.date}</p>
-                </div>
-              </button>
-            ))}
-            {events.past.length === 0 && <EmptyState message="No hay eventos pasados en tu registro." />}
+          <div className="grid grid-cols-1 gap-4">
+            {events.past.length > 0 ? events.past.map(event => {
+              const flyer = event.flyer || '';
+              const baseUrl = import.meta.env.VITE_API_BASE_URL?.split('/api/v1')[0] || '';
+              const finalSrc = (flyer && flyer.startsWith('http')) 
+                ? flyer 
+                : (flyer ? `${baseUrl}/${flyer.startsWith('/') ? flyer.substring(1) : flyer}` : 'https://images.unsplash.com/photo-1574433232601-3830c45974c8?auto=format&fit=crop&w=800&q=80');
+
+              return (
+                <button 
+                  key={event.id}
+                  onClick={() => navigate(`/events/${event.id}`)}
+                  className="flex flex-col md:flex-row items-center gap-6 p-6 bg-[#050505] border border-[#111] hover:border-accent/40 transition-all text-left group relative overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  
+                  {/* Larger Thumbnail */}
+                  <div className="w-full md:w-40 h-32 md:h-24 flex-shrink-0 bg-black border border-[#1a1a1a] overflow-hidden relative z-10">
+                    <img 
+                      src={finalSrc} 
+                      className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 transform group-hover:scale-105" 
+                      alt="" 
+                      onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1571266028243-3716f02d2d2e?auto=format&fit=crop&w=400&q=80'; }}
+                    />
+                  </div>
+
+                  {/* Details */}
+                  <div className="relative z-10 flex-grow space-y-2">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[9px] font-mono text-accent/60 border border-accent/20 px-2 py-0.5 uppercase tracking-widest">#{event.id?.toString().padStart(4, '0')}</span>
+                      <span className="text-[9px] font-mono text-[#444] uppercase tracking-widest">Finalizado</span>
+                    </div>
+                    <h4 className="text-xl md:text-2xl text-white font-display font-black uppercase italic tracking-tight group-hover:text-accent transition-colors leading-none">
+                      {event.title}
+                    </h4>
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-1">
+                      <div className="flex items-center gap-2 text-[#999] font-mono text-[11px] uppercase tracking-wider">
+                        <Calendar size={12} className="text-[#333]" /> {event.date}
+                      </div>
+                      <div className="flex items-center gap-2 text-[#999] font-mono text-[11px] uppercase tracking-wider">
+                        <MapPin size={12} className="text-[#333]" /> {event.location_name || event.location || 'SECRET LOCATION'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Indicator */}
+                  <div className="relative z-10 flex flex-col items-end gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0 hidden md:flex">
+                    <span className="text-[10px] text-accent font-mono font-bold uppercase tracking-widest">Ver Reporte</span>
+                    <div className="w-12 h-[2px] bg-accent shadow-neon"></div>
+                  </div>
+                </button>
+              );
+            }) : (
+              <EmptyState message="No hay eventos pasados en tu registro." />
+            )}
           </div>
         </section>
 
@@ -217,39 +299,6 @@ const MyEventsPage = () => {
   );
 };
 
-const MyPendingEventCard = ({ event, onDelete }) => {
-  const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_API_BASE_URL.split('/api/v1')[0];
-  const flyer = event.flyer || 'images/flyers/party1.jpg';
-  const finalSrc = flyer.startsWith('http') ? flyer : `${baseUrl}/${flyer.startsWith('/') ? flyer.substring(1) : flyer}`;
-
-  return (
-    <div className="flex items-center gap-6 p-4 bg-[#080808] border border-[#111] group relative">
-      <div className="w-24 h-24 flex-shrink-0 bg-black overflow-hidden opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all border border-[#222]">
-        <img src={finalSrc} className="w-full h-full object-cover" alt="" />
-      </div>
-      <div className="flex-grow">
-        <h4 className="text-lg text-white font-display font-black uppercase italic tracking-wider leading-none mb-2">{event.title}</h4>
-        <div className="flex gap-4 text-[10px] text-[#555] font-mono uppercase">
-           <span className="flex items-center gap-1"><Calendar size={12}/> {event.date}</span>
-           <span className="flex items-center gap-1"><MapPin size={12}/> {event.neighborhood}</span>
-           <span className="text-accent font-bold">VOUCHES: {event.vouch_count || 0}/3</span>
-        </div>
-      </div>
-      <div className="flex gap-2">
-        <button 
-          onClick={() => navigate(`/events/edit/${event.id}`)}
-          className="p-3 bg-[#111] text-[#444] hover:text-white transition-colors border border-transparent hover:border-[#333]"
-        >
-           <Edit3 size={16} />
-        </button>
-        <button onClick={onDelete} className="p-3 bg-[#111] text-[#444] hover:text-red-500 transition-colors border border-transparent hover:border-red-500/30">
-           <Trash2 size={16} />
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const VibeCheckModal = ({ data, onClose }) => {
   const stats = [
