@@ -187,8 +187,8 @@ const EventDetailPage = () => {
                 </div>
               </div>
 
-              {/* QR STAMP SECTION (Owner Only - Only for active/future events) */}
-              {event.is_mine && !isPast && (
+              {/* QR STAMP SECTION (Owner Only - Only for active/future events already verified) */}
+              {event.is_mine && event.is_verified && !isPast && (
                 <div className="mt-8 bg-[#080808] border border-[#1f1f1f] p-6 relative group overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-accent opacity-50 shadow-[0_0_10px_var(--color-accent)]"></div>
                   
@@ -272,36 +272,35 @@ const EventDetailPage = () => {
               <p className="text-[#aaa] font-mono text-sm leading-relaxed whitespace-pre-line">
                 {event.description}
               </p>
-            </div>
-
-            {/* Ticket Box - Integrated into right column */}
+                {/* Ticket Box - Integrated into right column */}
             <div className="pt-8 mt-10 border-t border-[#1a1a1a]">
-              <div className="bg-[#050505] border border-accent/20 p-6 relative overflow-hidden group">
+              <div className="bg-[#050505] border border-accent/20 p-10 relative overflow-hidden group">
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
                 
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div className="space-y-1">
-                    <p className="text-[#555] text-[9px] font-mono uppercase tracking-[0.4em]">RESERVA_ACCESO</p>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl text-white font-display font-black italic tracking-tighter">{event.price}€</span>
-                      <span className="text-accent font-mono text-[9px] uppercase tracking-widest">{event.price_info}</span>
+                <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                  <div className="space-y-3">
+                    <p className="text-[#666] text-[11px] font-mono uppercase tracking-[0.4em]">RESERVA_ACCESO</p>
+                    <div className="flex items-baseline gap-4">
+                      <span className="text-5xl text-white font-display font-black italic tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]">{event.price}€</span>
+                      <span className="text-accent font-mono text-xs uppercase tracking-widest font-bold">{event.price_info}</span>
                     </div>
                   </div>
                   
-                  <a 
-                    href={event.ticket_link} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-full md:w-auto px-10 py-4 bg-accent hover:bg-accent-hover text-white font-display font-black italic uppercase text-xs tracking-[0.2em] transition-all shadow-neon flex items-center justify-center gap-2"
-                  >
-                    COMPRAR TICKETS <ExternalLink size={14} />
-                  </a>
+                  {event.ticket_link && (
+                    <a 
+                      href={event.ticket_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full md:w-auto px-12 py-5 bg-accent hover:bg-accent-hover text-white font-display font-black italic uppercase text-sm tracking-[0.2em] transition-all shadow-neon flex items-center justify-center gap-3 transform hover:-translate-y-0.5"
+                    >
+                      TICKETS / LINK <ExternalLink size={16} />
+                    </a>
+                  )}
                 </div>
                 
-                <p className="mt-4 text-[#333] font-mono text-[8px] uppercase tracking-widest">
-                  Secure Transaction // ID_{event.id?.toString().padStart(6, '0')}
-                </p>
+                
               </div>
+            </div>
             </div>
           </div>
         </div>

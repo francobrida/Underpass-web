@@ -97,6 +97,16 @@ const MyEventsPage = () => {
       
       <main className="max-w-[1400px] mx-auto w-full px-6 md:px-10 mt-10 space-y-20">
         
+        {/* ACTION BAR */}
+        <div className="flex justify-end">
+          <button 
+            onClick={() => navigate('/events/create')}
+            className="flex items-center gap-2 px-8 py-3 bg-accent text-white font-display font-black italic uppercase text-xs hover:bg-white hover:text-black transition-all shadow-neon"
+          >
+            <Calendar size={16} /> Crear Evento
+          </button>
+        </div>
+
         {/* SECTION 1: VERIFIED ACTIVE EVENTS */}
         <section className="space-y-8">
           <div className="flex items-center gap-4 border-l-4 border-green-500 pl-6">
