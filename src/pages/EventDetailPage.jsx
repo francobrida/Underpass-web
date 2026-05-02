@@ -228,7 +228,7 @@ const EventDetailPage = () => {
           {/* Right Column: Info */}
           <div className={`${isPast ? 'lg:col-span-12' : 'lg:col-span-7'} order-1 lg:order-2 space-y-8`}>
             <div className="space-y-4">
-              <p className="text-accent/60 font-mono text-[10px] uppercase tracking-[0.5em] mb-2 animate-pulse">
+              <p className="text-accent/60 font-mono text-[12px] uppercase tracking-[0.5em] mb-2 animate-pulse">
                 // ORG BY: {event.organizer || event.organizer_name || event.user?.name}
               </p>
               <h1 className="text-4xl md:text-6xl text-white font-display font-black uppercase italic tracking-tighter leading-tight">
@@ -253,14 +253,15 @@ const EventDetailPage = () => {
             <div className="grid grid-cols-2 gap-px bg-[#1f1f1f] border border-[#1f1f1f]">
               {[
                 { label: 'FECHA', value: event.date, icon: Calendar },
-                { label: 'SALA', value: event.location_name, icon: MapPin },
-                { label: 'START', value: event.start_time, icon: Clock },
-                { label: 'END', value: event.end_time, icon: Clock }
+                { label: 'HORARIO', value: event.start_time + ' - ' + event.end_time, icon: Clock },
+                { label: 'BARRIO', value: event.neighborhood, icon: MapPin },
+                { label: 'LUGAR', value: event.location_name, icon: MapPin },
+                
               ].map((stat, i) => (
                 <div key={i} className="bg-black p-5 flex items-center gap-4">
                   <stat.icon size={16} className="text-accent/60" />
                   <div>
-                    <p className="text-[#666] text-[8px] font-mono uppercase tracking-widest">{stat.label}</p>
+                    <p className="text-[#666] text-[12px] font-mono uppercase tracking-widest">{stat.label}</p>
                     <p className="text-[#ccc] font-display font-bold uppercase italic text-xs tracking-wider">{stat.value}</p>
                   </div>
                 </div>
