@@ -12,6 +12,8 @@ import CreateEventPage from './pages/CreateEventPage';
 import AdminPanelPage from './pages/AdminPanelPage';
 import StampsPage from './pages/StampsPage';
 import RankingPage from './pages/RankingPage';
+import ProfilePage from './pages/ProfilePage';
+import LeaveVibecheckPage from './pages/LeaveVibecheckPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -89,6 +91,22 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events/:id/vibecheck"
+          element={
+            <ProtectedRoute>
+              <LeaveVibecheckPage />
             </ProtectedRoute>
           }
         />

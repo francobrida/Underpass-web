@@ -24,9 +24,11 @@ const EditEventPage = () => {
     neighborhood: '',
     price_info: '',
     ticket_link: '',
-    style: ''
+    style: '',
+    flyer: null
   });
   const [notification, setNotification] = useState(null);
+  const [currentFlyer, setCurrentFlyer] = useState('');
 
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
@@ -38,6 +40,13 @@ const EditEventPage = () => {
       try {
         const { data: result } = await apiClient.get(`/events/${id}`);
         const event = result.data || result;
+        const flyerPath = event.image || event.flyer || '';
+        if (flyerPath) {
+          const baseUrl = import.meta.env.VITE_API_BASE_URL.split('/api/v1')[0];
+          const cleanPath = flyerPath.startsWith('/') ? flyerPath.substring(1) : flyerPath;
+          const finalSrc = flyerPath.startsWith('http') ? flyerPath : `${baseUrl}/${cleanPath}`;
+          setCurrentFlyer(finalSrc);
+        }
         setFormData({
           title: event.title || '',
           lineup: event.lineup || '',
@@ -63,9 +72,31 @@ const EditEventPage = () => {
     fetchEvent();
   }, [id, navigate]);
 
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
+    
+    let flyerBase64 = null;
+    if (formData.flyer) {
+      try {
+        flyerBase64 = await fileToBase64(formData.flyer);
+      } catch (err) {
+        console.error("Error converting file to base64:", err);
+        showNotification("Error al procesar la imagen del flyer.", "error");
+        setSaving(false);
+        return;
+      }
+    }
+
     const payload = {
       title: formData.title,
       lineup: formData.lineup,
@@ -85,6 +116,10 @@ const EditEventPage = () => {
     
     if (formData.ticket_link && formData.ticket_link.trim() !== "") {
       payload.ticket_link = formData.ticket_link;
+    }
+
+    if (flyerBase64) {
+      payload.flyer_base64 = flyerBase64;
     }
 
     try {
@@ -287,6 +322,33 @@ const EditEventPage = () => {
                 className="w-full bg-black border border-[#222] p-4 text-sm text-accent font-mono focus:border-accent outline-none transition-all"
                 placeholder="https://ra.co/events/..."
               />
+            </div>
+
+            {/* Subir Flyer (Opcional en Edición) */}
+            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+              {currentFlyer && (
+                <div className="md:col-span-4 flex flex-col items-start gap-2">
+                  <span className="text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">Flyer Actual</span>
+                  <div className="w-full max-h-48 rounded-sm overflow-hidden border border-[#222]">
+                    <img 
+                      src={currentFlyer} 
+                      alt="Current Flyer" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                </div>
+              )}
+              <div className={`${currentFlyer ? 'md:col-span-8' : 'md:col-span-12'} space-y-2 w-full`}>
+                <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
+                  <ExternalLink size={12} /> Actualizar Flyer / Imagen (Opcional)
+                </label>
+                <input 
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setFormData({...formData, flyer: e.target.files[0]})}
+                  className="w-full bg-black border border-[#222] p-4 text-sm text-white font-mono focus:border-accent outline-none transition-all cursor-pointer file:bg-accent file:border-0 file:text-black file:font-display file:font-black file:italic file:uppercase file:text-[10px] file:px-4 file:py-2 file:mr-4 file:hover:bg-accent-hover file:transition-all"
+                />
+              </div>
             </div>
           </div>
 
