@@ -8,6 +8,7 @@ import EventDetailPage from './pages/EventDetailPage';
 import WaitingRoomPage from './pages/WaitingRoomPage';
 import MyEventsPage from './pages/MyEventsPage';
 import EditEventPage from './pages/EditEventPage';
+import CreateEventPage from './pages/CreateEventPage';
 import AdminPanelPage from './pages/AdminPanelPage';
 import StampsPage from './pages/StampsPage';
 import RankingPage from './pages/RankingPage';
@@ -32,6 +33,14 @@ function App() {
           element={
             <ProtectedRoute>
               <MyEventsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events/create"
+          element={
+            <ProtectedRoute>
+              <CreateEventPage />
             </ProtectedRoute>
           }
         />

@@ -187,8 +187,8 @@ const EventDetailPage = () => {
                 </div>
               </div>
 
-              {/* QR STAMP SECTION (Owner Only - Only for active/future events) */}
-              {event.is_mine && !isPast && (
+              {/* QR STAMP SECTION (Owner Only - Only for active/future events already verified) */}
+              {event.is_mine && event.is_verified && !isPast && (
                 <div className="mt-8 bg-[#080808] border border-[#1f1f1f] p-6 relative group overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-accent opacity-50 shadow-[0_0_10px_var(--color-accent)]"></div>
                   
@@ -228,7 +228,7 @@ const EventDetailPage = () => {
           {/* Right Column: Info */}
           <div className={`${isPast ? 'lg:col-span-12' : 'lg:col-span-7'} order-1 lg:order-2 space-y-8`}>
             <div className="space-y-4">
-              <p className="text-accent/60 font-mono text-[10px] uppercase tracking-[0.5em] mb-2 animate-pulse">
+              <p className="text-accent/60 font-mono text-[12px] uppercase tracking-[0.5em] mb-2 animate-pulse">
                 // ORG BY: {event.organizer || event.organizer_name || event.user?.name}
               </p>
               <h1 className="text-4xl md:text-6xl text-white font-display font-black uppercase italic tracking-tighter leading-tight">
@@ -253,14 +253,15 @@ const EventDetailPage = () => {
             <div className="grid grid-cols-2 gap-px bg-[#1f1f1f] border border-[#1f1f1f]">
               {[
                 { label: 'FECHA', value: event.date, icon: Calendar },
-                { label: 'SALA', value: event.location_name, icon: MapPin },
-                { label: 'START', value: event.start_time, icon: Clock },
-                { label: 'END', value: event.end_time, icon: Clock }
+                { label: 'HORARIO', value: event.start_time + ' - ' + event.end_time, icon: Clock },
+                { label: 'BARRIO', value: event.neighborhood, icon: MapPin },
+                { label: 'LUGAR', value: event.location_name, icon: MapPin },
+                
               ].map((stat, i) => (
                 <div key={i} className="bg-black p-5 flex items-center gap-4">
                   <stat.icon size={16} className="text-accent/60" />
                   <div>
-                    <p className="text-[#666] text-[8px] font-mono uppercase tracking-widest">{stat.label}</p>
+                    <p className="text-[#666] text-[12px] font-mono uppercase tracking-widest">{stat.label}</p>
                     <p className="text-[#ccc] font-display font-bold uppercase italic text-xs tracking-wider">{stat.value}</p>
                   </div>
                 </div>
@@ -272,36 +273,35 @@ const EventDetailPage = () => {
               <p className="text-[#aaa] font-mono text-sm leading-relaxed whitespace-pre-line">
                 {event.description}
               </p>
-            </div>
-
-            {/* Ticket Box - Integrated into right column */}
+                {/* Ticket Box - Integrated into right column */}
             <div className="pt-8 mt-10 border-t border-[#1a1a1a]">
-              <div className="bg-[#050505] border border-accent/20 p-6 relative overflow-hidden group">
+              <div className="bg-[#050505] border border-accent/20 p-10 relative overflow-hidden group">
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
                 
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div className="space-y-1">
-                    <p className="text-[#555] text-[9px] font-mono uppercase tracking-[0.4em]">RESERVA_ACCESO</p>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl text-white font-display font-black italic tracking-tighter">{event.price}€</span>
-                      <span className="text-accent font-mono text-[9px] uppercase tracking-widest">{event.price_info}</span>
+                <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                  <div className="space-y-3">
+                    <p className="text-[#666] text-[11px] font-mono uppercase tracking-[0.4em]">RESERVA_ACCESO</p>
+                    <div className="flex items-baseline gap-4">
+                      <span className="text-5xl text-white font-display font-black italic tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]">{event.price}€</span>
+                      <span className="text-accent font-mono text-xs uppercase tracking-widest font-bold">{event.price_info}</span>
                     </div>
                   </div>
                   
-                  <a 
-                    href={event.ticket_link} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-full md:w-auto px-10 py-4 bg-accent hover:bg-accent-hover text-white font-display font-black italic uppercase text-xs tracking-[0.2em] transition-all shadow-neon flex items-center justify-center gap-2"
-                  >
-                    COMPRAR TICKETS <ExternalLink size={14} />
-                  </a>
+                  {event.ticket_link && (
+                    <a 
+                      href={event.ticket_link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full md:w-auto px-12 py-5 bg-accent hover:bg-accent-hover text-white font-display font-black italic uppercase text-sm tracking-[0.2em] transition-all shadow-neon flex items-center justify-center gap-3 transform hover:-translate-y-0.5"
+                    >
+                      TICKETS / LINK <ExternalLink size={16} />
+                    </a>
+                  )}
                 </div>
                 
-                <p className="mt-4 text-[#333] font-mono text-[8px] uppercase tracking-widest">
-                  Secure Transaction // ID_{event.id?.toString().padStart(6, '0')}
-                </p>
+                
               </div>
+            </div>
             </div>
           </div>
         </div>
