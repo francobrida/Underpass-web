@@ -16,7 +16,7 @@ const Navbar = () => {
       { name: 'WAITING ROOM', icon: <Hourglass size={16} />, href: '/waiting-room' },
       { name: 'MIS EVENTOS', icon: <Ticket size={16} />, href: '/my-events' },
       { name: 'SELLOS Y PUNTOS', icon: <Medal size={16} />, href: '/stamps' },
-      { name: 'PERFIL', icon: <User size={16} />, href: '#' },
+      { name: 'PERFIL', icon: <User size={16} />, href: '/profile' },
     ];
 
     // Solo mostramos items que no son adminOnly, o si el usuario es admin

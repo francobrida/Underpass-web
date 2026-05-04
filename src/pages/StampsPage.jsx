@@ -289,6 +289,9 @@ const StampsPage = () => {
                         <span className="uppercase tracking-widest">{stamp.event?.date ? stamp.event.date.split('T')[0] : '2024'}</span>
                       </div>
                     </div>
+
+                    {/* Corner Label */}
+                    <div className="absolute top-3 left-3 text-[8px] font-mono text-[#333] font-black italic">STAMP_ID://{stamp.id}</div>
                   </div>
 
                   {/* Interactive Button */}
