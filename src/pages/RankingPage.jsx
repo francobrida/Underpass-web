@@ -74,11 +74,6 @@ const RankingPage = () => {
         <section className="panel-neon overflow-hidden">
           <div className="p-6 border-b border-white/5 bg-black flex items-center justify-between">
             <h3 className="text-xs font-mono font-bold text-[#666] uppercase tracking-[0.4em]">Active Sessions // Top Agents</h3>
-            <div className="flex gap-2">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="w-1 h-1 bg-accent/40 rounded-full shadow-neon"></div>
-              ))}
-            </div>
           </div>
 
           <div className="divide-y divide-white/5">
@@ -116,7 +111,6 @@ const RankingPage = () => {
                   {/* Points Readout */}
                   <div className="text-right flex-shrink-0">
                     <div className="flex items-center justify-end gap-3 text-white font-mono font-black text-2xl md:text-3xl tracking-tighter">
-                      <Zap size={20} className={isTop3 ? rankColors[index].split(' ')[0] : 'text-[#444]'} fill="currentColor" />
                       {user.points !== undefined && user.points !== null ? user.points.toLocaleString() : "0"}
                     </div>
                     <p className="text-[9px] text-accent font-mono uppercase tracking-[0.4em] mt-1 font-bold">Points</p>

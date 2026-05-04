@@ -13,8 +13,8 @@ const LeaveVibecheckPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Vibecheck form state
-  const [soundScore, setSoundScore] = useState(5);
-  const [safeSpaceScore, setSafeSpaceScore] = useState(5);
+  const [soundScore, setSoundScore] = useState(1);
+  const [safeSpaceScore, setSafeSpaceScore] = useState(1);
   const [comment, setComment] = useState('');
   const [notification, setNotification] = useState(null);
 
@@ -35,7 +35,15 @@ const LeaveVibecheckPage = () => {
         setLoading(false);
       }
     };
-    fetchEvent();
+    if (id && id !== 'mock-past-event' && id !== 'mock-future-event') {
+      fetchEvent();
+    } else {
+      setEvent({
+        id: id,
+        title: id === 'mock-past-event' ? 'RESISTANCE (MOCK PAST)' : 'DARK ROOM (MOCK FUTURE)'
+      });
+      setLoading(false);
+    }
   }, [id]);
 
   const handleSubmitVibecheck = async (e) => {
@@ -47,13 +55,18 @@ const LeaveVibecheckPage = () => {
 
     setIsSubmitting(true);
     try {
-      await apiClient.post(`/events/${id}/vibechecks`, {
-        sound_score: soundScore,
-        safe_space_score: safeSpaceScore,
-        comment: comment.trim()
-      });
-      showNotification("¡Vibecheck enviado con éxito! Redirigiendo...");
-      setTimeout(() => navigate('/stamps'), 2000);
+      if (id === 'mock-past-event' || id === 'mock-future-event') {
+        showNotification("¡Vibecheck enviado con éxito! (Mock de prueba).");
+        setTimeout(() => navigate('/stamps'), 2000);
+      } else {
+        await apiClient.post(`/events/${id}/vibechecks`, {
+          sound_score: soundScore,
+          safe_space_score: safeSpaceScore,
+          comment: comment.trim()
+        });
+        showNotification("¡Vibecheck enviado con éxito! Redirigiendo...");
+        setTimeout(() => navigate('/stamps'), 2000);
+      }
     } catch (err) {
       console.error("Error posting vibecheck:", err);
       let errorMsg = "No se pudo guardar el vibecheck. Revisa los datos.";
@@ -109,65 +122,93 @@ const LeaveVibecheckPage = () => {
           </p>
         </div>
 
-        {notification && (
-          <div className={`p-4 font-mono text-xs border uppercase tracking-widest flex items-center justify-between animate-in fade-in duration-300 ${
-            notification.type === 'error' 
-              ? 'bg-red-500/10 border-red-500/30 text-red-400' 
-              : 'bg-accent/10 border-accent/30 text-accent font-bold font-mono'
-          }`}>
-            <span className="flex items-center gap-2">
-              <Sparkles size={14} /> {notification.msg}
-            </span>
-          </div>
-        )}
-
         {/* Feedback form */}
         <form onSubmit={handleSubmitVibecheck} className="bg-black/80 backdrop-blur-md border border-accent/20 p-8 shadow-[0_0_40px_rgba(139,92,246,0.08)] relative space-y-8">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
           
-          {/* Sound rating */}
+          {/* Sound rating - Audio Fader */}
           <div className="space-y-4">
             <label className="flex items-center gap-2 text-[10px] text-[#aaa] font-mono uppercase tracking-[0.3em] font-bold">
               <Star size={12} className="text-accent" fill="currentColor" /> Calidad de Sonido (Sound Score)
             </label>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((val) => (
-                <button
-                  type="button"
-                  key={val}
-                  onClick={() => setSoundScore(val)}
-                  className={`flex-1 py-4 border font-display font-black italic text-lg uppercase transition-all tracking-widest ${
-                    soundScore === val 
-                      ? 'bg-accent border-accent text-white shadow-neon scale-105' 
-                      : 'bg-[#030303] border-[#222] text-[#555] hover:border-accent/40 hover:text-[#bbb]'
-                  }`}
-                >
-                  {val}/5
-                </button>
-              ))}
+            <div className="space-y-3 bg-[#080808] border border-[#1a1a1a] p-5 rounded-sm">
+              <div className="flex justify-between items-center text-xs font-mono">
+                <span className="text-[#555] uppercase tracking-widest">1 (Deficiente)</span>
+                <span className="text-accent font-display font-black text-2xl drop-shadow-[0_0_10px_rgba(139,92,246,0.5)] italic">
+                  LEVEL: {soundScore}/5
+                </span>
+                <span className="text-[#555] uppercase tracking-widest">5 (Excelente)</span>
+              </div>
+              <div className="relative pt-1 flex items-center">
+                {/* Custom fader track background */}
+                <div className="absolute top-1/2 left-0 w-full h-[6px] bg-[#151515] border border-[#262626] rounded-sm transform -translate-y-1/2 pointer-events-none"></div>
+                {/* Active track level */}
+                <div 
+                  className="absolute top-1/2 left-0 h-[6px] bg-accent rounded-sm transform -translate-y-1/2 transition-all duration-100 pointer-events-none"
+                  style={{ width: `${((soundScore - 1) / 4) * 100}%` }}
+                ></div>
+                {/* Input slider */}
+                <input 
+                  type="range"
+                  min="1"
+                  max="5"
+                  step="1"
+                  value={soundScore}
+                  onChange={(e) => setSoundScore(Number(e.target.value))}
+                  className="w-full h-8 bg-transparent cursor-pointer outline-none accent-accent relative z-10 hover:brightness-110 transition-all"
+                />
+              </div>
+              {/* Slider meter ticks */}
+              <div className="flex justify-between text-white text-[10px] font-mono select-none px-1">
+                <span>| 1</span>
+                <span>| 2</span>
+                <span>| 3</span>
+                <span>| 4</span>
+                <span>| 5</span>
+              </div>
             </div>
           </div>
 
-          {/* Safe space rating */}
+          {/* Safe space rating - Audio Fader */}
           <div className="space-y-4 pt-4">
             <label className="flex items-center gap-2 text-[10px] text-[#aaa] font-mono uppercase tracking-[0.3em] font-bold">
               <Shield size={12} className="text-accent" /> Ambiente Seguro (Safe Space Score)
             </label>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((val) => (
-                <button
-                  type="button"
-                  key={val}
-                  onClick={() => setSafeSpaceScore(val)}
-                  className={`flex-1 py-4 border font-display font-black italic text-lg uppercase transition-all tracking-widest ${
-                    safeSpaceScore === val 
-                      ? 'bg-accent border-accent text-white shadow-neon scale-105' 
-                      : 'bg-[#030303] border-[#222] text-[#555] hover:border-accent/40 hover:text-[#bbb]'
-                  }`}
-                >
-                  {val}/5
-                </button>
-              ))}
+            <div className="space-y-3 bg-[#080808] border border-[#1a1a1a] p-5 rounded-sm">
+              <div className="flex justify-between items-center text-xs font-mono">
+                <span className="text-[#555] uppercase tracking-widest">1 (Inseguro)</span>
+                <span className="text-accent font-display font-black text-2xl drop-shadow-[0_0_10px_rgba(139,92,246,0.5)] italic">
+                  LEVEL: {safeSpaceScore}/5
+                </span>
+                <span className="text-[#555] uppercase tracking-widest">5 (Seguro)</span>
+              </div>
+              <div className="relative pt-1 flex items-center">
+                {/* Custom fader track background */}
+                <div className="absolute top-1/2 left-0 w-full h-[6px] bg-[#151515] border border-[#262626] rounded-sm transform -translate-y-1/2 pointer-events-none"></div>
+                {/* Active track level */}
+                <div 
+                  className="absolute top-1/2 left-0 h-[6px] bg-accent rounded-sm transform -translate-y-1/2 transition-all duration-100 pointer-events-none"
+                  style={{ width: `${((safeSpaceScore - 1) / 4) * 100}%` }}
+                ></div>
+                {/* Input slider */}
+                <input 
+                  type="range"
+                  min="1"
+                  max="5"
+                  step="1"
+                  value={safeSpaceScore}
+                  onChange={(e) => setSafeSpaceScore(Number(e.target.value))}
+                  className="w-full h-8 bg-transparent cursor-pointer outline-none accent-accent relative z-10 hover:brightness-110 transition-all"
+                />
+              </div>
+              {/* Slider meter ticks */}
+              <div className="flex justify-between text-white text-[10px] font-mono select-none px-1">
+                <span>| 1</span>
+                <span>| 2</span>
+                <span>| 3</span>
+                <span>| 4</span>
+                <span>| 5</span>
+              </div>
             </div>
           </div>
 
@@ -182,7 +223,7 @@ const LeaveVibecheckPage = () => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               className="w-full bg-black border border-[#222] p-5 text-sm text-white font-mono focus:border-accent outline-none transition-all resize-none"
-              placeholder="¿Cómo fue la fiesta? Cuéntale a la comunidad..."
+              placeholder="¿Cómo fue la fiesta? Hazle una review privada al organizador..."
             ></textarea>
           </div>
 
@@ -194,9 +235,21 @@ const LeaveVibecheckPage = () => {
               className="w-full py-4 bg-accent hover:bg-accent-hover text-white font-display font-black italic uppercase text-[10px] tracking-[0.2em] transition-all flex items-center justify-center gap-2 shadow-neon transform hover:-translate-y-1 disabled:opacity-50"
             >
               {isSubmitting ? <Loader2 size={14} className="animate-spin text-white" /> : <Sparkles size={14} />}
-              {isSubmitting ? 'ENVIANDO VIBECHECK...' : 'PUBLICAR FEEDBACK'}
+              {isSubmitting ? 'ENVIANDO VIBECHECK...' : 'ENVIAR FEEDBACK'}
             </button>
           </div>
+
+          {notification && (
+            <div className={`p-4 font-mono text-xs border uppercase tracking-widest flex items-center justify-between animate-in fade-in duration-300 mt-4 ${
+              notification.type === 'error' 
+                ? 'bg-red-500/10 border-red-500/30 text-red-400' 
+                : 'bg-accent/10 border-accent/30 text-accent font-bold font-mono'
+            }`}>
+              <span className="flex items-center gap-2">
+                <Sparkles size={14} /> {notification.msg}
+              </span>
+            </div>
+          )}
         </form>
       </main>
     </div>
