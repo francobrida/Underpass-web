@@ -118,7 +118,7 @@ const MyEventsPage = () => {
           </div>
           
           {events.verified.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6">
               {events.verified.map(event => (
                 <div key={event.id} className="relative group">
                   <EventCard event={event} />
@@ -158,7 +158,7 @@ const MyEventsPage = () => {
           </div>
           
           {events.pending.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6">
               {events.pending.map(event => (
                 <div key={event.id} className="relative group">
                   <div className="opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500">

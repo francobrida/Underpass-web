@@ -276,8 +276,8 @@ const AdminPanelPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-[#050505] border border-[#111] overflow-hidden shadow-2xl">
-                  <table className="w-full text-left border-collapse">
+                <div className="bg-[#050505] border border-[#111] overflow-x-auto shadow-2xl">
+                  <table className="w-full text-left border-collapse min-w-[800px]">
                     <thead>
                       <tr className="border-b border-[#111] bg-[#080808]">
                         <th className="p-5 text-xs font-mono text-[#aaa] uppercase tracking-widest">ID</th>
@@ -396,8 +396,8 @@ const AdminPanelPage = () => {
                   ))}
                 </div>
 
-                <div className="bg-[#050505] border border-[#111] overflow-hidden shadow-2xl">
-                  <table className="w-full text-left border-collapse">
+                <div className="bg-[#050505] border border-[#111] overflow-x-auto shadow-2xl">
+                  <table className="w-full text-left border-collapse min-w-[800px]">
                     <thead>
                       <tr className="border-b border-[#111] bg-[#080808]">
                         <th className="p-5 text-xs font-mono text-[#aaa] uppercase tracking-widest"></th>
