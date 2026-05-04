@@ -39,29 +39,29 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-background/95 backdrop-blur-md border-b border-border px-8 py-5 flex items-center justify-between sticky top-0 z-50">
+    <nav className="w-full bg-background/95 backdrop-blur-md border-b border-border px-4 md:px-8 py-3 md:py-5 flex flex-col md:flex-row items-center justify-between sticky top-0 z-50">
       {/* Logo */}
-      <div className="flex-shrink-0">
-        <Link to="/events" className="text-2xl text-white tracking-tighter uppercase font-black italic">
+      <div className="flex-shrink-0 mb-3 md:mb-0">
+        <Link to="/events" className="text-xl md:text-2xl text-white tracking-tighter uppercase font-black italic">
           UNDER<span className="text-accent">PASS</span>
         </Link>
       </div>
 
       {/* Nav Links */}
-      <div className="hidden md:flex items-center gap-2">
+      <div className="flex flex-wrap justify-center items-center gap-1 md:gap-2 w-full md:w-auto">
         {navItems.map((item, index) => {
           const isActive = location.pathname === item.href;
           return (
             <Link
               key={index}
               to={item.href}
-              className={`flex items-center gap-2 px-4 py-2 text-[11px] font-bold tracking-widest transition-all duration-200 rounded ${
+              className={`flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2 text-[9px] md:text-[11px] font-bold tracking-widest transition-all duration-200 rounded ${
                 isActive 
                   ? 'text-white bg-white/10' 
                   : 'text-[#888] hover:text-white'
               }`}
             >
-              {item.icon}
+              <span className="hidden md:block">{item.icon}</span>
               {item.name}
             </Link>
           );
@@ -71,12 +71,12 @@ const Navbar = () => {
         <button 
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="ml-4 flex items-center gap-2 px-5 py-2 border border-border text-text-secondary hover:text-white hover:border-accent hover:shadow-[0_0_10px_rgba(139,92,246,0.2)] rounded font-display uppercase text-[11px] font-bold tracking-widest transition-all duration-300 disabled:opacity-50"
+          className="ml-2 md:ml-4 flex items-center gap-1 md:gap-2 px-3 md:px-5 py-1.5 md:py-2 border border-border text-text-secondary hover:text-white hover:border-accent hover:shadow-[0_0_10px_rgba(139,92,246,0.2)] rounded font-display uppercase text-[9px] md:text-[11px] font-bold tracking-widest transition-all duration-300 disabled:opacity-50"
         >
           {isLoggingOut ? (
-            <Loader2 size={14} className="animate-spin text-accent" />
+            <Loader2 size={12} className="animate-spin text-accent md:w-[14px] md:h-[14px]" />
           ) : (
-            <LogOut size={14} className="text-accent" />
+            <LogOut size={12} className="text-accent md:w-[14px] md:h-[14px]" />
           )}
           {isLoggingOut ? 'Saliendo...' : 'Salir'}
         </button>

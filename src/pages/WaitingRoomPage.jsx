@@ -131,14 +131,14 @@ const WaitingEventCard = ({ event, onVouch }) => {
           </div>
         </div>
       )}
-      <div className="relative w-full md:w-44 h-44 flex-shrink-0 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 opacity-60 group-hover:opacity-100 border border-[#222]">
+      <div className="relative w-full md:w-44 h-32 md:h-44 flex-shrink-0 overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-500 opacity-60 group-hover:opacity-100 border border-[#222]">
         <img src={finalSrc} alt="" className="w-full h-full object-cover" />
       </div>
 
       {/* Info */}
       <div className="flex-grow space-y-4 text-center md:text-left py-2">
         <div className="space-y-1">
-          <h3 className="text-3xl md:text-4xl text-white font-display font-black uppercase italic tracking-tighter leading-none">
+          <h3 className="text-2xl md:text-4xl text-white font-display font-black uppercase italic tracking-tighter leading-none">
             {event.title}
           </h3>
           <p className="text-accent font-mono text-sm md:text-base uppercase tracking-widest font-bold">

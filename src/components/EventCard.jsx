@@ -33,8 +33,8 @@ const EventCard = ({ event }) => {
         />
         
         {/* Floating Tags Top */}
-        <div className="absolute top-4 left-4 z-20">
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-black/80 backdrop-blur-sm border border-[#333] text-[10px] font-mono text-white tracking-widest uppercase">
+        <div className="absolute top-2 md:top-4 left-2 md:left-4 z-20">
+          <div className="flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-3 md:py-1 bg-black/80 backdrop-blur-sm border border-[#333] text-[8px] md:text-[10px] font-mono text-white tracking-widest uppercase">
             <MapPin size={10} className="text-accent" />
             {event.location || event.neighborhood || 'BCN'}
           </div>
@@ -42,51 +42,51 @@ const EventCard = ({ event }) => {
       </div>
 
       {/* Content Container */}
-      <div className="p-6 relative z-20 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent -mt-10 pt-12 transition-transform duration-300">
+      <div className="p-3 md:p-6 relative z-20 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent -mt-10 pt-12 transition-transform duration-300 flex flex-col flex-grow">
         
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="flex flex-wrap gap-1 md:gap-2 mb-2 md:mb-3">
           {event.style && (
-            <span className="text-[10px] text-accent font-mono border border-accent/30 bg-accent/10 px-2 py-0.5">
+            <span className="text-[8px] md:text-[10px] text-accent font-mono border border-accent/30 bg-accent/10 px-1 md:px-2 py-0.5">
               #{event.style}
             </span>
           )}
           {event.tags?.map(tag => (
-            <span key={tag} className="text-[10px] text-[#666] font-mono border border-[#222] bg-[#111] px-2 py-0.5 group-hover:border-[#444] transition-colors">
+            <span key={tag} className="text-[8px] md:text-[10px] text-[#666] font-mono border border-[#222] bg-[#111] px-1 md:px-2 py-0.5 group-hover:border-[#444] transition-colors">
               #{tag}
             </span>
           ))}
         </div>
 
         {/* Title */}
-        <h3 className="text-2xl text-white font-display font-black uppercase italic tracking-tight mb-1 group-hover:text-accent transition-colors line-clamp-1">
+        <h3 className="text-sm md:text-2xl text-white font-display font-black uppercase italic tracking-tight mb-1 group-hover:text-accent transition-colors line-clamp-1">
           {event.title}
         </h3>
-        <p className="text-xs text-[#ccc] font-mono uppercase tracking-widest mb-6 line-clamp-1">
+        <p className="text-[9px] md:text-xs text-[#ccc] font-mono uppercase tracking-widest mb-4 md:mb-6 line-clamp-1">
           LINEUP: {event.lineup || 'Por confirmar'}
         </p>
 
         {/* Date & Time Footer */}
-        <div className="flex items-center justify-between border-t border-[#1f1f1f] pt-4 mt-auto">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5 text-xs text-[#aaa] font-mono">
-              <Calendar size={14} className="text-accent/60" />
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between border-t border-[#1f1f1f] pt-3 md:pt-4 mt-auto gap-2">
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="flex items-center gap-1 md:gap-1.5 text-[9px] md:text-xs text-[#aaa] font-mono">
+              <Calendar size={12} className="text-accent/60 md:w-3.5 md:h-3.5" />
               {event.date ? event.date.split('T')[0] : 'TBA'}
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-[#aaa] font-mono">
-              <Clock size={14} className="text-accent/60" />
+            <div className="flex items-center gap-1 md:gap-1.5 text-[9px] md:text-xs text-[#aaa] font-mono">
+              <Clock size={12} className="text-accent/60 md:w-3.5 md:h-3.5" />
               {event.time || (event.start_time ? event.start_time.slice(0, 5) : '00:00')} HS
             </div>
           </div>
           {/* Precio */}
-          <div className="text-white font-display font-black italic text-sm">
+          <div className="text-white font-display font-black italic text-xs md:text-sm">
             {event.price || 'GRATIS'}
           </div>
         </div>
 
         {/* Button Overlay */}
-        <div className="overflow-hidden mt-0 h-0 group-hover:h-12 group-hover:mt-4 transition-all duration-300 ease-out">
-          <button className="w-full bg-white text-black font-display font-black italic uppercase text-xs tracking-widest py-3 hover:bg-accent hover:text-white transition-colors duration-300">
+        <div className="overflow-hidden mt-0 h-0 group-hover:h-10 md:group-hover:h-12 group-hover:mt-3 md:group-hover:mt-4 transition-all duration-300 ease-out">
+          <button className="w-full bg-white text-black font-display font-black italic uppercase text-[10px] md:text-xs tracking-widest py-2 md:py-3 hover:bg-accent hover:text-white transition-colors duration-300">
             Ver Detalles
           </button>
         </div>
