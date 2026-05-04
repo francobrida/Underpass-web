@@ -13,8 +13,8 @@ const LeaveVibecheckPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Vibecheck form state
-  const [soundScore, setSoundScore] = useState(5);
-  const [safeSpaceScore, setSafeSpaceScore] = useState(5);
+  const [soundScore, setSoundScore] = useState(1);
+  const [safeSpaceScore, setSafeSpaceScore] = useState(1);
   const [comment, setComment] = useState('');
   const [notification, setNotification] = useState(null);
 
@@ -121,18 +121,6 @@ const LeaveVibecheckPage = () => {
             Valoración y feedback para el evento: {event?.title || 'UNDERPASS SESSION'}
           </p>
         </div>
-
-        {notification && (
-          <div className={`p-4 font-mono text-xs border uppercase tracking-widest flex items-center justify-between animate-in fade-in duration-300 ${
-            notification.type === 'error' 
-              ? 'bg-red-500/10 border-red-500/30 text-red-400' 
-              : 'bg-accent/10 border-accent/30 text-accent font-bold font-mono'
-          }`}>
-            <span className="flex items-center gap-2">
-              <Sparkles size={14} /> {notification.msg}
-            </span>
-          </div>
-        )}
 
         {/* Feedback form */}
         <form onSubmit={handleSubmitVibecheck} className="bg-black/80 backdrop-blur-md border border-accent/20 p-8 shadow-[0_0_40px_rgba(139,92,246,0.08)] relative space-y-8">
@@ -250,6 +238,18 @@ const LeaveVibecheckPage = () => {
               {isSubmitting ? 'ENVIANDO VIBECHECK...' : 'ENVIAR FEEDBACK'}
             </button>
           </div>
+
+          {notification && (
+            <div className={`p-4 font-mono text-xs border uppercase tracking-widest flex items-center justify-between animate-in fade-in duration-300 mt-4 ${
+              notification.type === 'error' 
+                ? 'bg-red-500/10 border-red-500/30 text-red-400' 
+                : 'bg-accent/10 border-accent/30 text-accent font-bold font-mono'
+            }`}>
+              <span className="flex items-center gap-2">
+                <Sparkles size={14} /> {notification.msg}
+              </span>
+            </div>
+          )}
         </form>
       </main>
     </div>

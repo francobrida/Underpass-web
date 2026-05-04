@@ -39,7 +39,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-background border-b border-border px-8 py-5 flex items-center justify-between">
+    <nav className="w-full bg-background/95 backdrop-blur-md border-b border-border px-8 py-5 flex items-center justify-between sticky top-0 z-50">
       {/* Logo */}
       <div className="flex-shrink-0">
         <Link to="/events" className="text-2xl text-white tracking-tighter uppercase font-black italic">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Trophy, Award, Calendar, Activity, Cpu, ShieldCheck, Database, Layers, Sparkles, MessageSquare, AlertCircle } from 'lucide-react';
-import apiClient from '../services/apiClient';
+import apiClient, { getAuthUser } from '../services/apiClient';
 import Navbar from '../components/Navbar';
 import TechnicalLoader from '../components/TechnicalLoader';
 
@@ -24,68 +24,36 @@ const StampsPage = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
+      const currentUser = getAuthUser();
+      const userCall = currentUser?.id ? apiClient.get(`/users/${currentUser.id}`) : Promise.resolve({ data: currentUser });
+
       const [stampsRes, userRes] = await Promise.all([
         apiClient.get('/stamps'),
-        apiClient.get('/me')
+        userCall
       ]);
       
-      const apiStamps = stampsRes.data || stampsRes || [];
+      const apiStamps = stampsRes.data?.data || stampsRes.data || stampsRes || [];
       
-      // Añadimos 2 mocks de prueba para testear vibechecks
-      const mockStamps = [
-        {
-          id: 'mock-past',
-          event: {
-            id: 'mock-past-event',
-            title: 'RESISTANCE (MOCK PAST)',
-            date: '2026-04-15',
-            end_time: '06:00',
-            flyer: 'images/flyers/party1.jpg',
-            description: 'Fiesta de techno industrial que ya pasó.'
+      const stampsWithVibechecks = await Promise.all(
+        apiStamps.map(async (stamp) => {
+          if (!stamp.event?.id) return { ...stamp, alreadyVoted: false };
+          try {
+            const { data } = await apiClient.get(`/events/${stamp.event.id}/vibechecks`);
+            const reviews = data.data || data || [];
+            const hasVoted = reviews.some(r => r.user?.id === currentUser.id || r.user_id === currentUser.id);
+            return { ...stamp, alreadyVoted: hasVoted };
+          } catch (e) {
+            console.error("Error getting vibecheck info for event", stamp.event.id, e);
+            return { ...stamp, alreadyVoted: false };
           }
-        },
-        {
-          id: 'mock-future',
-          event: {
-            id: 'mock-future-event',
-            title: 'DARK ROOM (MOCK FUTURE)',
-            date: '2026-06-20',
-            end_time: '06:00',
-            flyer: 'images/flyers/party2.jpg',
-            description: 'Fiesta techno futurista que aún no ha ocurrido.'
-          }
-        }
-      ];
+        })
+      );
 
-      setStamps([...apiStamps, ...mockStamps]);
-      setPoints(userRes.data?.points || userRes.points || 0);
+      setStamps(stampsWithVibechecks);
+      setPoints(userRes.data?.points || userRes.data?.data?.points || userRes.points || userRes.data?.user?.points || 0);
     } catch (err) {
-      console.error("Error fetching stamps/points, using mocks:", err);
-      const mockStamps = [
-        {
-          id: 'mock-past',
-          event: {
-            id: 'mock-past-event',
-            title: 'RESISTANCE (MOCK PAST)',
-            date: '2026-04-15',
-            end_time: '06:00',
-            flyer: 'images/flyers/party1.jpg',
-            description: 'Fiesta de techno industrial que ya pasó.'
-          }
-        },
-        {
-          id: 'mock-future',
-          event: {
-            id: 'mock-future-event',
-            title: 'DARK ROOM (MOCK FUTURE)',
-            date: '2026-06-20',
-            end_time: '06:00',
-            flyer: 'images/flyers/party2.jpg',
-            description: 'Fiesta techno futurista que aún no ha ocurrido.'
-          }
-        }
-      ];
-      setStamps(mockStamps);
+      console.error("Error fetching stamps/points:", err);
+      setStamps([]);
       setPoints(0);
     } finally {
       setLoading(false);
@@ -123,8 +91,9 @@ const StampsPage = () => {
 
   const isVibecheckAvailable = (event) => {
     if (!event || !event.date) return false;
+    const datePart = event.date.split('T')[0];
     const endTime = event.end_time || '23:59';
-    const eventEndDateTime = new Date(`${event.date}T${endTime}`);
+    const eventEndDateTime = new Date(`${datePart}T${endTime}`);
     const now = new Date();
     return now > eventEndDateTime;
   };
@@ -269,7 +238,7 @@ const StampsPage = () => {
           {/* List layout of Stamps with Grungy style */}
           <div className="p-6 md:p-8 space-y-4">
             {stamps.map((stamp, i) => {
-              const vibeAvailable = isVibecheckAvailable(stamp.event);
+              const vibeAvailable = isVibecheckAvailable(stamp.event) && !stamp.alreadyVoted;
               
               // Resolve flyer image path
               let finalSrc = '';
@@ -310,16 +279,28 @@ const StampsPage = () => {
                       <h3 className="text-xl md:text-2xl font-display font-black uppercase italic leading-none text-[#bbb] group-hover:text-white transition-colors tracking-normal">
                         {stamp.event?.title || 'SESSION'}
                       </h3>
+                      {stamp.event?.organizer?.name && (
+                        <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-accent/80 group-hover:text-accent">
+                          Organizador: {stamp.event.organizer.name}
+                        </div>
+                      )}
                       <div className="flex items-center justify-center md:justify-start gap-2 text-[10px] font-mono text-[#555] group-hover:text-[#888] transition-colors">
                         <Calendar size={12} className="text-green-500/50 group-hover:text-accent/50" />
-                        <span className="uppercase tracking-widest">{stamp.event?.date || '2024'}</span>
+                        <span className="uppercase tracking-widest">{stamp.event?.date ? stamp.event.date.split('T')[0] : '2024'}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Interactive Button */}
                   <div className="flex-shrink-0 w-full md:w-auto relative z-20">
-                    {vibeAvailable ? (
+                    {stamp.alreadyVoted ? (
+                      <button 
+                        disabled
+                        className="w-full md:w-auto px-6 py-3 bg-[#0d0d0d] border border-green-500/30 text-green-500 font-display font-bold uppercase text-[10px] tracking-wider flex items-center justify-center gap-2 cursor-not-allowed opacity-80"
+                      >
+                        <ShieldCheck size={14} /> VIBECHECK ENVIADO
+                      </button>
+                    ) : vibeAvailable ? (
                       <button 
                         onClick={() => navigate(`/events/${stamp.event?.id}/vibecheck`)}
                         className="w-full md:w-auto px-6 py-3 bg-accent/90 hover:bg-accent hover:text-white text-white font-display font-black italic uppercase text-[10px] tracking-wider transition-all flex items-center justify-center gap-2 border border-accent/40 shadow-none hover:shadow-[0_0_15px_rgba(139,92,246,0.2)]"
