@@ -17,7 +17,7 @@ const EventDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [vibeChecks, setVibeChecks] = useState(null);
 
-  const isPast = event && new Date(event.date) < new Date(new Date().setHours(0,0,0,0));
+  const isPast = event && event.date && event.date !== 'TBA' && event.date <= new Date().toISOString().split('T')[0];
 
   const downloadQRCode = () => {
     const canvas = document.getElementById("qr-gen");
@@ -94,14 +94,24 @@ const EventDetailPage = () => {
           location_name: item.location || item.location_name || 'SECRET LOCATION',
           flyer: flyerUrl
         });
-        // Si es un evento pasado y somos el dueño, traemos los vibechecks
-        if (new Date(item.date) < new Date()) {
-          try {
-            const { data: vbResult } = await apiClient.get(`/events/${id}/vibechecks`);
-            setVibeChecks(vbResult.data || vbResult);
-          } catch (vErr) {
-            console.warn("No vibechecks found or error fetching them");
-          }
+        // Traemos siempre los vibechecks para eventos pasados o presentes
+        try {
+          const { data: vbResult } = await apiClient.get(`/events/${id}/vibechecks`);
+          const reviewsArray = Array.isArray(vbResult.data) ? vbResult.data : (Array.isArray(vbResult) ? vbResult : []);
+          
+          const total = reviewsArray.length;
+          const avgSound = total > 0 ? reviewsArray.reduce((acc, r) => acc + (r.sound_score || 0), 0) / total : 0;
+          const avgSafety = total > 0 ? reviewsArray.reduce((acc, r) => acc + (r.safe_space_score || 0), 0) / total : 0;
+          const avgGlobal = (avgSound + avgSafety) / 2;
+
+          setVibeChecks({
+            sound_score: avgSound.toFixed(1),
+            safe_space_score: avgSafety.toFixed(1),
+            average_score: avgGlobal.toFixed(1),
+            reviews: reviewsArray
+          });
+        } catch (vErr) {
+          console.warn("No vibechecks found or error fetching them");
         }
       } catch (err) {
         console.warn("API Error or Offline, check ID:", id);
@@ -315,7 +325,7 @@ const EventDetailPage = () => {
       </footer>
 
       {/* VibeCheck Results Section (For Past Events) */}
-      {isPast && vibeChecks && (
+      {(isPast || (vibeChecks && vibeChecks.reviews && vibeChecks.reviews.length > 0)) && (
         <section className="max-w-[1200px] mx-auto w-full px-6 md:px-10 mb-20 animate-in fade-in slide-in-from-bottom-8 duration-700">
           <div className="border-t-2 border-accent/20 pt-16 space-y-12">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
