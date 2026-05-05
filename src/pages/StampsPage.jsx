@@ -126,15 +126,15 @@ const StampsPage = () => {
           <div className="lg:col-span-5 bg-black flex border-b lg:border-b-0 lg:border-r border-white/5">
             <button 
               onClick={() => navigate('/ranking')}
-              className="group flex items-center justify-between w-full p-8 hover:bg-accent/5 transition-all"
+              className="group flex items-center justify-between w-full p-4 sm:p-6 md:p-8 hover:bg-accent/5 transition-all"
             >
               <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-colors shadow-[0_0_15px_rgba(139,92,246,0.3)]">
-                  <Trophy size={24} />
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-black transition-colors shadow-[0_0_15px_rgba(139,92,246,0.3)]">
+                  <Trophy size={20} className="md:w-6 md:h-6" />
                 </div>
                 <div className="text-left">
-                  <p className="text-xl font-display font-black uppercase italic tracking-tight group-hover:text-accent transition-colors">Community Ranking</p>
-                  <p className="text-[12px] font-mono text-[#666] uppercase tracking-[0.3em] mt-1">Ver el ranking de usuarios</p>
+                  <p className="text-sm sm:text-base md:text-xl font-display font-black uppercase italic tracking-tight group-hover:text-accent transition-colors">Community Ranking</p>
+                  <p className="text-[9px] md:text-[12px] font-mono text-[#666] uppercase tracking-[0.2em] md:tracking-[0.3em] mt-0.5 md:mt-1">Ver el ranking de usuarios</p>
                 </div>
               </div>
               <Activity size={18} className="text-[#222] group-hover:text-accent transition-colors animate-pulse" />
@@ -142,18 +142,18 @@ const StampsPage = () => {
           </div>
 
           {/* VU-METER PANEL - DIRECT POINTS */}
-          <div className="lg:col-span-7 p-8 bg-[#030303] flex flex-col justify-between">
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-accent animate-ping"></div>
-                <span className="text-3xl font-mono font-black text-white tracking-tighter">
-                  {points} <span className="text-[15px] text-accent/80 uppercase tracking-[0.4em] ml-2">Puntos Acumulados</span>
+          <div className="lg:col-span-7 p-4 sm:p-6 md:p-8 bg-[#030303] flex flex-col justify-between">
+            <div className="flex justify-between items-center mb-4 md:mb-6">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-accent animate-ping"></div>
+                <span className="text-xl md:text-3xl font-mono font-black text-white tracking-tighter">
+                  {points} <span className="text-[9px] sm:text-[11px] md:text-[15px] text-accent/80 uppercase tracking-[0.2em] md:tracking-[0.4em] ml-1 md:ml-2">Puntos Acumulados</span>
                 </span>
               </div>
             </div>
 
             {/* Segmented VU Meter */}
-            <div className="flex gap-[3px] h-12 items-end">
+            <div className="flex gap-[1px] md:gap-[3px] h-6 sm:h-8 md:h-12 items-end">
               {[...Array(40)].map((_, i) => {
                 const isActive = (i / 40) < (points / 2000);
                 let colorClass = "bg-[#111]";

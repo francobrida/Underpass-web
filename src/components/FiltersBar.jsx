@@ -37,32 +37,32 @@ const FiltersBar = ({ onFilterChange, filters }) => {
       {/* Visual background lines */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#222] to-transparent opacity-60"></div>
       
-      <div className="flex flex-row flex-wrap md:flex-nowrap gap-2 md:gap-4 items-end relative z-10">
+      <div className="flex flex-row flex-nowrap gap-1 sm:gap-2 md:gap-4 items-end relative z-10 overflow-x-auto overflow-y-hidden pb-2 scrollbar-hide">
         
         {/* Búsqueda */}
-        <div className="flex-[1.4] w-full group min-w-[120px]">
-          <label className="flex items-center gap-1.5 text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none">
+        <div className="flex-[1.4] w-full group min-w-[70px] sm:min-w-[120px]">
+          <label className="flex items-center gap-0.5 sm:gap-1.5 text-[6px] sm:text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.1em] sm:tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none whitespace-nowrap">
             <Search size={12} className="text-accent/80" /> BÚSQUEDA
           </label>
           <input 
             type="text" 
             value={filters.search}
             onChange={(e) => onFilterChange({ search: e.target.value })}
-            placeholder="NOMBRE, LINEUP O CLUB..." 
-            className="w-full bg-[#080808] border border-[#1a1a1a] px-2 py-2 md:px-4 md:py-3 text-[10px] md:text-sm text-white font-mono placeholder-[#444] focus:outline-none focus:border-accent hover:border-[#333] transition-all"
+            placeholder="BUSCAR..." 
+            className="w-full bg-[#080808] border border-[#1a1a1a] px-1 sm:px-2 py-1.5 sm:py-2 md:px-4 md:py-3 text-[8px] sm:text-[10px] md:text-sm text-white font-mono placeholder-[#444] focus:outline-none focus:border-accent hover:border-[#333] transition-all"
           />
         </div>
 
         {/* Barrio */}
-        <div className="flex-1 w-full group relative min-w-[100px]">
-          <label className="flex items-center gap-1.5 text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none">
-            <MapPin size={12} className="text-accent/80" /> BARRIO
+        <div className="flex-1 w-full group relative min-w-[60px] sm:min-w-[100px]">
+          <label className="flex items-center gap-0.5 sm:gap-1.5 text-[6px] sm:text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.1em] sm:tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none whitespace-nowrap">
+            <MapPin size={10} className="text-accent/80 sm:w-3 sm:h-3" /> BARRIO
           </label>
           <div className="relative">
             <select 
               value={filters.neighborhood}
               onChange={(e) => onFilterChange({ neighborhood: e.target.value })}
-              className="w-full bg-[#080808] border border-[#1a1a1a] pl-2 pr-6 py-2 md:pl-4 md:pr-10 md:py-3 text-[10px] md:text-sm text-white font-mono focus:outline-none focus:border-accent hover:border-[#333] transition-all appearance-none cursor-pointer"
+              className="w-full bg-[#080808] border border-[#1a1a1a] pl-1 pr-4 sm:pl-2 sm:pr-6 py-1.5 sm:py-2 md:pl-4 md:pr-10 md:py-3 text-[8px] sm:text-[10px] md:text-sm text-white font-mono focus:outline-none focus:border-accent hover:border-[#333] transition-all appearance-none cursor-pointer"
             >
               <option value="">TODOS</option>
               {availableNeighborhoods.map((n, i) => (
@@ -76,15 +76,15 @@ const FiltersBar = ({ onFilterChange, filters }) => {
         </div>
 
         {/* Estilo / Género */}
-        <div className="flex-1 w-full group relative min-w-[100px]">
-          <label className="flex items-center gap-1.5 text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none">
-            <Music size={12} className="text-accent/80" /> ESTILO
+        <div className="flex-1 w-full group relative min-w-[60px] sm:min-w-[100px]">
+          <label className="flex items-center gap-0.5 sm:gap-1.5 text-[6px] sm:text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.1em] sm:tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none whitespace-nowrap">
+            <Music size={10} className="text-accent/80 sm:w-3 sm:h-3" /> ESTILO
           </label>
           <div className="relative">
             <select 
               value={filters.genre}
               onChange={(e) => onFilterChange({ genre: e.target.value })}
-              className="w-full bg-[#080808] border border-[#1a1a1a] pl-2 pr-6 py-2 md:pl-4 md:pr-10 md:py-3 text-[10px] md:text-sm text-white font-mono focus:outline-none focus:border-accent hover:border-[#333] transition-all appearance-none cursor-pointer"
+              className="w-full bg-[#080808] border border-[#1a1a1a] pl-1 pr-4 sm:pl-2 sm:pr-6 py-1.5 sm:py-2 md:pl-4 md:pr-10 md:py-3 text-[8px] sm:text-[10px] md:text-sm text-white font-mono focus:outline-none focus:border-accent hover:border-[#333] transition-all appearance-none cursor-pointer"
             >
               <option value="">CUALQUIERA</option>
               {availableGenres.map((genre) => (
@@ -98,22 +98,22 @@ const FiltersBar = ({ onFilterChange, filters }) => {
         </div>
 
         {/* Ordenar por Precio */}
-        <div className="flex-1 w-full group relative min-w-[100px]">
-          <label className="flex items-center gap-1.5 text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none">
-            <SlidersHorizontal size={12} className="text-accent/80" /> ORDENAR
+        <div className="flex-1 w-full group relative min-w-[60px] sm:min-w-[100px]">
+          <label className="flex items-center gap-0.5 sm:gap-1.5 text-[6px] sm:text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.1em] sm:tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none whitespace-nowrap">
+            <SlidersHorizontal size={10} className="text-accent/80 sm:w-3 sm:h-3" /> ORDENAR
           </label>
           <button 
             onClick={() => {
               const nextPrice = filters.price === '' ? 'asc' : (filters.price === 'asc' ? 'desc' : '');
               onFilterChange({ price: nextPrice });
             }}
-            className={`w-full flex items-center justify-between px-2 py-2 md:px-4 md:py-3 border text-[10px] md:text-sm font-mono transition-all ${
+            className={`w-full flex items-center justify-between px-1 sm:px-2 py-1.5 sm:py-2 md:px-4 md:py-3 border text-[8px] sm:text-[10px] md:text-sm font-mono transition-all ${
               filters.price 
                 ? 'bg-accent/10 border-accent text-accent' 
                 : 'bg-[#080808] border-[#1a1a1a] text-[#888] hover:border-[#333] hover:text-[#bbb]'
             }`}
           >
-            <span className="uppercase tracking-wider">
+            <span className="uppercase tracking-widest sm:tracking-wider truncate max-w-[80%]">
               {filters.price === '' && 'POR FECHA'}
               {filters.price === 'asc' && 'MÁS BARATO'}
               {filters.price === 'desc' && 'MÁS CARO'}
@@ -125,13 +125,13 @@ const FiltersBar = ({ onFilterChange, filters }) => {
         </div>
 
         {/* Limpiar Filtros */}
-        <div className="w-full md:w-auto mt-2 md:mt-0 flex-shrink-0">
+        <div className="flex-shrink-0 mt-0">
           <button 
             onClick={handleReset}
-            className="w-full md:w-auto flex items-center justify-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-[#0d0d0d] hover:bg-accent hover:text-white border border-[#1a1a1a] hover:border-accent text-[10px] md:text-xs font-bold text-[#888] font-mono uppercase tracking-[0.3em] transition-all duration-300 group shadow-none"
+            className="w-full flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 md:px-6 md:py-3 bg-[#0d0d0d] hover:bg-accent hover:text-white border border-[#1a1a1a] hover:border-accent text-[8px] sm:text-[10px] md:text-xs font-bold text-[#888] font-mono uppercase tracking-[0.1em] sm:tracking-[0.3em] transition-all duration-300 group shadow-none h-full"
           >
-            <RotateCcw size={14} className="group-hover:-rotate-180 transition-transform duration-500" />
-            RESET
+            <RotateCcw size={12} className="group-hover:-rotate-180 transition-transform duration-500 sm:w-3.5 sm:h-3.5" />
+            <span className="hidden sm:inline">RESET</span>
           </button>
         </div>
 
