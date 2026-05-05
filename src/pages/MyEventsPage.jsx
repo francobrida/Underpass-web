@@ -96,8 +96,7 @@ const MyEventsPage = () => {
       <Navbar />
       
       <main className="max-w-[1400px] mx-auto w-full px-6 md:px-10 mt-10 space-y-20">
-        
-        {/* ACTION BAR */}
+
         <div className="flex justify-end">
           <button 
             onClick={() => navigate('/events/create')}
@@ -107,7 +106,6 @@ const MyEventsPage = () => {
           </button>
         </div>
 
-        {/* SECTION 1: VERIFIED ACTIVE EVENTS */}
         <section className="space-y-8">
           <div className="flex items-center gap-4 border-l-4 border-green-500 pl-6">
             <ShieldCheck className="text-green-500" size={32} />
@@ -122,7 +120,7 @@ const MyEventsPage = () => {
               {events.verified.map(event => (
                 <div key={event.id} className="relative group">
                   <EventCard event={event} />
-                  {/* Overlays for Edit/Delete */}
+                  
                   <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-30">
                     <button 
                       onClick={(e) => { e.stopPropagation(); setShowEditWarning(event.id); }}
@@ -147,7 +145,6 @@ const MyEventsPage = () => {
           )}
         </section>
 
-        {/* SECTION 2: PENDING EVENTS */}
         <section className="space-y-8">
           <div className="flex items-center gap-4 border-l-4 border-accent pl-6">
             <Hourglass className="text-accent" size={32} />
@@ -164,15 +161,13 @@ const MyEventsPage = () => {
                   <div className="opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500">
                     <EventCard event={event} />
                   </div>
-                  
-                  {/* Vouch Count Badge for Pending */}
+
                   <div className="absolute top-4 left-4 z-30">
                     <span className="px-2 py-1 bg-accent text-white font-mono text-[9px] font-bold uppercase tracking-widest shadow-neon">
                       {event.vouch_count || 0} / 3 VOUCHES
                     </span>
                   </div>
 
-                  {/* Overlays for Edit/Delete */}
                   <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-30">
                     <button 
                       onClick={(e) => { e.stopPropagation(); navigate(`/events/edit/${event.id}`); }}
@@ -197,7 +192,6 @@ const MyEventsPage = () => {
           )}
         </section>
 
-        {/* SECTION 3: PAST EVENTS (ARCHIVE) */}
         <section className="space-y-8 pb-20">
           <div className="flex items-center gap-4 border-l-4 border-[#333] pl-6">
             <History className="text-[#666]" size={32} />
@@ -222,8 +216,7 @@ const MyEventsPage = () => {
                   className="flex flex-col md:flex-row items-center gap-6 p-6 bg-[#050505] border border-[#111] hover:border-accent/40 transition-all text-left group relative overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  
-                  {/* Larger Thumbnail */}
+
                   <div className="w-full md:w-40 h-32 md:h-24 flex-shrink-0 bg-black border border-[#1a1a1a] overflow-hidden relative z-10">
                     <img 
                       src={finalSrc} 
@@ -233,7 +226,6 @@ const MyEventsPage = () => {
                     />
                   </div>
 
-                  {/* Details */}
                   <div className="relative z-10 flex-grow space-y-2">
                     <div className="flex items-center gap-3">
                       <span className="text-[9px] font-mono text-accent/60 border border-accent/20 px-2 py-0.5 uppercase tracking-widest">#{event.id?.toString().padStart(4, '0')}</span>
@@ -252,7 +244,6 @@ const MyEventsPage = () => {
                     </div>
                   </div>
 
-                  {/* Action Indicator */}
                   <div className="relative z-10 flex flex-col items-end gap-2 opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0 hidden md:flex">
                     <span className="text-[10px] text-accent font-mono font-bold uppercase tracking-widest">Ver Reporte</span>
                     <div className="w-12 h-[2px] bg-accent shadow-neon"></div>
@@ -267,7 +258,6 @@ const MyEventsPage = () => {
 
       </main>
 
-      {/* MODALS */}
       {showEditWarning && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-sm">
           <div className="max-w-md w-full bg-[#0a0a0a] border-2 border-accent p-8 space-y-6">
@@ -308,7 +298,6 @@ const MyEventsPage = () => {
     </div>
   );
 };
-
 
 const VibeCheckModal = ({ data, onClose }) => {
   const stats = [
@@ -352,7 +341,7 @@ const VibeCheckModal = ({ data, onClose }) => {
         </div>
         
         <div className="p-4 bg-[#050505] border-t border-[#222] text-center">
-          <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.4em]">Underpass Archive System // Finalized Event Data</p>
+          <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.4em]">Underpass Archive System 
         </div>
       </div>
     </div>

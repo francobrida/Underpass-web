@@ -8,8 +8,6 @@ const apiClient = axios.create({
   },
 });
 
-// ── Request Interceptor ──
-// Antes de cada petición, inyecta el Bearer token si existe en localStorage
 apiClient.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('auth_token');
@@ -21,15 +19,13 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ── Response Interceptor ──
-// Si la API devuelve 401 (Unauthenticated), limpiamos el token y redirigimos al login
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('auth_user');
-      // Redirigir al login solo si no estamos ya en la página de login
+      
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';
       }
@@ -38,7 +34,6 @@ apiClient.interceptors.response.use(
   }
 );
 
-// ── Helpers para manejar el token ──
 export const setAuthToken = (token) => {
   localStorage.setItem('auth_token', token);
 };

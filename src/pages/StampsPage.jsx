@@ -10,8 +10,7 @@ const StampsPage = () => {
   const [stamps, setStamps] = useState([]);
   const [points, setPoints] = useState(0);
   const [loading, setLoading] = useState(true);
-  
-  // Simulation scanner form states
+
   const [stampToken, setStampToken] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notification, setNotification] = useState(null);
@@ -110,19 +109,16 @@ const StampsPage = () => {
   return (
     <div className="min-h-screen bg-[#050505] text-white selection:bg-accent selection:text-black font-sans relative pb-20">
       <Navbar />
-      
-      {/* BACKGROUND GRID DECORATION */}
+
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] overflow-hidden z-0 select-none">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
         <div className="absolute inset-0 bg-radial-gradient"></div>
       </div>
 
       <main className="max-w-7xl mx-auto px-6 py-12 relative z-10 space-y-10">
-        
-        {/* TOP STATUS BAR (INTEGRATED RACK) */}
+
         <header className="grid grid-cols-1 lg:grid-cols-12 gap-1 panel-neon p-1 mb-8 bg-black/40 backdrop-blur-md">
-          
-          {/* RANKING ACCESS - DIRECT BUTTON */}
+
           <div className="lg:col-span-5 bg-black flex border-b lg:border-b-0 lg:border-r border-white/5">
             <button 
               onClick={() => navigate('/ranking')}
@@ -141,7 +137,6 @@ const StampsPage = () => {
             </button>
           </div>
 
-          {/* VU-METER PANEL - DIRECT POINTS */}
           <div className="lg:col-span-7 p-4 sm:p-6 md:p-8 bg-[#030303] flex flex-col justify-between">
             <div className="flex justify-between items-center mb-4 md:mb-6">
               <div className="flex items-center gap-2 md:gap-3">
@@ -152,7 +147,6 @@ const StampsPage = () => {
               </div>
             </div>
 
-            {/* Segmented VU Meter */}
             <div className="flex gap-[1px] md:gap-[3px] h-6 sm:h-8 md:h-12 items-end">
               {[...Array(40)].map((_, i) => {
                 const isActive = (i / 40) < (points / 2000);
@@ -174,7 +168,6 @@ const StampsPage = () => {
           </div>
         </header>
 
-        {/* Global Alert Notification */}
         {notification && (
           <div className={`p-4 font-mono text-xs border uppercase tracking-widest flex items-center justify-between animate-in fade-in duration-300 ${
             notification.type === 'error' 
@@ -187,7 +180,6 @@ const StampsPage = () => {
           </div>
         )}
 
-        {/* SIMULATOR: MANUAL SCANNER/CODE ENTRY */}
         <section className="panel-neon p-8 bg-black/80 backdrop-blur-md border border-accent/20 relative overflow-hidden group">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
           
@@ -220,9 +212,8 @@ const StampsPage = () => {
           </form>
         </section>
 
-        {/* MAIN DECK: STAMPS PASSPORT IN LIST FORMAT */}
         <section className="relative overflow-hidden bg-black/60 backdrop-blur-md border border-[#111]">
-          {/* Section Header */}
+          
           <div className="p-6 border-b border-white/5 bg-black/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 bg-accent/20 border border-accent/40 flex items-center justify-center text-accent">
@@ -235,12 +226,10 @@ const StampsPage = () => {
             </div>
           </div>
 
-          {/* List layout of Stamps with Grungy style */}
           <div className="p-6 md:p-8 space-y-4">
             {stamps.map((stamp, i) => {
               const vibeAvailable = isVibecheckAvailable(stamp.event) && !stamp.alreadyVoted;
-              
-              // Resolve flyer image path
+
               let finalSrc = '';
               if (stamp.event?.image || stamp.event?.flyer) {
                 const baseUrl = import.meta.env.VITE_API_BASE_URL.split('/api/v1')[0];
@@ -251,11 +240,9 @@ const StampsPage = () => {
 
               return (
                 <div key={stamp.id} className="group relative bg-[#040404] border border-[#1a1a1a] hover:border-green-500/40 p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-300 rounded-sm hover:shadow-[0_0_20px_rgba(34,197,94,0.06)] relative overflow-hidden">
-                  
-                  {/* Rustic ink stamp graphic on the left */}
+
                   <div className="flex-grow flex flex-col md:flex-row items-center gap-6 text-center md:text-left select-none w-full">
-                    
-                    {/* Worn-out circular flyer/sello */}
+
                     <div 
                       className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-green-500 group-hover:border-accent transition-all duration-300 bg-[#080808] flex-shrink-0 select-none overflow-hidden flex items-center justify-center relative"
                       style={{ boxShadow: '0 0 25px rgba(34, 197, 94, 0.4), inset 0 0 15px rgba(34, 197, 94, 0.2)' }}
@@ -271,7 +258,7 @@ const StampsPage = () => {
                           FLYER
                         </div>
                       )}
-                      {/* Distressed ink texture overlay */}
+                      
                       <div className="absolute inset-0 bg-black/10 mix-blend-color-burn pointer-events-none"></div>
                     </div>
 
@@ -290,11 +277,9 @@ const StampsPage = () => {
                       </div>
                     </div>
 
-                    {/* Corner Label */}
-                    <div className="absolute top-3 left-3 text-[8px] font-mono text-[#333] font-black italic">STAMP_ID://{stamp.id}</div>
+                    <div className="absolute top-3 left-3 text-[8px] font-mono text-[#333] font-black italic">STAMP_ID:
                   </div>
 
-                  {/* Interactive Button */}
                   <div className="flex-shrink-0 w-full md:w-auto relative z-20">
                     {stamp.alreadyVoted ? (
                       <button 

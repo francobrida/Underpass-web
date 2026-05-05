@@ -94,8 +94,7 @@ const CreateEventPage = () => {
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
-          
-          // Comprimir a JPEG con calidad 0.8
+
           const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
           resolve(dataUrl);
         };
@@ -168,16 +167,14 @@ const CreateEventPage = () => {
   return (
     <div className="min-h-screen bg-[#050505] text-white flex flex-col pb-20 selection:bg-accent selection:text-black relative">
       <Navbar />
-      
-      {/* BACKGROUND GRID DECORATION */}
+
       <div className="fixed inset-0 pointer-events-none opacity-[0.04] overflow-hidden z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-accent/20 rounded-full blur-[120px] -mr-[400px] -mt-[400px]"></div>
       </div>
 
       <main className="max-w-[800px] mx-auto w-full px-6 mt-12 space-y-10 relative z-10">
-        
-        {/* Header */}
+
         <div className="space-y-6">
           <div className="flex items-center gap-4 border-l-4 border-accent pl-6">
             <div>
@@ -189,15 +186,12 @@ const CreateEventPage = () => {
           </div>
         </div>
 
-        {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-8 bg-black/80 backdrop-blur-md border border-accent/30 p-8 md:p-12 shadow-[0_0_40px_rgba(139,92,246,0.15)] relative">
-          
-          {/* Subtle top border glow inside form */}
+
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            {/* Título */}
+
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Type size={12} /> Título del Evento
@@ -212,7 +206,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* Lineup */}
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Tag size={12} /> Lineup (DJs / Artistas)
@@ -227,7 +220,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* Descripción */}
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <AlignLeft size={12} /> Descripción / Info
@@ -241,7 +233,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* Flyer Upload */}
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <ImageIcon size={12} /> Flyer / Imagen Oficial
@@ -254,7 +245,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* Fecha */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Calendar size={12} /> Fecha
@@ -268,7 +258,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* Precio */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <DollarSign size={12} /> Precio (€)
@@ -282,7 +271,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* Horarios */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Clock size={12} /> Hora Inicio
@@ -307,7 +295,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* Ubicación */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <MapPin size={12} /> Sala / Club
@@ -334,7 +321,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* Info de Precio (Opcional) */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <DollarSign size={12} /> Info adicional precio
@@ -348,7 +334,6 @@ const CreateEventPage = () => {
               />
             </div>
 
-            {/* +18 Toggle Compacto */}
             <div className="flex items-center justify-between p-4 bg-black border border-[#222] h-[82px] self-end mb-[2px]">
               <div className="flex items-center gap-2">
                 <ShieldCheck size={16} className={formData.is_18_plus ? "text-accent" : "text-[#555]"} />
@@ -368,7 +353,6 @@ const CreateEventPage = () => {
               </button>
             </div>
 
-            {/* Ticket Link (Opcional) */}
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <ExternalLink size={12} /> Link de Entradas
@@ -381,8 +365,7 @@ const CreateEventPage = () => {
                 placeholder="https://ra.co/events/..."
               />
             </div>
-            
-            {/* Géneros Musicales */}
+
             <div className="md:col-span-2 space-y-3 pt-4 border-t border-[#111]">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Disc size={12} /> Géneros Musicales
@@ -411,7 +394,6 @@ const CreateEventPage = () => {
             </div>
           </div>
 
-          {/* Botones de acción */}
           <div className="flex flex-col md:flex-row gap-4 pt-6 border-t border-[#111]">
             <button 
               type="button"
@@ -432,7 +414,6 @@ const CreateEventPage = () => {
         </form>
       </main>
 
-      {/* Custom Notification Toast */}
       {notification && (
         <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 border animate-in fade-in slide-in-from-bottom-4 duration-300 ${
           notification.type === 'error' 

@@ -46,8 +46,7 @@ const WaitingRoomPage = () => {
       <Navbar />
       
       <main className="flex-grow p-6 md:p-10 max-w-[1200px] mx-auto w-full space-y-12 mt-4">
-        
-        {/* Header Section */}
+
         <div className="space-y-4 border-l-4 border-accent pl-6 py-2">
           <h1 className="text-4xl md:text-5xl text-white font-display font-black uppercase italic tracking-tighter">
             The Waiting Room
@@ -94,7 +93,6 @@ const WaitingEventCard = ({ event, onVouch }) => {
   const vouchCount = event.vouch_count || 0;
   const progress = (vouchCount / 3) * 100;
 
-  // Construcción de URL de imagen similar a EventCard
   const baseUrl = import.meta.env.VITE_API_BASE_URL.split('/api/v1')[0];
   const imagePath = event.flyer || 'images/flyers/party1.jpg';
   const finalSrc = imagePath.startsWith('http') ? imagePath : `${baseUrl}/${imagePath.startsWith('/') ? imagePath.substring(1) : imagePath}`;
@@ -102,11 +100,10 @@ const WaitingEventCard = ({ event, onVouch }) => {
   const handleAction = async () => {
     setIsVouching(true);
     await onVouch();
-    
-    // Si con este voto llega a 3, disparamos la animación
+
     if (vouchCount + 1 >= 3) {
       setIsJustVerified(true);
-      // Esperamos a que termine la animación antes de que el padre refresque y lo quite
+      
       setTimeout(() => {
         setIsVouching(false);
       }, 1000);
@@ -121,8 +118,7 @@ const WaitingEventCard = ({ event, onVouch }) => {
         ? 'border-green-500 bg-green-500/10 scale-[1.02] z-50 shadow-[0_0_50px_rgba(34,197,94,0.3)] translate-x-full opacity-0' 
         : 'border-[#1a1a1a] hover:border-accent/30 hover:bg-[#0d0d0d]'
     }`}>
-      
-      {/* Verification Overlay Animation */}
+
       {isJustVerified && (
         <div className="absolute inset-0 flex items-center justify-center bg-green-500/20 backdrop-blur-sm z-50 animate-in fade-in zoom-in duration-300">
           <div className="flex flex-col items-center animate-bounce">
@@ -135,7 +131,6 @@ const WaitingEventCard = ({ event, onVouch }) => {
         <img src={finalSrc} alt="" className="w-full h-full object-cover" />
       </div>
 
-      {/* Info */}
       <div className="flex-grow space-y-4 text-center md:text-left py-2">
         <div className="space-y-1">
           <h3 className="text-2xl md:text-4xl text-white font-display font-black uppercase italic tracking-tighter leading-none">
@@ -147,7 +142,7 @@ const WaitingEventCard = ({ event, onVouch }) => {
         </div>
 
         <div className="space-y-2">
-          {/* Date & Time */}
+          
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
             <div className="flex items-center gap-1.5 text-xs text-[#aaa] font-mono">
               <Calendar size={14} className="text-accent/60" />
@@ -159,7 +154,6 @@ const WaitingEventCard = ({ event, onVouch }) => {
             </div>
           </div>
 
-          {/* Location */}
           <div className="flex items-center justify-center md:justify-start gap-1.5 text-xs text-[#aaa] font-mono uppercase tracking-wider">
             <MapPin size={14} className="text-accent/60" />
             {event.location || event.neighborhood || 'LOCALIZACIÓN POR CONFIRMAR'}
@@ -171,17 +165,14 @@ const WaitingEventCard = ({ event, onVouch }) => {
         </p>
       </div>
 
-      {/* Vouch Progress & Button */}
       <div className="flex flex-col items-center md:items-end gap-6 min-w-[240px] bg-black/40 p-4 border border-[#1a1a1a] rounded-sm">
-        
-        {/* Progress Tracker */}
+
         <div className="w-full space-y-3">
           <div className="flex justify-between text-[11px] font-mono font-bold text-[#999] uppercase tracking-[0.3em] mb-1">
             <span>Progreso</span>
             <span className={vouchCount > 0 ? 'text-accent' : ''}>{vouchCount} / 3 VOUCHES</span>
           </div>
-          
-          {/* Main Progress Bar */}
+
           <div className="h-4 w-full bg-black border border-[#333] relative overflow-hidden rounded-full p-[2px]">
             <div 
               className="h-full bg-accent shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.6)] transition-all duration-1000 rounded-full"
@@ -192,7 +183,6 @@ const WaitingEventCard = ({ event, onVouch }) => {
             ></div>
           </div>
 
-          {/* Larger LED Indicators */}
           <div className="flex gap-3 justify-center md:justify-end pt-1">
             {[1, 2, 3].map(i => (
               <div 
@@ -228,7 +218,6 @@ const WaitingEventCard = ({ event, onVouch }) => {
         </button>
       </div>
 
-      {/* "Tu Evento" badge if applicable (simulado) */}
       {event.is_mine && (
         <div className="absolute top-0 right-0 p-1">
            <span className="text-[8px] font-mono text-accent opacity-50 uppercase tracking-widest">TU EVENTO</span>

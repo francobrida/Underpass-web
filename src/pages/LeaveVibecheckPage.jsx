@@ -12,7 +12,6 @@ const LeaveVibecheckPage = () => {
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Vibecheck form state
   const [soundScore, setSoundScore] = useState(1);
   const [safeSpaceScore, setSafeSpaceScore] = useState(1);
   const [comment, setComment] = useState('');
@@ -94,14 +93,12 @@ const LeaveVibecheckPage = () => {
     <div className="min-h-screen bg-[#050505] text-white flex flex-col pb-20 selection:bg-accent selection:text-black relative z-10">
       <Navbar />
 
-      {/* BACKGROUND TEXTURE */}
       <div className="absolute inset-0 pointer-events-none select-none z-0 overflow-hidden opacity-[0.05]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       </div>
 
       <main className="max-w-[800px] mx-auto w-full px-6 mt-12 space-y-10 relative z-10">
-        
-        {/* Header section with back link */}
+
         <div className="flex items-center justify-between">
           <button 
             onClick={() => navigate('/stamps')}
@@ -112,7 +109,6 @@ const LeaveVibecheckPage = () => {
           </button>
         </div>
 
-        {/* Action Title */}
         <div className="border-l-4 border-accent pl-6">
           <h1 className="text-4xl text-white font-display font-black uppercase italic tracking-tighter drop-shadow-[0_0_15px_rgba(139,92,246,0.4)]">
             DEJAR VIBECHECK
@@ -122,11 +118,9 @@ const LeaveVibecheckPage = () => {
           </p>
         </div>
 
-        {/* Feedback form */}
         <form onSubmit={handleSubmitVibecheck} className="bg-black/80 backdrop-blur-md border border-accent/20 p-8 shadow-[0_0_40px_rgba(139,92,246,0.08)] relative space-y-8">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
-          
-          {/* Sound rating - Audio Fader */}
+
           <div className="space-y-4">
             <label className="flex items-center gap-2 text-[10px] text-[#aaa] font-mono uppercase tracking-[0.3em] font-bold">
               <Star size={12} className="text-accent" fill="currentColor" /> Calidad de Sonido (Sound Score)
@@ -140,14 +134,14 @@ const LeaveVibecheckPage = () => {
                 <span className="text-[#555] uppercase tracking-widest">5 (Excelente)</span>
               </div>
               <div className="relative pt-1 flex items-center">
-                {/* Custom fader track background */}
+                
                 <div className="absolute top-1/2 left-0 w-full h-[6px] bg-[#151515] border border-[#262626] rounded-sm transform -translate-y-1/2 pointer-events-none"></div>
-                {/* Active track level */}
+                
                 <div 
                   className="absolute top-1/2 left-0 h-[6px] bg-accent rounded-sm transform -translate-y-1/2 transition-all duration-100 pointer-events-none"
                   style={{ width: `${((soundScore - 1) / 4) * 100}%` }}
                 ></div>
-                {/* Input slider */}
+                
                 <input 
                   type="range"
                   min="1"
@@ -158,7 +152,7 @@ const LeaveVibecheckPage = () => {
                   className="w-full h-8 bg-transparent cursor-pointer outline-none accent-accent relative z-10 hover:brightness-110 transition-all"
                 />
               </div>
-              {/* Slider meter ticks */}
+              
               <div className="flex justify-between text-white text-[10px] font-mono select-none px-1">
                 <span>| 1</span>
                 <span>| 2</span>
@@ -169,7 +163,6 @@ const LeaveVibecheckPage = () => {
             </div>
           </div>
 
-          {/* Safe space rating - Audio Fader */}
           <div className="space-y-4 pt-4">
             <label className="flex items-center gap-2 text-[10px] text-[#aaa] font-mono uppercase tracking-[0.3em] font-bold">
               <Shield size={12} className="text-accent" /> Ambiente Seguro (Safe Space Score)
@@ -183,14 +176,14 @@ const LeaveVibecheckPage = () => {
                 <span className="text-[#555] uppercase tracking-widest">5 (Seguro)</span>
               </div>
               <div className="relative pt-1 flex items-center">
-                {/* Custom fader track background */}
+                
                 <div className="absolute top-1/2 left-0 w-full h-[6px] bg-[#151515] border border-[#262626] rounded-sm transform -translate-y-1/2 pointer-events-none"></div>
-                {/* Active track level */}
+                
                 <div 
                   className="absolute top-1/2 left-0 h-[6px] bg-accent rounded-sm transform -translate-y-1/2 transition-all duration-100 pointer-events-none"
                   style={{ width: `${((safeSpaceScore - 1) / 4) * 100}%` }}
                 ></div>
-                {/* Input slider */}
+                
                 <input 
                   type="range"
                   min="1"
@@ -201,7 +194,7 @@ const LeaveVibecheckPage = () => {
                   className="w-full h-8 bg-transparent cursor-pointer outline-none accent-accent relative z-10 hover:brightness-110 transition-all"
                 />
               </div>
-              {/* Slider meter ticks */}
+              
               <div className="flex justify-between text-white text-[10px] font-mono select-none px-1">
                 <span>| 1</span>
                 <span>| 2</span>
@@ -212,7 +205,6 @@ const LeaveVibecheckPage = () => {
             </div>
           </div>
 
-          {/* Comment */}
           <div className="space-y-4 pt-4">
             <label className="flex items-center gap-2 text-[10px] text-[#aaa] font-mono uppercase tracking-[0.3em] font-bold">
               <MessageSquare size={12} className="text-accent" /> Comentario de tu experiencia
@@ -227,7 +219,6 @@ const LeaveVibecheckPage = () => {
             ></textarea>
           </div>
 
-          {/* Submit Action */}
           <div className="pt-2">
             <button
               type="submit"

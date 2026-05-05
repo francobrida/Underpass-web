@@ -11,22 +11,21 @@ import {
 
 const AdminPanelPage = () => {
   const currentUser = getAuthUser();
-  const [activeTab, setActiveTab] = useState('users'); // 'users' or 'events'
-  const [eventSubTab, setEventSubTab] = useState('verified'); // 'verified', 'pending', 'past'
+  const [activeTab, setActiveTab] = useState('users'); 
+  const [eventSubTab, setEventSubTab] = useState('verified'); 
   
   const [users, setUsers] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  // States for filters & pagination
+
   const [userSearch, setUserSearch] = useState('');
   const [userPage, setUserPage] = useState(1);
-  const [roleSortOrder, setRoleSortOrder] = useState('asc'); // 'asc' or 'desc'
-  const [itemToDelete, setItemToDelete] = useState(null); // { type: 'user'|'event', id: id, name: name }
-  const [userToEdit, setUserToEdit] = useState(null); // Usuario seleccionado para editar
-  const [editFormData, setEditFormData] = useState({}); // Datos temporales del formulario
-  const [eventToEdit, setEventToEdit] = useState(null); // Evento seleccionado para editar
-  const [eventEditFormData, setEventEditFormData] = useState({}); // Datos temporales del formulario de evento
+  const [roleSortOrder, setRoleSortOrder] = useState('asc'); 
+  const [itemToDelete, setItemToDelete] = useState(null); 
+  const [userToEdit, setUserToEdit] = useState(null); 
+  const [editFormData, setEditFormData] = useState({}); 
+  const [eventToEdit, setEventToEdit] = useState(null); 
+  const [eventEditFormData, setEventEditFormData] = useState({}); 
 
   const fetchData = async () => {
     setLoading(true);
@@ -56,7 +55,6 @@ const AdminPanelPage = () => {
     fetchData();
   }, [activeTab]);
 
-  // --- LOGIC FOR USERS ---
   const handleEditClick = (user) => {
     setUserToEdit(user);
     setEditFormData({
@@ -78,7 +76,6 @@ const AdminPanelPage = () => {
     }
   };
 
-  // --- LOGIC FOR EVENTS ---
   const handleEventEditClick = (event) => {
     setEventToEdit(event);
     setEventEditFormData({
@@ -226,14 +223,14 @@ const AdminPanelPage = () => {
         
         {!eventToEdit ? (
           <>
-            {/* Admin Header */}
+            
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-[#111] pb-8">
               <div className="space-y-2">
                 <div className="flex items-center gap-3 text-accent">
                   <Shield size={40} className="animate-pulse" />
                   <h1 className="text-4xl md:text-5xl font-display font-black uppercase italic tracking-tighter">Admin Control</h1>
                 </div>
-                <p className="text-[#aaa] font-mono text-xs uppercase tracking-[0.4em]">// Barcelona Underground Event Protocol //</p>
+                <p className="text-[#aaa] font-mono text-xs uppercase tracking-[0.4em]">
               </div>
 
               <div className="flex bg-[#050505] border border-[#111] p-1.5 self-start">
@@ -256,7 +253,6 @@ const AdminPanelPage = () => {
               </div>
             </div>
 
-            {/* --- USERS TAB VIEW --- */}
             {activeTab === 'users' && (
               <div className="space-y-6 animate-in fade-in duration-500">
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -374,7 +370,6 @@ const AdminPanelPage = () => {
               </div>
             )}
 
-            {/* --- EVENTS TAB VIEW --- */}
             {activeTab === 'events' && (
               <div className="space-y-6 animate-in fade-in duration-500">
                 <div className="flex gap-4 border-b border-[#111] pb-1">
@@ -486,7 +481,7 @@ const AdminPanelPage = () => {
             </div>
 
             <form onSubmit={handleUpdateEvent} className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-              {/* Left Column: Visuals & Genres (4/12) */}
+              
               <div className="lg:col-span-4 space-y-8">
                 <div className="aspect-[3/4] bg-[#050505] border border-[#111] overflow-hidden group relative shadow-2xl">
                    <img 
@@ -510,10 +505,8 @@ const AdminPanelPage = () => {
                 </div>
               </div>
 
-              {/* Right Column: Form Fields (8/12) */}
               <div className="lg:col-span-8 space-y-12">
-                
-                {/* General Info */}
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3 md:col-span-2">
                     <label className="text-[10px] font-mono text-[#666] uppercase tracking-[0.4em]">Título</label>
@@ -542,7 +535,6 @@ const AdminPanelPage = () => {
                   </div>
                 </div>
 
-                {/* Date & Time */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-3">
                     <label className="text-[10px] font-mono text-[#666] uppercase tracking-[0.4em]">Fecha</label>
@@ -573,7 +565,6 @@ const AdminPanelPage = () => {
                   </div>
                 </div>
 
-                {/* Location */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
                     <label className="text-[10px] font-mono text-[#666] uppercase tracking-[0.4em]">Sala / Localización</label>
@@ -595,7 +586,6 @@ const AdminPanelPage = () => {
                   </div>
                 </div>
 
-                {/* Commercial & Links */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                    <div className="space-y-3">
                     <label className="text-[10px] font-mono text-[#666] uppercase tracking-[0.4em]">Precio Base (€)</label>
@@ -629,7 +619,6 @@ const AdminPanelPage = () => {
                   </div>
                 </div>
 
-                {/* System Toggles */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
                   <div className="flex gap-6 items-end md:col-span-2">
                     <button 
@@ -649,7 +638,6 @@ const AdminPanelPage = () => {
                   </div>
                 </div>
 
-                {/* Final Actions */}
                 <div className="pt-16 flex gap-8">
                   <button 
                     type="button" 
@@ -671,9 +659,6 @@ const AdminPanelPage = () => {
         )}
       </main>
 
-      {/* --- EXTERNAL MODALS --- */}
-
-      {/* MODAL: ELIMINAR ITEM */}
       {itemToDelete && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
           <div className="max-w-md w-full bg-[#0a0a0a] border-2 border-red-500/50 p-8 space-y-8 shadow-[0_0_50px_rgba(239,68,68,0.2)]">
@@ -715,7 +700,6 @@ const AdminPanelPage = () => {
         </div>
       )}
 
-      {/* MODAL: EDITAR USUARIO COMPACTO */}
       {userToEdit && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/95 backdrop-blur-md animate-in zoom-in duration-300">
           <div className="max-w-2xl w-full bg-[#0a0a0a] border border-[#222] p-6 space-y-5 shadow-[0_0_50px_rgba(0,0,0,0.8)]">

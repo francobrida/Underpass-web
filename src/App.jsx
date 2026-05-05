@@ -110,7 +110,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* Redirección automática de la raíz a /events */}
+        
         <Route path="/" element={<Navigate to="/events" replace />} />
       </Routes>
     </Router>

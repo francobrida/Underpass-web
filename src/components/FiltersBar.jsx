@@ -34,12 +34,11 @@ const FiltersBar = ({ onFilterChange, filters }) => {
 
   return (
     <div className="w-full bg-[#040404]/80 backdrop-blur-lg border border-[#141414] hover:border-[#222] p-6 relative overflow-hidden transition-all duration-500 rounded-sm shadow-[0_0_40px_rgba(139,92,246,0.45)]">
-      {/* Visual background lines */}
+      
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#222] to-transparent opacity-60"></div>
       
       <div className="flex flex-row flex-nowrap gap-1 sm:gap-2 md:gap-4 items-end relative z-10 overflow-x-auto overflow-y-hidden pb-2 scrollbar-hide">
-        
-        {/* Búsqueda */}
+
         <div className="flex-[1.4] w-full group min-w-[70px] sm:min-w-[120px]">
           <label className="flex items-center gap-0.5 sm:gap-1.5 text-[6px] sm:text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.1em] sm:tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none whitespace-nowrap">
             <Search size={12} className="text-accent/80" /> BÚSQUEDA
@@ -53,7 +52,6 @@ const FiltersBar = ({ onFilterChange, filters }) => {
           />
         </div>
 
-        {/* Barrio */}
         <div className="flex-1 w-full group relative min-w-[60px] sm:min-w-[100px]">
           <label className="flex items-center gap-0.5 sm:gap-1.5 text-[6px] sm:text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.1em] sm:tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none whitespace-nowrap">
             <MapPin size={10} className="text-accent/80 sm:w-3 sm:h-3" /> BARRIO
@@ -75,7 +73,6 @@ const FiltersBar = ({ onFilterChange, filters }) => {
           </div>
         </div>
 
-        {/* Estilo / Género */}
         <div className="flex-1 w-full group relative min-w-[60px] sm:min-w-[100px]">
           <label className="flex items-center gap-0.5 sm:gap-1.5 text-[6px] sm:text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.1em] sm:tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none whitespace-nowrap">
             <Music size={10} className="text-accent/80 sm:w-3 sm:h-3" /> ESTILO
@@ -97,7 +94,6 @@ const FiltersBar = ({ onFilterChange, filters }) => {
           </div>
         </div>
 
-        {/* Ordenar por Precio */}
         <div className="flex-1 w-full group relative min-w-[60px] sm:min-w-[100px]">
           <label className="flex items-center gap-0.5 sm:gap-1.5 text-[6px] sm:text-[9px] md:text-xs text-[#999] font-mono uppercase tracking-[0.1em] sm:tracking-[0.25em] mb-1 md:mb-2 group-focus-within:text-accent transition-colors font-bold select-none whitespace-nowrap">
             <SlidersHorizontal size={10} className="text-accent/80 sm:w-3 sm:h-3" /> ORDENAR
@@ -124,7 +120,6 @@ const FiltersBar = ({ onFilterChange, filters }) => {
           </button>
         </div>
 
-        {/* Limpiar Filtros */}
         <div className="flex-shrink-0 mt-0">
           <button 
             onClick={handleReset}

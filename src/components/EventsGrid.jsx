@@ -11,7 +11,7 @@ const EventsGrid = ({ filters }) => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // Limpiamos los filtros para no enviar strings vacíos al backend
+        
         const cleanParams = Object.fromEntries(
           Object.entries(filters).filter(([_, value]) => value !== '')
         );

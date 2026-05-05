@@ -10,11 +10,11 @@ const TechnicalLoader = () => {
             className={`w-2 animate-pulse-fast`}
             style={{ 
               animationDelay: `${i * 0.1}s`,
-              backgroundColor: i < 8 ? '#8b5cf6' : '#22c55e', // Violeta y luego Verde Neón
+              backgroundColor: i < 8 ? '#8b5cf6' : '#22c55e', 
               boxShadow: i < 8 
                 ? '0 0 10px rgba(139, 92, 246, 0.5)' 
                 : '0 0 10px rgba(34, 197, 94, 0.5)',
-              height: `${20 + Math.sin(i) * 30 + 50}%` // Alturas variables iniciales
+              height: `${20 + Math.sin(i) * 30 + 50}%` 
             }}
           ></div>
         ))}
