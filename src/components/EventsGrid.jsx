@@ -82,7 +82,7 @@ const EventsGrid = ({ filters }) => {
           <p className="text-text-secondary font-mono text-sm uppercase tracking-widest">No hay eventos disponibles en este momento.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-6">
+        <div className="grid grid-cols-4 gap-1.5 sm:gap-3 md:gap-6">
           {events.map(event => (
             <EventCard key={event.id} event={event} />
           ))}
