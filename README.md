@@ -1,10 +1,9 @@
 <p align="center">
-  <!-- Add banner image here -->
   <img src="public/Underpass-front-banner.png" alt="Underpass banner" title="Underpass">
 </p>
 
 <p align="center">
-  Check the <a href="https://underpass.up.railway.app/"><strong>live demo here</strong></a> and the API documentation <a href="https://underpass-api-production.up.railway.app/docs"><strong>here</strong></a> 
+  Check the <a href="https://underpass.up.railway.app/"><strong>Live Demo Here</strong></a> and the API documentation <a href="https://underpass-api-production.up.railway.app/docs"><strong>here</strong></a> 
 </p>
 
 ## 📚 Table of Contents
@@ -37,11 +36,6 @@ This repository contains the React frontend that consumes the [UnderPass API](ht
 
 ## Features
 
-<p align="center">
-  <!-- Add features overview image here -->
-  <img src="public/Underpass-features.png" alt="Underpass Features" title="Underpass Features">
-</p>
-
 ### Authentication
 
 - Login, Register and Logout connected to the API via Bearer token (Laravel Passport).
@@ -62,20 +56,29 @@ This repository contains the React frontend that consumes the [UnderPass API](ht
 - **Digital Passport & Stamps:** Scan a unique QR code at a verified event to receive a collectible Stamp.
 - **Vibechecks:** Only attendees with a stamp can rate the event's Sound and Safety.
 - **Leaderboard:** Community ranking based on points.
+### 📸 Visual Overview
 
+**The Main Feed:** A dynamic, responsive grid displaying all community-verified underground events with a dark, cyberpunk-inspired aesthetic.
 <p align="center">
   <img src="public/main-dashboard.png" alt="Main Feed" title="Underpass Feed">
 </p>
+
+**The Waiting Room:** Where democracy happens. Users can browse pending events and vouch for the ones they trust to get them verified.
 <p align="center">
   <img src="public/waiting-room.png" alt="Waiting Room" title="Underpass Waiting Room">
 </p>
+
+**Admin Panel:** Full moderation control. Admins can manage users, override event statuses, and maintain platform safety via a responsive data table.
 <p align="center">
-  <img src="public/Admin-panel-view.png" alt="Admin Panel" title="Underpass Admin">
+  <img src="public/admin-panel.png" alt="Admin Panel" title="Underpass Admin">
 </p>
+
+**Stamps & Points:** A digital passport storing attendance records (Stamps) and tracking the user's community ranking points, optimized for mobile viewing.
 <p align="center">
   <img src="public/stamps-and-points.png" alt="Stamps and points" title="Underpass Mobile View">
 </p>
 
+**Vibechecks:** A qualitative feedback mechanism unlocked only after claiming a stamp, ensuring that only physical attendees can submit genuine reviews.
 <p align="center">
   <img src="public/vibecheck.png" alt="Vibecheck" title="Underpass Vibecheck">
 </p>
