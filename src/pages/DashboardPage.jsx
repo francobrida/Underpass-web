@@ -21,7 +21,6 @@ const DashboardPage = () => {
 
       <main className="flex-grow p-6 md:p-10 max-w-[1400px] mx-auto w-full space-y-12 mt-4">
 
-        {/* Header Titles */}
         <div className="space-y-1">
           <h1 className="text-4xl md:text-5xl text-white font-display font-black uppercase italic tracking-tighter">
             Agenda Electrónica
@@ -31,10 +30,8 @@ const DashboardPage = () => {
           </p>
         </div>
 
-        {/* Filters */}
         <FiltersBar onFilterChange={handleFilterChange} filters={filters} />
 
-        {/* Events Grid */}
         <div className="pt-4">
           <EventsGrid filters={filters} />
         </div>

@@ -26,7 +26,6 @@ const LoginPage = () => {
         password: form.password,
       });
 
-      // Guardar token y datos del usuario
       const token = data.token || data.access_token;
       const user = data.user || data.data;
 
@@ -56,15 +55,12 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
 
-      {/* Subtle animated background grid */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
 
-      {/* Decorative glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="w-full max-w-md relative z-10">
 
-        {/* Logo */}
         <div className="text-center mt-10 mb-10">
           <h1 className="text-5xl text-white tracking-tighter uppercase font-black italic font-display">
             UNDER<span className="text-accent">PASS</span>
@@ -74,10 +70,8 @@ const LoginPage = () => {
           </p>
         </div>
 
-        {/* Login Card */}
         <div className="bg-[#050505] border border-[#1f1f1f] p-8 relative overflow-hidden">
 
-          {/* Top accent line */}
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-60"></div>
 
           <h2 className="text-white font-display font-bold uppercase text-lg tracking-widest mb-8 flex items-center gap-3">
@@ -87,7 +81,6 @@ const LoginPage = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
 
-            {/* Email Field */}
             <div className="group">
               <label className="flex items-center gap-2 text-[15px] text-[#555] font-mono uppercase tracking-[0.2em] mb-2 group-focus-within:text-accent transition-colors">
                 <Mail size={12} className="text-accent" />
@@ -104,7 +97,6 @@ const LoginPage = () => {
               />
             </div>
 
-            {/* Password Field */}
             <div className="group">
               <label className="flex items-center gap-2 text-[15px] text-[#555] font-mono uppercase tracking-[0.2em] mb-2 group-focus-within:text-accent transition-colors">
                 <KeyRound size={12} className="text-accent" />
@@ -130,14 +122,12 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Error Message */}
             {error && (
               <div className="bg-red-950/50 border border-red-900 px-4 py-3 text-red-400 font-mono text-xs tracking-wide">
                 ⚠ {error}
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -154,7 +144,6 @@ const LoginPage = () => {
             </button>
           </form>
 
-          {/* Register Link */}
           <div className="mt-8 pt-6 border-t border-[#1a1a1a] text-center">
             <p className="text-[#555] text-[11px] font-mono uppercase tracking-widest">
               ¿No tenés cuenta?{' '}
@@ -165,7 +154,6 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {/* Footer */}
         <p className="text-[#333] text-[10px] font-mono text-center mt-6 uppercase tracking-widest">
           © 2026 UNDERPASS — ALL RIGHTS RESERVED
         </p>

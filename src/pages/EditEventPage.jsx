@@ -102,8 +102,7 @@ const EditEventPage = () => {
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
-          
-          // Comprimir a JPEG con calidad 0.8
+
           const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
           resolve(dataUrl);
         };
@@ -141,7 +140,6 @@ const EditEventPage = () => {
       end_time: formData.end_time ? formData.end_time.slice(0, 5) : null,
     };
 
-    // Solo incluimos estos si tienen contenido para evitar errores de validación 'string' vs 'null'
     if (formData.price_info && formData.price_info.trim() !== "") {
       payload.price_info = formData.price_info;
     }
@@ -182,8 +180,7 @@ const EditEventPage = () => {
       <Navbar />
       
       <main className="max-w-[800px] mx-auto w-full px-6 mt-12 space-y-10">
-        
-        {/* Header con advertencia */}
+
         <div className="space-y-6">
           <div className="flex items-center gap-4 border-l-4 border-accent pl-6">
             <div>
@@ -200,11 +197,10 @@ const EditEventPage = () => {
           </div>
         </div>
 
-        {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-8 bg-[#050505] border border-[#111] p-8 md:p-12 shadow-2xl">
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Título */}
+            
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Type size={12} /> Título del Evento
@@ -219,7 +215,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Lineup */}
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Tag size={12} /> Lineup (DJs / Artistas)
@@ -234,7 +229,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Descripción */}
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <AlignLeft size={12} /> Descripción / Info
@@ -248,7 +242,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Fecha */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Calendar size={12} /> Fecha
@@ -262,7 +255,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Precio */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <DollarSign size={12} /> Precio (€)
@@ -276,7 +268,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Horarios */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <Clock size={12} /> Hora Inicio
@@ -301,7 +292,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Ubicación */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <MapPin size={12} /> Sala / Club
@@ -328,7 +318,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Info de Precio (Opcional) */}
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <DollarSign size={12} /> Info adicional precio
@@ -342,7 +331,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Ticket Link (Opcional) */}
             <div className="md:col-span-2 space-y-2">
               <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                 <ExternalLink size={12} /> Link de Entradas
@@ -356,7 +344,6 @@ const EditEventPage = () => {
               />
             </div>
 
-            {/* Subir Flyer (Opcional en Edición) */}
             <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
               {currentFlyer && (
                 <div className="md:col-span-4 flex flex-col items-start gap-2">
@@ -384,7 +371,6 @@ const EditEventPage = () => {
             </div>
           </div>
 
-          {/* Botones de acción */}
           <div className="flex flex-col md:flex-row gap-4 pt-6 border-t border-[#111]">
             <button 
               type="button"
@@ -405,11 +391,10 @@ const EditEventPage = () => {
         </form>
 
         <p className="text-center text-[9px] text-[#333] font-mono uppercase tracking-[0.5em]">
-          Underpass System // Event Protocol Update // {new Date().getFullYear()}
+          Underpass System 
         </p>
       </main>
 
-      {/* Custom Notification Toast */}
       {notification && (
         <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 border animate-in fade-in slide-in-from-bottom-4 duration-300 ${
           notification.type === 'error' 

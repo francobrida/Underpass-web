@@ -9,7 +9,6 @@ const ProfilePage = () => {
   const [savingUser, setSavingUser] = useState(false);
   const [savingPass, setSavingPass] = useState(false);
 
-  // Form states
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   
@@ -129,15 +128,13 @@ const ProfilePage = () => {
     <div className="min-h-screen bg-[#050505] text-white flex flex-col pb-20 selection:bg-accent selection:text-black relative selection:text-white">
       <Navbar />
 
-      {/* Futuristic Background Grids */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/15 rounded-full blur-[130px] -mr-[300px] -mt-[300px]"></div>
       </div>
 
       <main className="max-w-[1100px] mx-auto w-full px-6 mt-12 space-y-10 relative z-10">
-        
-        {/* Header */}
+
         <div className="space-y-6">
           <div className="flex items-center gap-4 border-l-4 border-accent pl-6">
             <div>
@@ -149,7 +146,6 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* Global Alert Notification */}
         {notification && (
           <div className={`p-4 font-mono text-xs border uppercase tracking-widest flex items-center justify-between animate-in fade-in duration-300 ${
             notification.type === 'error' 
@@ -164,8 +160,7 @@ const ProfilePage = () => {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          
-          {/* Left / Info Section */}
+
           <div className="lg:col-span-5 space-y-8 bg-black/80 backdrop-blur-md border border-accent/20 p-8 shadow-[0_0_40px_rgba(139,92,246,0.08)] relative overflow-hidden group">
             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
             
@@ -197,10 +192,8 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Right / Forms Section */}
           <div className="lg:col-span-7 space-y-8">
-            
-            {/* Form 1: General Info */}
+
             <form onSubmit={handleUpdateProfile} className="bg-black/80 backdrop-blur-md border border-accent/20 p-8 shadow-[0_0_40px_rgba(139,92,246,0.08)] relative">
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
               
@@ -251,7 +244,6 @@ const ProfilePage = () => {
               </div>
             </form>
 
-            {/* Form 2: Password Update */}
             <form onSubmit={handleUpdatePassword} className="bg-black/80 backdrop-blur-md border border-accent/20 p-8 shadow-[0_0_40px_rgba(139,92,246,0.08)] relative">
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
               
@@ -261,8 +253,7 @@ const ProfilePage = () => {
               </div>
 
               <div className="grid grid-cols-1 gap-6 pt-6">
-                
-                {/* Current Password */}
+
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                     Contraseña Actual
@@ -285,7 +276,6 @@ const ProfilePage = () => {
                   </div>
                 </div>
 
-                {/* New Password */}
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                     Nueva Contraseña
@@ -308,7 +298,6 @@ const ProfilePage = () => {
                   </div>
                 </div>
 
-                {/* Confirm Password */}
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 text-[10px] text-[#555] font-mono uppercase tracking-[0.2em] font-bold">
                     Confirmar Nueva Contraseña

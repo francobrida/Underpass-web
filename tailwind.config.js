@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -8,11 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0a0a0a', // Dark industrial background
-        surface: '#121212', // Slightly lighter for cards/panels
-        border: '#2a2a2a', // Industrial border color
+        background: '#0a0a0a', 
+        surface: '#121212', 
+        border: '#2a2a2a', 
         accent: {
-          DEFAULT: '#8b5cf6', // Neon Violet (Violeta eléctrico)
+          DEFAULT: '#8b5cf6', 
           hover: '#7c3aed',
         },
         text: {

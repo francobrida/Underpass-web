@@ -35,7 +35,6 @@ const EventDetailPage = () => {
     document.body.removeChild(downloadLink);
   };
 
-  // Mock data basado estrictamente en las columnas reales del README
   const mockEvent = {
     id: id,
     title: 'INDUSTRIAL DARKNESS',
@@ -76,7 +75,6 @@ const EventDetailPage = () => {
           }
         }
 
-        // Buscamos géneros en 'genres', 'styles' o el campo 'style' directo
         const genreData = item.genres || item.styles || [];
         const genreString = Array.isArray(genreData) 
           ? genreData.map(g => g.name || g).join(', ') 
@@ -94,7 +92,7 @@ const EventDetailPage = () => {
           location_name: item.location || item.location_name || 'SECRET LOCATION',
           flyer: flyerUrl
         });
-        // Traemos siempre los vibechecks para eventos pasados o presentes
+        
         try {
           const { data: vbResult } = await apiClient.get(`/events/${id}/vibechecks`);
           const reviewsArray = Array.isArray(vbResult.data) ? vbResult.data : (Array.isArray(vbResult) ? vbResult : []);
@@ -115,7 +113,7 @@ const EventDetailPage = () => {
         }
       } catch (err) {
         console.warn("API Error or Offline, check ID:", id);
-        // Fallback a mocks
+        
         if (id === '999') {
           setEvent(mockPastEvent);
           setVibeChecks({
@@ -156,8 +154,7 @@ const EventDetailPage = () => {
       <Navbar />
       
       <main className="max-w-[1200px] mx-auto w-full px-6 md:px-10 mt-10 md:mt-16 flex-grow">
-        
-        {/* Header Section: Title & Back Button */}
+
         <div className="mb-10 flex items-center justify-between">
           <button 
             onClick={() => navigate('/events')}
@@ -174,10 +171,8 @@ const EventDetailPage = () => {
           )}
         </div>
 
-        {/* Main Content: Flyer next to Name */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 items-start">
-          
-          {/* Left Column: Flyer (Hidden for past events) */}
+
           {!isPast && (
             <div className="lg:col-span-5 order-2 lg:order-1">
               <div className="relative group">
@@ -197,7 +192,6 @@ const EventDetailPage = () => {
                 </div>
               </div>
 
-              {/* QR STAMP SECTION (Owner Only - Only for active/future events already verified) */}
               {event.is_mine && event.is_verified && !isPast && (
                 <div className="mt-8 bg-[#080808] border border-[#1f1f1f] p-6 relative group overflow-hidden">
                   <div className="absolute top-0 left-0 w-full h-[2px] bg-accent opacity-50 shadow-[0_0_10px_var(--color-accent)]"></div>
@@ -235,11 +229,10 @@ const EventDetailPage = () => {
             </div>
           )}
 
-          {/* Right Column: Info */}
           <div className={`${isPast ? 'lg:col-span-12' : 'lg:col-span-7'} order-1 lg:order-2 space-y-8`}>
             <div className="space-y-4">
               <p className="text-accent/60 font-mono text-[12px] uppercase tracking-[0.5em] mb-2 animate-pulse">
-                // ORG BY: {event.organizer || event.organizer_name || event.user?.name}
+                
               </p>
               <h1 className="text-4xl md:text-6xl text-white font-display font-black uppercase italic tracking-tighter leading-tight">
                 {event.title}
@@ -248,7 +241,7 @@ const EventDetailPage = () => {
                 <p className="text-accent font-mono text-lg md:text-2xl uppercase tracking-[0.1em] font-bold leading-tight">
                   {event.lineup}
                 </p>
-                {/* Genre Neon Tags */}
+                
                 <div className="flex flex-wrap gap-2 pt-2">
                   {(event.style || 'ELECTRONIC').split(',').map((tag, i) => (
                     <span key={i} className="px-3 py-1 bg-accent/10 border border-accent/40 text-accent text-[9px] font-mono font-bold uppercase tracking-[0.2em] shadow-[0_0_10px_rgba(139,92,246,0.1)]">
@@ -259,7 +252,6 @@ const EventDetailPage = () => {
               </div>
             </div>
 
-            {/* Technical Specs Grid */}
             <div className="grid grid-cols-2 gap-px bg-[#1f1f1f] border border-[#1f1f1f]">
               {[
                 { label: 'FECHA', value: event.date, icon: Calendar },
@@ -278,12 +270,11 @@ const EventDetailPage = () => {
               ))}
             </div>
 
-            {/* Description */}
             <div className="space-y-4 pt-4 border-t border-[#1a1a1a]">
               <p className="text-[#aaa] font-mono text-sm leading-relaxed whitespace-pre-line">
                 {event.description}
               </p>
-                {/* Ticket Box - Integrated into right column */}
+                
             <div className="pt-8 mt-10 border-t border-[#1a1a1a]">
               <div className="bg-[#050505] border border-accent/20 p-10 relative overflow-hidden group">
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
@@ -308,8 +299,7 @@ const EventDetailPage = () => {
                     </a>
                   )}
                 </div>
-                
-                
+
               </div>
             </div>
             </div>
@@ -317,14 +307,12 @@ const EventDetailPage = () => {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="mt-20 py-10 border-t border-[#111] text-center">
         <p className="text-[#333] text-[9px] font-mono uppercase tracking-[0.5em]">
           © 2026 UNDERPASS — BARCELONA UNDERGROUND ARCHIVE
         </p>
       </footer>
 
-      {/* VibeCheck Results Section (For Past Events) */}
       {(isPast || (vibeChecks && vibeChecks.reviews && vibeChecks.reviews.length > 0)) && (
         <section className="max-w-[1200px] mx-auto w-full px-6 md:px-10 mb-20 animate-in fade-in slide-in-from-bottom-8 duration-700">
           <div className="border-t-2 border-accent/20 pt-16 space-y-12">

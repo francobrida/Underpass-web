@@ -19,19 +19,18 @@ const Navbar = () => {
       { name: 'PERFIL', icon: <User size={16} />, href: '/profile' },
     ];
 
-    // Solo mostramos items que no son adminOnly, o si el usuario es admin
     return items.filter(item => !item.adminOnly || user?.role === 'admin');
   }, [user]);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      // Intentamos avisar al backend
+      
       await apiClient.post('/logout');
     } catch (err) {
       console.warn("Error al cerrar sesión en el servidor, limpiando localmente...");
     } finally {
-      // Siempre limpiamos localmente aunque el servidor falle o esté offline
+      
       clearAuth();
       setIsLoggingOut(false);
       navigate('/login');
@@ -40,14 +39,13 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-background/95 backdrop-blur-md border-b border-border px-4 md:px-8 py-3 md:py-5 flex flex-col md:flex-row items-center justify-between sticky top-0 z-50">
-      {/* Logo */}
+      
       <div className="flex-shrink-0 mb-3 md:mb-0">
         <Link to="/events" className="text-xl md:text-2xl text-white tracking-tighter uppercase font-black italic">
           UNDER<span className="text-accent">PASS</span>
         </Link>
       </div>
 
-      {/* Nav Links */}
       <div className="flex flex-wrap justify-center items-center gap-1 md:gap-2 w-full md:w-auto">
         {navItems.map((item, index) => {
           const isActive = location.pathname === item.href;
@@ -66,8 +64,7 @@ const Navbar = () => {
             </Link>
           );
         })}
-        
-        {/* Logout Button */}
+
         <button 
           onClick={handleLogout}
           disabled={isLoggingOut}

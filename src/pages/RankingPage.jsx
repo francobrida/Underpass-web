@@ -38,14 +38,12 @@ const RankingPage = () => {
     <div className="min-h-screen bg-[#050505] text-white selection:bg-accent selection:text-black">
       <Navbar />
 
-      {/* BACKGROUND GRID DECORATION */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       </div>
       
       <main className="max-w-5xl mx-auto px-6 py-12 relative z-10">
-        
-        {/* TOP STATUS BAR - MINIMALIST MAIN HEADER */}
+
         <header className="panel-neon p-1 mb-12">
           <div className="p-8 bg-black flex flex-col md:flex-row md:items-center justify-between overflow-hidden relative">
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
@@ -70,10 +68,9 @@ const RankingPage = () => {
           </div>
         </header>
 
-        {/* DATABASE PANEL */}
         <section className="panel-neon overflow-hidden">
           <div className="p-6 border-b border-white/5 bg-black flex items-center justify-between">
-            <h3 className="text-xs font-mono font-bold text-[#666] uppercase tracking-[0.4em]">Active Sessions // Top Agents</h3>
+            <h3 className="text-xs font-mono font-bold text-[#666] uppercase tracking-[0.4em]">Active Sessions 
           </div>
 
           <div className="divide-y divide-white/5">
@@ -87,13 +84,11 @@ const RankingPage = () => {
                   className={`flex items-center gap-4 md:gap-8 p-6 hover:bg-white/[0.02] transition-all group relative overflow-hidden`}
                 >
                   {isTop3 && <div className={`absolute inset-y-0 left-0 w-1 ${rankColors[index].split(' ')[0]}`}></div>}
-                  
-                  {/* Position */}
+
                   <div className={`w-16 text-center font-display font-black italic text-4xl tracking-tighter ${isTop3 ? rankColors[index].split(' ')[0] : 'text-[#333]'}`}>
                     {index === 0 ? <Crown size={32} className="mx-auto" /> : (index + 1).toString().padStart(2, '0')}
                   </div>
 
-                  {/* User Entry */}
                   <div className="flex items-center gap-4 flex-grow">
                     <div>
                       <h4 className={`font-display font-black uppercase italic tracking-wider text-xl leading-none ${!isTop3 && 'text-[#ccc] group-hover:text-white'}`}>
@@ -108,7 +103,6 @@ const RankingPage = () => {
                     </div>
                   </div>
 
-                  {/* Points Readout */}
                   <div className="text-right flex-shrink-0">
                     <div className="flex items-center justify-end gap-3 text-white font-mono font-black text-2xl md:text-3xl tracking-tighter">
                       {user.points !== undefined && user.points !== null ? user.points.toLocaleString() : "0"}
@@ -120,9 +114,8 @@ const RankingPage = () => {
             })}
           </div>
 
-          {/* Table Footer */}
           <div className="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center px-8">
-            <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.6em]">System Protocol // Ranking Broadcast // Underpass Central</p>
+            <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.6em]">System Protocol 
             <div className="flex gap-1">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="w-4 h-1 bg-white/5 rounded-full"></div>
