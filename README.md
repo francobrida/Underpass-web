@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  Check the <a href="#"><strong>live demo here</strong></a> and the API documentation <a href="https://underpass-api-production.up.railway.app/docs"><strong>here</strong></a> 
+  Check the <a href="https://underpass.up.railway.app/"><strong>live demo here</strong></a> and the API documentation <a href="https://underpass-api-production.up.railway.app/docs"><strong>here</strong></a> 
 </p>
 
 ## 📚 Table of Contents
@@ -22,9 +22,9 @@
 
 ## About
 
-**UnderPass** is a decentralized electronic music agenda for the Barcelona underground scene. It features a unique trust-based verification system, physical attendance validation via QR/Stamps, and a qualitative feedback loop.
+**UnderPass** is a decentralized electronic music agenda for the Barcelona underground scene. Unlike traditional platforms, it relies on the community to verify events and uses a gamification loop (Stamps & Points) to ensure that only physical attendees can provide qualitative feedback ("Vibechecks").
 
-This repository contains the React frontend that consumes the [UnderPass API](https://github.com/francobrida/UnderPass-API). Built with React 19 and Vite, it provides a dynamic interface with role-based routing (Clubber, Organizer, Admin), gamification elements (stamps & points), and QR code management.
+This repository contains the React frontend that consumes the [UnderPass API](https://github.com/francobrida/UnderPass-API) engine. Built with React 19 and Vite, it provides a dynamic interface with role-based routing (Clubber, Organizer, Admin) and seamless QR code management for the gamification flow.
 
 ## 💻 Tech Stack
 
@@ -49,7 +49,7 @@ This repository contains the React frontend that consumes the [UnderPass API](ht
 ### Vouch-to-Verify System
 
 - **Waiting Room:** View unverified events pending approval.
-- **Vouching:** Trusted users can "vouch" for an event. Reach 3 vouches to auto-verify!
+- **Vouching:** Logued users can "vouch" for an event. Reach 3 vouches to auto-verify!
 
 ### Role-Based Access Control
 
@@ -62,6 +62,27 @@ This repository contains the React frontend that consumes the [UnderPass API](ht
 - **Digital Passport & Stamps:** Scan a unique QR code at a verified event to receive a collectible Stamp.
 - **Vibechecks:** Only attendees with a stamp can rate the event's Sound and Safety.
 - **Leaderboard:** Community ranking based on points.
+
+<!-- TODO: [MUESTRA TUS FEATURES] 
+Añade aquí pantallazos de la aplicación para que el usuario vea cómo luce (basado en cómo lo hiciste en Nodefold). 
+Te sugiero estas 4 imágenes (guárdalas en la carpeta public/ y enlázalas aquí): -->
+
+<p align="center">
+  <!-- Sugerencia 1: Una captura del feed principal (Dashboard) mostrando la FilterBar y el Grid de eventos -->
+  <img src="public/Main-feed-view.png" alt="Main Feed" title="Underpass Feed">
+</p>
+<p align="center">
+  <!-- Sugerencia 2: Una captura de la "Waiting Room" mostrando las barras de progreso del sistema de Vouching -->
+  <img src="public/Waiting-room-view.png" alt="Waiting Room" title="Underpass Waiting Room">
+</p>
+<p align="center">
+  <!-- Sugerencia 3: Una captura del Admin Panel (mostrando las tablas que acabamos de ajustar) o la sección de "My Stamps" para la gamificación -->
+  <img src="public/Admin-panel-view.png" alt="Admin Panel" title="Underpass Admin">
+</p>
+<p align="center">
+  <!-- Sugerencia 4: Un GIF corto usando la web, o un pantallazo doble mostrando cómo se ve perfecta la versión MÓVIL (luciendo el responsive) -->
+  <img src="public/Underpass-mobile-or-gif.webp" alt="Mobile View" title="Underpass Mobile View">
+</p>
 
 ## 🛠️ Setup & Installation
 
@@ -113,31 +134,84 @@ Built with **React 19** and **Vite**.
 
 All API calls are centralized and managed via Axios, where tokens are attached automatically once the user authenticates. React Router v7 handles protected routes, ensuring only Admins, Organizers, or authenticated Clubbers access their specific views.
 
-## 🐳 Docker & Deployment
+## 🚀 Deployment
 
-*(Note: Add Docker instructions if a Dockerfile is provided for the frontend)*
+The frontend is continuously deployed on **Railway**. 
 
-### Standard Build
+Unlike the backend (which may require a specific Dockerfile for Java/Spring Boot configurations), this frontend utilizes Railway's automatic **Nixpacks** builder. When connected to the repository, Railway automatically detects the `package.json`, installs the Node.js environment, and runs the build script (`npm run build`).
+
+To run it locally:
+
+```bash
+npm install
+npm run dev
+```
+
+To test the production build locally:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## Deployment
+### Live Links
 
-- **Frontend** — [Link to Frontend Demo](#)
+- **Frontend Demo** — [https://underpass.up.railway.app/](https://underpass.up.railway.app/)
 - **API Docs** — [https://underpass-api-production.up.railway.app/docs](https://underpass-api-production.up.railway.app/docs)
 
-## 👤 Demo Accounts
+## 🔐 Test Credentials
 
-To test the app, use the demo accounts created by the API seeders.
+To evaluate the platform, use the following pre-seeded accounts (run `php artisan migrate --seed` on the API first):
 
-| Role  |       Email        | Password  |
-| :---: | :----------------: | :-------: |
-| Admin | admin@underpass.com| password  |
-| Organizer | organizer@test.com | password |
-| Clubber  | clubber@test.com  | password  |
+**Admin**
+- **Email:** `admin@underpass.com`
+- **Password:** `password`
+- **Access:** Full Dashboard, User Management, and Event CRUD.
+
+**Event Organizer**
+- **Email:** `organizer@test.com`
+- **Password:** `password`
+- **Access:** Create Events, View QR Codes, and check Event Feedback.
+
+**Clubber (User)**
+- **Email:** `clubber@test.com`
+- **Password:** `password`
+- **Access:** Vouch for events, Claim Stamps (Gamification), and submit Vibechecks.
+
+## 🕹️ Quick Testing Guide
+
+Follow this flow to test the UnderPass core logic, from basic CRUD to the Gamification loop:
+
+**Step 1: Event Creation (Basic CRUD)**
+- **Login as:** `clubber@test.com` (password: `password`).
+- **Action:** Go to "Mis Eventos", then "Crear Evento". Fill in the details for a new underground party.
+- **Logic:** The event is created with `is_verified = false`. It will not appear in the main feed yet; instead, it goes directly to the Waiting Room.
+
+**Step 2: Vouching (Community Power)**
+- **Login as:** `clubber@test.com`.
+- **Action:** Go to the Waiting Room. Find the event you just created (or the one named "Test Event no verificado" from the Seeder).
+- **Logic:** Events need 3 "vouches" to be published. Since you cannot vouch for your own event, the Seeder provides other pending events. Once a "Clubber" event reaches the 3-vouch limit, it is published, and the User Role is automatically promoted to "Organizer".
+
+**Step 3: The QR & Stamping (Scan Simulation)**
+- **Login as:** `organizer@test.com`.
+- **Action:** Go to "Mis Eventos" and enter the verified event "Main Stage Techno".
+- **Logic:** As the owner of a verified event, the QR Code (Stamp Token) will be displayed.
+- **Simulate Scan:** Click the "Descargar QR" button or copy the link. Accessing that URL while logged in as a Clubber will automatically generate a Stamp in the user's account.
+
+**Step 4: Sellos y Puntos (The Passport)**
+- **Login as:** `clubber@test.com`.
+- **Action:** Enter the "Sellos y Puntos" section.
+- **Logic:** Check your stamp collection (including "Flashback Night" from the Seeder) and your updated point counter. This is the visual proof of your clubbing history.
+
+**Step 5: VibeCheck (Post-Event Feedback)**
+- **Login as:** `clubber@test.com`.
+- **Action:** Within "Sellos y Puntos", find the event "Noche de Vinilo & Techno".
+- **Logic:** Because the event has ended and you have the Stamp, the "DEJAR VIBECHECK" button is active. Submit the rating to earn +5 extra points.
+
+**Step 6: Admin Panel (Moderation)**
+- **Login as:** `admin@underpass.com`.
+- **Action:** Access the Admin Panel.
+- **Logic:** Perform CRUD operations on users and events. Admins can manually verify events or delete inappropriate content to keep the platform safe.
 
 ## 🚧 Upcoming Improvements
 
