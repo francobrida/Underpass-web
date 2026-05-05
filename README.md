@@ -137,7 +137,7 @@ All API calls are centralized and managed via Axios, where tokens are attached a
 
 The frontend is continuously deployed on **Railway**. 
 
-Unlike the backend (which may require a specific Dockerfile for Java/Spring Boot configurations), this frontend utilizes Railway's automatic **Nixpacks** builder. When connected to the repository, Railway automatically detects the `package.json`, installs the Node.js environment, and runs the build script (`npm run build`).
+Unlike the backend (which utilizes a specific Dockerfile for PHP/Laravel configurations), this frontend utilizes Railway's automatic **Nixpacks** builder. When connected to the repository, Railway automatically detects the `package.json`, installs the Node.js environment, and runs the build script (`npm run build`).
 
 To run it locally:
 
