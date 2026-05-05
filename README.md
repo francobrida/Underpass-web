@@ -63,25 +63,21 @@ This repository contains the React frontend that consumes the [UnderPass API](ht
 - **Vibechecks:** Only attendees with a stamp can rate the event's Sound and Safety.
 - **Leaderboard:** Community ranking based on points.
 
-<!-- TODO: [MUESTRA TUS FEATURES] 
-Añade aquí pantallazos de la aplicación para que el usuario vea cómo luce (basado en cómo lo hiciste en Nodefold). 
-Te sugiero estas 4 imágenes (guárdalas en la carpeta public/ y enlázalas aquí): -->
-
 <p align="center">
-  <!-- Sugerencia 1: Una captura del feed principal (Dashboard) mostrando la FilterBar y el Grid de eventos -->
-  <img src="public/Main-feed-view.png" alt="Main Feed" title="Underpass Feed">
+  <img src="public/main-dashboard.png" alt="Main Feed" title="Underpass Feed">
 </p>
 <p align="center">
-  <!-- Sugerencia 2: Una captura de la "Waiting Room" mostrando las barras de progreso del sistema de Vouching -->
-  <img src="public/Waiting-room-view.png" alt="Waiting Room" title="Underpass Waiting Room">
+  <img src="public/waiting-room.png" alt="Waiting Room" title="Underpass Waiting Room">
 </p>
 <p align="center">
-  <!-- Sugerencia 3: Una captura del Admin Panel (mostrando las tablas que acabamos de ajustar) o la sección de "My Stamps" para la gamificación -->
   <img src="public/Admin-panel-view.png" alt="Admin Panel" title="Underpass Admin">
 </p>
 <p align="center">
-  <!-- Sugerencia 4: Un GIF corto usando la web, o un pantallazo doble mostrando cómo se ve perfecta la versión MÓVIL (luciendo el responsive) -->
-  <img src="public/Underpass-mobile-or-gif.webp" alt="Mobile View" title="Underpass Mobile View">
+  <img src="public/stamps-and-points.png" alt="Stamps and points" title="Underpass Mobile View">
+</p>
+
+<p align="center">
+  <img src="public/vibecheck.png" alt="Vibecheck" title="Underpass Vibecheck">
 </p>
 
 ## 🛠️ Setup & Installation
@@ -190,7 +186,7 @@ Follow this flow to test the UnderPass core logic, from basic CRUD to the Gamifi
 **Step 2: Vouching (Community Power)**
 - **Login as:** `clubber@test.com`.
 - **Action:** Go to the Waiting Room. Find the event you just created (or the one named "Test Event no verificado" from the Seeder).
-- **Logic:** Events need 3 "vouches" to be published. Since you cannot vouch for your own event, the Seeder provides other pending events. Once a "Clubber" event reaches the 3-vouch limit, it is published, and the User Role is automatically promoted to "Organizer".
+- **Logic:** Events need 3 "vouches" to be published. Since you cannot vouch for your own event, the Seeder provides other pending events. Once a "Clubber" event reaches the 3-vouch limit, it is published, and the User Role is automatically promoted to "Organizer", allowing the user to have more than one active event.
 
 **Step 3: The QR & Stamping (Scan Simulation)**
 - **Login as:** `organizer@test.com`.
@@ -214,10 +210,14 @@ Follow this flow to test the UnderPass core logic, from basic CRUD to the Gamifi
 - **Logic:** Perform CRUD operations on users and events. Admins can manually verify events or delete inappropriate content to keep the platform safe.
 
 ## 🚧 Upcoming Improvements
-
+Short term:
 - Push Notifications for verified events.
 - Points Marketplace to exchange points for benefits.
 - Enhanced Organizer Dashboard with historical Vibechecks data.
+- Filters for events in the Waiting Room and users/events in Admin Panel.
+Long term:
+- Ticket Sales for events (Organizers can set a price for their events and users can buy tickets).
+- User's Ticket QR Code generation for event entry.
 
 ## 🎨 Credits
 
