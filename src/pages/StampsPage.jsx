@@ -277,7 +277,7 @@ const StampsPage = () => {
                       </div>
                     </div>
 
-                    <div className="absolute top-3 left-3 text-[8px] font-mono text-[#333] font-black italic">STAMP_ID:
+                    <div className="absolute top-3 left-3 text-[8px] font-mono text-[#333] font-black italic">STAMP_ID: {stamp.id}</div>
                   </div>
 
                   <div className="flex-shrink-0 w-full md:w-auto relative z-20">

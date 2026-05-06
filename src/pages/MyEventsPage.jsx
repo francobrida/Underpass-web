@@ -341,7 +341,7 @@ const VibeCheckModal = ({ data, onClose }) => {
         </div>
         
         <div className="p-4 bg-[#050505] border-t border-[#222] text-center">
-          <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.4em]">Underpass Archive System 
+          <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.4em]">Underpass Archive System</p>
         </div>
       </div>
     </div>

@@ -230,7 +230,7 @@ const AdminPanelPage = () => {
                   <Shield size={40} className="animate-pulse" />
                   <h1 className="text-4xl md:text-5xl font-display font-black uppercase italic tracking-tighter">Admin Control</h1>
                 </div>
-                <p className="text-[#aaa] font-mono text-xs uppercase tracking-[0.4em]">
+                <p className="text-[#aaa] font-mono text-xs uppercase tracking-[0.4em]">SISTEMA DE CONTROL Y SUPERVISIÓN GLOBAL</p>
               </div>
 
               <div className="flex bg-[#050505] border border-[#111] p-1.5 self-start">

@@ -70,7 +70,7 @@ const RankingPage = () => {
 
         <section className="panel-neon overflow-hidden">
           <div className="p-6 border-b border-white/5 bg-black flex items-center justify-between">
-            <h3 className="text-xs font-mono font-bold text-[#666] uppercase tracking-[0.4em]">Active Sessions 
+            <h3 className="text-xs font-mono font-bold text-[#666] uppercase tracking-[0.4em]">Active Sessions</h3>
           </div>
 
           <div className="divide-y divide-white/5">
@@ -115,7 +115,7 @@ const RankingPage = () => {
           </div>
 
           <div className="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center px-8">
-            <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.6em]">System Protocol 
+            <p className="text-[8px] text-[#333] font-mono uppercase tracking-[0.6em]">System Protocol</p>
             <div className="flex gap-1">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="w-4 h-1 bg-white/5 rounded-full"></div>
