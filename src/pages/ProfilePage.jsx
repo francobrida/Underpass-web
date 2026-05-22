@@ -58,7 +58,8 @@ const ProfilePage = () => {
         try {
           await apiClient.put('/profile', { name, email });
         } catch (subErr) {
-          console.warn("Fallo en actualizar en el backend. Aplicando cambio localmente.");
+          console.warn("Fallo en actualizar en el backend.");
+          throw subErr;
         }
       }
 
@@ -66,7 +67,18 @@ const ProfilePage = () => {
       setCurrentUser(updatedUser);
       showNotification("Perfil de usuario actualizado con éxito.");
     } catch (error) {
-      showNotification("Hubo un error al actualizar los datos requeridos.", "error");
+      let errorMsg = "Hubo un error al actualizar los datos requeridos.";
+      if (error.response?.data?.errors) {
+        const firstError = Object.values(error.response.data.errors)[0];
+        if (Array.isArray(firstError)) {
+          errorMsg = firstError[0];
+        } else if (typeof firstError === 'string') {
+          errorMsg = firstError;
+        }
+      } else if (error.response?.data?.message) {
+        errorMsg = error.response.data.message;
+      }
+      showNotification(errorMsg, "error");
     } finally {
       setSavingUser(false);
     }
@@ -107,6 +119,7 @@ const ProfilePage = () => {
           });
         } catch (subErr) {
           console.warn("Endpoint de contraseña no disponible en el backend temporalmente.");
+          throw subErr;
         }
       }
       
@@ -115,8 +128,18 @@ const ProfilePage = () => {
       setConfirmPassword('');
       showNotification("Contraseña modificada correctamente.");
     } catch (error) {
-      const msg = error.response?.data?.message || "Error al actualizar la contraseña.";
-      showNotification(msg, "error");
+      let errorMsg = "Error al actualizar la contraseña.";
+      if (error.response?.data?.errors) {
+        const firstError = Object.values(error.response.data.errors)[0];
+        if (Array.isArray(firstError)) {
+          errorMsg = firstError[0];
+        } else if (typeof firstError === 'string') {
+          errorMsg = firstError;
+        }
+      } else if (error.response?.data?.message) {
+        errorMsg = error.response.data.message;
+      }
+      showNotification(errorMsg, "error");
     } finally {
       setSavingPass(false);
     }

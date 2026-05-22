@@ -6,7 +6,7 @@ import {
   Trash2, Edit3, AlertTriangle, 
   CheckCircle2, Hourglass, Search,
   ChevronLeft, ChevronRight, History, Clock, MapPin, User,
-  ArrowBigDown, XCircle
+  ArrowBigDown, XCircle, Sparkles
 } from 'lucide-react';
 
 const AdminPanelPage = () => {
@@ -26,6 +26,12 @@ const AdminPanelPage = () => {
   const [editFormData, setEditFormData] = useState({}); 
   const [eventToEdit, setEventToEdit] = useState(null); 
   const [eventEditFormData, setEventEditFormData] = useState({}); 
+  const [notification, setNotification] = useState(null);
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 4000);
+  }; 
 
   const fetchData = async () => {
     setLoading(true);
@@ -70,9 +76,17 @@ const AdminPanelPage = () => {
     try {
       await apiClient.patch(`/users/${userToEdit.id}`, editFormData);
       setUserToEdit(null);
+      showNotification("¡Usuario actualizado correctamente!");
       fetchData();
     } catch (err) {
-      alert("Error al actualizar usuario");
+      let errorDetail = "";
+      const serverData = err.response?.data;
+      if (serverData?.errors) {
+        errorDetail = Object.values(serverData.errors).flat().join('\n');
+      } else {
+        errorDetail = serverData?.message || err.message || "Error desconocido";
+      }
+      showNotification(`Error al actualizar usuario: ${errorDetail}`, "error");
     }
   };
 
@@ -127,6 +141,7 @@ const AdminPanelPage = () => {
 
       await apiClient.put(`/events/${eventToEdit.id}`, payload);
       setEventToEdit(null);
+      showNotification("¡Evento actualizado correctamente!");
       fetchData();
     } catch (err) {
       console.error("Error detallado:", err.response?.data || err.message);
@@ -140,7 +155,7 @@ const AdminPanelPage = () => {
         errorDetail = serverData?.message || err.message || "Error desconocido";
       }
 
-      alert(`Error al actualizar evento:\n${errorDetail}`);
+      showNotification(`Error al actualizar evento: ${errorDetail}`, "error");
     }
   };
 
@@ -180,15 +195,21 @@ const AdminPanelPage = () => {
   const handleDelete = async () => {
     if (!itemToDelete) return;
     try {
-      if (itemToDelete.type === 'user') {
+      if (itemToDelete.type === 'usuario' || itemToDelete.type === 'user') {
         await apiClient.delete(`/users/${itemToDelete.id}`);
+        showNotification("¡Usuario eliminado correctamente!");
       } else {
         await apiClient.delete(`/events/${itemToDelete.id}`);
+        showNotification("¡Evento eliminado correctamente!");
       }
       fetchData();
       setItemToDelete(null);
     } catch (err) {
-      alert(`Error al eliminar ${itemToDelete.type}`);
+      let errorMsg = `Error al eliminar ${itemToDelete.type}`;
+      if (err.response?.data?.message) {
+        errorMsg = err.response.data.message;
+      }
+      showNotification(errorMsg, "error");
     }
   };
 
@@ -198,9 +219,10 @@ const AdminPanelPage = () => {
         ...event, 
         is_verified: !event.is_verified 
       });
+      showNotification(event.is_verified ? "¡Evento desmarcado como verificado!" : "¡Evento verificado correctamente!");
       fetchData();
     } catch (err) {
-      alert("Error al cambiar estado de verificación");
+      showNotification("Error al cambiar estado de verificación", "error");
     }
   };
 
@@ -750,6 +772,19 @@ const AdminPanelPage = () => {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {notification && (
+        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 border animate-in fade-in slide-in-from-bottom-4 duration-300 ${
+          notification.type === 'error' 
+            ? 'bg-red-950/20 border-red-500/50 text-red-500 shadow-[0_0_20px_rgba(239,68,68,0.2)]' 
+            : 'bg-accent/10 border-accent/50 text-accent shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.2)]'
+        }`}>
+          {notification.type === 'error' ? <AlertTriangle size={18} /> : <Sparkles size={18} />}
+          <p className="font-mono text-[11px] uppercase tracking-widest font-bold">
+            {notification.message}
+          </p>
         </div>
       )}
     </div>

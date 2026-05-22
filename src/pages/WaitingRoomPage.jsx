@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import apiClient from '../services/apiClient';
-import { ShieldCheck, UserCheck, AlertCircle, Loader2, Calendar, Clock, MapPin } from 'lucide-react';
+import { ShieldCheck, UserCheck, AlertCircle, Loader2, Calendar, Clock, MapPin, AlertTriangle, Sparkles } from 'lucide-react';
 import TechnicalLoader from '../components/TechnicalLoader';
 
 const WaitingRoomPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(null);
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 4000);
+  };
 
   const fetchWaitingEvents = async () => {
     try {
@@ -42,11 +48,12 @@ const WaitingRoomPage = () => {
     try {
       const response = await apiClient.post(`/events/${eventId}/vouches`);
       console.log("✅ VOUCH_EXITOSO:", response.data);
+      showNotification("¡Vouch registrado con éxito!");
       fetchWaitingEvents();
     } catch (err) {
       console.error("❌ ERROR_AL_DAR_VOUCH:", err.response || err);
       const msg = err.response?.data?.message || "No se pudo procesar el voto. Quizás ya votaste por este evento o no tienes permisos.";
-      alert(`ERROR: ${msg}`);
+      showNotification(msg, "error");
     }
   };
 
@@ -92,6 +99,19 @@ const WaitingRoomPage = () => {
           </div>
         )}
       </main>
+
+      {notification && (
+        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 border animate-in fade-in slide-in-from-bottom-4 duration-300 ${
+          notification.type === 'error' 
+            ? 'bg-red-950/20 border-red-500/50 text-red-500 shadow-[0_0_20px_rgba(239,68,68,0.2)]' 
+            : 'bg-accent/10 border-accent/50 text-accent shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.2)]'
+        }`}>
+          {notification.type === 'error' ? <AlertTriangle size={18} /> : <Sparkles size={18} />}
+          <p className="font-mono text-[11px] uppercase tracking-widest font-bold">
+            {notification.message}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

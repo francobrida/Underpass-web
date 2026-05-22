@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, MapPin } from 'lucide-react';
 
@@ -13,7 +12,7 @@ const EventCard = ({ event }) => {
   return (
     <div 
       onClick={() => navigate(`/events/${event.id}`)}
-      className="group relative bg-[#050505] border border-[#1f1f1f] hover:border-accent overflow-hidden transition-all duration-500 hover:shadow-[0_0_20px_-5px_rgba(139,92,246,0.3)] cursor-pointer"
+      className="group relative bg-[#050505] border border-[#1f1f1f] hover:border-accent overflow-hidden transition-all duration-500 hover:shadow-[0_0_20px_-5px_rgba(139,92,246,0.3)] cursor-pointer flex flex-col h-full"
     >
 
       <div className="absolute inset-0 opacity-0 group-hover:opacity-10 pointer-events-none transition-opacity duration-300" style={{ backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06))', backgroundSize: '100% 4px, 3px 100%' }}></div>
@@ -38,9 +37,16 @@ const EventCard = ({ event }) => {
         </div>
       </div>
 
-      <div className="p-1.5 sm:p-3 md:p-6 relative z-20 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent -mt-6 sm:-mt-10 pt-8 sm:pt-12 transition-transform duration-300 flex flex-col flex-grow">
+      <div className="p-1.5 sm:p-3 md:p-6 relative z-20 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent -mt-6 sm:-mt-10 pt-10 sm:pt-14 md:pt-16 transition-transform duration-300 flex flex-col flex-grow">
 
-        <div className="flex flex-wrap gap-0.5 sm:gap-1 md:gap-2 mb-1 sm:mb-2 md:mb-3">
+        <h3 className="text-[9px] leading-tight sm:text-xs md:text-lg lg:text-xl xl:text-2xl text-white font-display font-black uppercase italic tracking-tight mb-0.5 sm:mb-1 group-hover:text-accent transition-colors break-words">
+          {event.title}
+        </h3>
+        <p className="text-[6px] sm:text-[9px] md:text-xs text-[#ccc] font-mono uppercase tracking-widest mb-1 sm:mb-2 md:mb-3 line-clamp-2 sm:line-clamp-none">
+          LINEUP: {event.lineup || 'Por confirmar'}
+        </p>
+
+        <div className="flex flex-wrap gap-0.5 sm:gap-1 md:gap-2 mb-2 sm:mb-4 md:mb-6">
           {event.style && (
             <span className="text-[5px] sm:text-[8px] md:text-[10px] text-accent font-mono border border-accent/30 bg-accent/10 px-0.5 sm:px-1 md:px-2 py-[1px] sm:py-0.5">
               #{event.style}
@@ -52,13 +58,6 @@ const EventCard = ({ event }) => {
             </span>
           ))}
         </div>
-
-        <h3 className="text-[7px] leading-tight sm:text-sm md:text-2xl text-white font-display font-black uppercase italic tracking-tight mb-0.5 sm:mb-1 group-hover:text-accent transition-colors line-clamp-2 sm:line-clamp-1">
-          {event.title}
-        </h3>
-        <p className="text-[5px] sm:text-[9px] md:text-xs text-[#ccc] font-mono uppercase tracking-widest mb-2 sm:mb-4 md:mb-6 line-clamp-1">
-          LINEUP: {event.lineup || 'Por confirmar'}
-        </p>
 
         <div className="flex flex-col xl:flex-row xl:items-center justify-between border-t border-[#1f1f1f] pt-1.5 sm:pt-3 md:pt-4 mt-auto gap-0.5 sm:gap-2">
           <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 md:gap-4">

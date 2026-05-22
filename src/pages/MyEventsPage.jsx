@@ -7,7 +7,7 @@ import TechnicalLoader from '../components/TechnicalLoader';
 import { 
   Edit3, Trash2, AlertTriangle, History, 
   ShieldCheck, Hourglass, Star, MessageSquare, 
-  X, Loader2, Calendar, Clock, MapPin 
+  X, Loader2, Calendar, Clock, MapPin, Sparkles
 } from 'lucide-react';
 
 const MyEventsPage = () => {
@@ -17,6 +17,12 @@ const MyEventsPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVibeCheck, setSelectedVibeCheck] = useState(null);
   const [showEditWarning, setShowEditWarning] = useState(null);
+  const [notification, setNotification] = useState(null);
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 4000);
+  };
 
   const fetchMyEvents = async () => {
     if (!user?.id) return;
@@ -66,9 +72,14 @@ const MyEventsPage = () => {
     if (window.confirm("¿Estás seguro de que quieres eliminar este evento? Esta acción es irreversible.")) {
       try {
         await apiClient.delete(`/events/${id}`);
+        showNotification("¡Evento eliminado correctamente!");
         fetchMyEvents();
       } catch (err) {
-        alert("Error al eliminar el evento");
+        let errorMsg = "Error al eliminar el evento.";
+        if (err.response?.data?.message) {
+          errorMsg = err.response.data.message;
+        }
+        showNotification(errorMsg, "error");
       }
     }
   };
@@ -78,7 +89,7 @@ const MyEventsPage = () => {
       const { data: result } = await apiClient.get(`/events/${id}/vibechecks`);
       setSelectedVibeCheck(result.data || result);
     } catch (err) {
-      alert("No se pudieron cargar los VibeChecks");
+      showNotification("No se pudieron cargar los VibeChecks.", "error");
     }
   };
 
@@ -294,6 +305,19 @@ const MyEventsPage = () => {
           data={selectedVibeCheck} 
           onClose={() => setSelectedVibeCheck(null)} 
         />
+      )}
+
+      {notification && (
+        <div className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 border animate-in fade-in slide-in-from-bottom-4 duration-300 ${
+          notification.type === 'error' 
+            ? 'bg-red-950/20 border-red-500/50 text-red-500 shadow-[0_0_20px_rgba(239,68,68,0.2)]' 
+            : 'bg-accent/10 border-accent/50 text-accent shadow-[0_0_20px_rgba(var(--color-accent-rgb),0.2)]'
+        }`}>
+          {notification.type === 'error' ? <AlertTriangle size={18} /> : <Sparkles size={18} />}
+          <p className="font-mono text-[11px] uppercase tracking-widest font-bold">
+            {notification.message}
+          </p>
+        </div>
       )}
     </div>
   );
