@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  Check the <a href="https://underpass.up.railway.app/"><strong>Live Demo Here</strong></a> and the API documentation <a href="https://underpass-api-production.up.railway.app/docs"><strong>here</strong></a> 
+  Check the <a href="underpass-demo.up.railway.app"><strong>Live Demo Here</strong></a> and the API documentation <a href="https://underpass-api-production.up.railway.app/docs"><strong>here</strong></a> 
 </p>
 
 ## 📚 Table of Contents
@@ -155,7 +155,7 @@ npm run preview
 
 ### Live Links
 
-- **Frontend Demo** — [https://underpass.up.railway.app/](https://underpass.up.railway.app/)
+- **Frontend Demo** — [https://underpass-demo.up.railway.app/](https://underpass.up.railway.app/)
 - **API Docs** — [https://underpass-api-production.up.railway.app/docs](https://underpass-api-production.up.railway.app/docs)
 
 ## 🔐 Test Credentials
