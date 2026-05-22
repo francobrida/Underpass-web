@@ -21,7 +21,14 @@ const EventsGrid = ({ filters }) => {
         
         if (Array.isArray(dataArray) && dataArray.length > 0) {
           console.log("🔍 DATOS_CRUDOS_API (Primer evento):", dataArray[0]);
-          const normalizedEvents = dataArray.map(item => ({
+          
+          const today = new Date().toISOString().split('T')[0];
+          const upcomingEvents = dataArray.filter(item => {
+            if (!item.date) return true;
+            return item.date.split('T')[0] >= today;
+          });
+
+          const normalizedEvents = upcomingEvents.map(item => ({
             id: item.id,
             title: item.title || item.name || 'SIN TÍTULO',
             lineup: item.lineup || item.organizer?.name || item.organizer || 'ARTISTAS POR ANUNCIAR',

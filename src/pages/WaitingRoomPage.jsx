@@ -15,7 +15,16 @@ const WaitingRoomPage = () => {
         params: { verified: 'false' } 
       });
       const dataArray = result.data || result;
-      setEvents(Array.isArray(dataArray) ? dataArray : []);
+      
+      const today = new Date().toISOString().split('T')[0];
+      const upcomingEvents = Array.isArray(dataArray) 
+        ? dataArray.filter(item => {
+            if (!item.date) return true;
+            return item.date.split('T')[0] >= today;
+          })
+        : [];
+        
+      setEvents(upcomingEvents);
     } catch (err) {
       console.error("Error en Waiting Room:", err);
       setError("No se pudieron cargar los eventos en espera.");
