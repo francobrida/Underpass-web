@@ -1,7 +1,27 @@
 import axios from 'axios';
 
+const configuredBaseURL = import.meta.env.VITE_API_BASE_URL;
+const DEV_FALLBACK_BASE_URL = 'http://localhost:8000/api/v1';
+
+function resolveBaseURL() {
+  if (configuredBaseURL) {
+    return configuredBaseURL;
+  }
+  if (import.meta.env.DEV) {
+    console.warn(
+      `VITE_API_BASE_URL is not set. Falling back to ${DEV_FALLBACK_BASE_URL} for local development.`
+    );
+    return DEV_FALLBACK_BASE_URL;
+  }
+  throw new Error(
+    'VITE_API_BASE_URL is required for non-development builds. Set it before building — this build is misconfigured.'
+  );
+}
+
+const API_BASE_URL = resolveBaseURL();
+
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://underpass-api-production.up.railway.app/api/v1',
+  baseURL: API_BASE_URL,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
