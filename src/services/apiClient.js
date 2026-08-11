@@ -22,22 +22,12 @@ const API_BASE_URL = resolveBaseURL();
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
   },
 });
-
-apiClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
 
 apiClient.interceptors.response.use(
   (response) => response,
@@ -54,10 +44,6 @@ apiClient.interceptors.response.use(
   }
 );
 
-export const setAuthToken = (token) => {
-  localStorage.setItem('auth_token', token);
-};
-
 export const setAuthUser = (user) => {
   localStorage.setItem('auth_user', JSON.stringify(user));
 };
@@ -67,17 +53,13 @@ export const getAuthUser = () => {
   return user ? JSON.parse(user) : null;
 };
 
-export const getAuthToken = () => {
-  return localStorage.getItem('auth_token');
-};
-
 export const clearAuth = () => {
   localStorage.removeItem('auth_token');
   localStorage.removeItem('auth_user');
 };
 
 export const isAuthenticated = () => {
-  return !!localStorage.getItem('auth_token');
+  return !!localStorage.getItem('auth_user');
 };
 
 export default apiClient;
