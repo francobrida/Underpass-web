@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, Loader2, Mail, KeyRound, User, ShieldCheck } from 'lucide-react';
-import apiClient, { setAuthToken, setAuthUser } from '../services/apiClient';
+import apiClient, { setAuthUser } from '../services/apiClient';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -45,15 +45,13 @@ const RegisterPage = () => {
         password_confirmation: form.password_confirmation,
       });
 
-      const token = data.token || data.access_token;
       const user = data.user || data.data;
 
-      if (token) {
-        setAuthToken(token);
-        if (user) setAuthUser(user);
+      if (user) {
+        setAuthUser(user);
         navigate('/');
       } else {
-        
+
         navigate('/login');
       }
     } catch (err) {
