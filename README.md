@@ -121,9 +121,9 @@ The app will be available at `http://localhost:5173`
 
 ## 🔑 Environment Variables
 
-| Variable       | Description                  | Default                        |
-| -------------- | ---------------------------- | ------------------------------ |
-| `VITE_API_URL` | Base URL of the UnderPass API| `http://localhost:8000/api/v1` |
+| Variable              | Description                                                              | Default                         |
+| --------------------- | ------------------------------------------------------------------------- | ------------------------------- |
+| `VITE_API_BASE_URL`   | Base URL of the UnderPass API. Required for any non-dev build (the app fails to start without it); optional in dev. | `http://localhost:8000/api/v1` |
 
 > All variables exposed to the browser must be prefixed with `VITE_`. This is a Vite security convention.
 
