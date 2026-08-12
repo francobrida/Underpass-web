@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, Loader2, Mail, KeyRound } from 'lucide-react';
-import apiClient, { setAuthToken, setAuthUser } from '../services/apiClient';
+import apiClient, { setAuthUser } from '../services/apiClient';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -26,15 +26,13 @@ const LoginPage = () => {
         password: form.password,
       });
 
-      const token = data.token || data.access_token;
       const user = data.user || data.data;
 
-      if (token) {
-        setAuthToken(token);
-        if (user) setAuthUser(user);
+      if (user) {
+        setAuthUser(user);
         navigate('/events');
       } else {
-        setError('Respuesta inesperada del servidor. No se recibió token.');
+        setError('Respuesta inesperada del servidor. No se recibió usuario.');
       }
     } catch (err) {
       if (err.response) {
